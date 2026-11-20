@@ -71,7 +71,7 @@ class DatePicker020Test extends AbstractDatePickerTest {
         assertEquals("Option 2", page.menu.getSelectedLabel());
         assertEquals("08/13/2020", datePicker.getInputValue());
         assertEquals("1", count.getText());
-        assertConfiguration(datePicker.getWidgetConfiguration());
+        assertConfiguration(datePicker.getClientConfiguration());
     }
 
     private void assertConfiguration(JSONObject cfg) {

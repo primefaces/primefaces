@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        InputTextarea
+    </ui:define>
+
+    <ui:define name="description">
+        InputTextarea extends the standard inputTextarea with auto resize, a counter of the remaining characters,
+        autocomplete and theming. The examples show a textarea that grows with its content and calls an Ajax listener,
+        the counter with <b>maxlength</b> and <b>counterTemplate</b>, and suggestions from a <b>completeMethod</b> for
+        words of at least four characters (<b>minQueryLength</b>).
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/inputtextarea"/>
+    <ui:param name="componentLink" value="InputTextarea"/>
+    <ui:param name="tagName" value="inputTextarea"/>
+
+    <ui:define name="implementation">
+        <p:growl id="growl" showSummary="true" showDetail="true" keepAlive="true" life="3000">
+            <p:autoUpdate/>
+        </p:growl>
+
+        <div class="card">
+            <h:form>
+                <h5>AutoResize + AJAX Events</h5>
+                <p:inputTextarea rows="6" cols="33" value="#{inputTextareaView.value}">
+                    <p:ajax listener="#{inputTextareaView.onChange}"/>
+                </p:inputTextarea>
+
+                <h5>Remaining Chars</h5>
+                <p:inputTextarea rows="5" cols="30" counter="display" maxlength="10"
+                                 counterTemplate="{0} characters remaining." autoResize="false"/>
+                <h:outputText id="display" class="block" />
+
+                <h5>AutoComplete</h5>
+                <p>Following inputTextarea send a query for each word that has at least 4 characters to the complete method. Try typing "PrimeFaces".</p>
+                <p:inputTextarea rows="10" cols="50" completeMethod="#{inputTextareaView.completeArea}" queryDelay="750"
+                                 minQueryLength="4">
+                    <p:ajax event="itemSelect" listener="#{inputTextareaView.onSelect}"/>
+                </p:inputTextarea>
+            </h:form>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

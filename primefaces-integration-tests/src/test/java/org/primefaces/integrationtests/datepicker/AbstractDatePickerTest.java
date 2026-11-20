@@ -28,13 +28,17 @@ import org.primefaces.selenium.PrimeExpectedConditions;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.DatePicker;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -66,6 +70,21 @@ public class AbstractDatePickerTest extends AbstractPrimePageTest {
         if (milliseconds != null) {
             assertEquals(Integer.parseInt(milliseconds), datePicker.getMillisecond());
         }
+    }
+
+    /**
+     * Asserts that the today button selected the current time and that the panel shows it. The panel is compared to the
+     * selected value instead of a second "now", which is a different minute whenever the click crosses a minute.
+     *
+     * @param before the time right before the click on the today button
+     */
+    protected void assertNow(DatePicker datePicker, LocalDateTime before) {
+        LocalDateTime value = datePicker.getValue();
+        assertNotNull(value);
+        assertFalse(value.isBefore(before.truncatedTo(ChronoUnit.SECONDS)), value + " is before " + before);
+        assertFalse(value.isAfter(LocalDateTime.now()), value + " is in the future");
+        assertDate(datePicker, value.getMonth().name(), Objects.toString(value.getYear()));
+        assertTime(datePicker, Objects.toString(value.getHour()), Objects.toString(value.getMinute()), Objects.toString(value.getSecond()));
     }
 
     /**

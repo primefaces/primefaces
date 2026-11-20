@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Messages
+    </ui:define>
+
+    <ui:define name="description">
+        Messages components are used to display FacesMessages. <b>p:messages</b> lists the messages, here with
+        <b>showDetail</b> and <b>closable</b> for the four severities. The validation example uses <b>p:message</b>, which
+        displays the message of a single component, in its <b>display</b> modes: both (default), text, icon and tooltip.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/messages"/>
+    <ui:param name="componentLink" value="Messages"/>
+    <ui:param name="tagName" value="messages"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:tooltip/>
+
+            <h:form>
+                <p:messages id="messages" showDetail="true" closable="true" />
+
+                <h5 class="mt-0">Severities</h5>
+                <p:commandButton value="Info" action="#{messagesView.info}" styleClass="mr-2" update="@form" />
+                <p:commandButton value="Warn" action="#{messagesView.warn}" styleClass="mr-2 p-button-warning" update="@form" />
+                <p:commandButton value="Error" action="#{messagesView.error}" styleClass="mr-2 p-button-danger" update="@form" />
+                <p:commandButton value="Fatal" action="#{messagesView.fatal}" styleClass="mr-2 p-button-help" update="@form" />
+            </h:form>            
+        </div>
+
+        <div class="card">
+            <h:form>
+                <h5>Validation</h5>
+                <h:panelGroup id="grid" layout="block" styleClass="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="@next" value="Default"/>
+                        <p:inputText id="default" required="true"/>
+                        <p:message for="@previous"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="@next" value="Text"/>
+                        <p:inputText id="txt" required="true"/>
+                        <p:message for="@previous" display="text"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="@next" value="Icon"/>
+                        <p:inputText id="icon" required="true"/>
+                        <p:message for="@previous" display="icon"/>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <p:outputLabel for="@next" value="Tooltip"/>
+                        <p:inputText id="tt" required="true"/>
+                        <p:message for="@previous" display="tooltip"/>
+                    </div>
+                </h:panelGroup>
+
+                <p:commandButton id="submitButton" value="Submit" update="grid" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

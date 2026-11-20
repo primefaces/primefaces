@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            /* the header icons are tokens: here for one panel, in :root for all */
+            .custom-icons-panel {
+                --p-panel-close-icon: var(--p-icon-trash);
+                --p-panel-toggle-collapsed-icon: var(--p-icon-down);
+                --p-panel-toggle-expanded-icon: var(--p-icon-up);
+                --p-panel-menu-icon: var(--p-icon-list);
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Panel
+    </ui:define>
+
+    <ui:define name="description">
+        Panel is a grouping component with a header, content and footer. The examples show a <b>toggleable</b> and
+        <b>closable</b> panel with the <b>toggle</b> and <b>close</b> Ajax events, a menu in the header defined with
+        the <b>options</b> facet, custom header content and actions with the <b>header</b> and <b>actions</b> facets,
+        and header icons that are replaced with CSS variables.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/panel"/>
+    <ui:param name="componentLink" value="Panel-1"/>
+    <ui:param name="tagName" value="panel"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+            <p:growl id="msgs" showDetail="true" skipDetailIfEqualsSummary="true"/>
+
+            <h5 class="mt-0">Regular</h5>
+            <p:panel header="Header" footer="Movie Details">
+                <p class="m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+            </p:panel>
+
+            <h5>Toggleable</h5>
+            <p:panel header="Header" toggleable="true" toggleableHeader="true" closable="true" toggleSpeed="500"
+                        closeSpeed="500" ref="panel">
+
+                <p:ajax event="close" listener="#{panelView.onClose}" update="msgs"/>
+                <p:ajax event="toggle" listener="#{panelView.onToggle}" update="msgs"/>
+
+                <p class="m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+
+                <f:facet name="options">
+                    <p:menu>
+                        <p:submenu label="Settings">
+                            <p:menuitem value="Toggle" url="#" icon="pi pi-clone" onclick="PF('panel').toggle()"/>
+                            <p:menuitem value="Remove" url="#" icon="pi pi-times" onclick="PF('panel').close()"/>
+                        </p:submenu>
+                    </p:menu>
+                </f:facet>
+            </p:panel>
+
+            <h5>Custom Toolbar</h5>
+            <p:panel id="custom">
+                <p class="m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+
+                <f:facet name="header">
+                    <i class="pi pi-ellipsis-v mr-2"></i>Header
+                </f:facet>
+                <f:facet name="actions">
+                    <p:commandLink styleClass="p-panel-titlebar-icon p-state-default">
+                            <i class="pi pi-question"></i>
+                    </p:commandLink>
+                    <p:commandLink styleClass="p-panel-titlebar-icon p-state-default">
+                        <i class="pi pi-star"></i>
+                    </p:commandLink>
+                </f:facet>
+            </p:panel>
+
+            <h5>Custom Icons</h5>
+            <p:panel header="Custom Icons" toggleable="true" closable="true" styleClass="custom-icons-panel">
+
+                <p:ajax event="close" listener="#{panelView.onClose}" update="msgs"/>
+                <p:ajax event="toggle" listener="#{panelView.onToggle}" update="msgs"/>
+
+                <p class="m-0">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </p>
+
+                <f:facet name="options">
+                    <p:menu>
+                        <p:submenu label="Settings">
+                            <p:menuitem value="Action 1" url="#" icon="pi pi-check"/>
+                            <p:menuitem value="Action 2" url="#" icon="pi pi-refresh"/>
+                        </p:submenu>
+                    </p:menu>
+                </f:facet>
+            </p:panel>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

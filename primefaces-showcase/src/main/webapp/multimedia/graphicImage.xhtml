@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        GraphicImage
+    </ui:define>
+
+    <ui:define name="description">
+        GraphicImage extends the standard <b>h:graphicImage</b> and can display images created at runtime or stored in a
+        database. The demo shows a static resource image, a StreamedContent loaded in a separate request, a byte array
+        rendered as a data URI with <b>stream="false"</b>, a StreamedContent written to the response without buffering,
+        and a text drawn as an image on the server.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/graphicimage"/>
+    <ui:param name="tagName" value="graphicImage"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <h5>Static Image</h5>
+            <p:graphicImage name="images/nature/nature4.jpg" library="demo"/>
+        </div>
+
+        <div class="card">
+            <h5>StreamedContent</h5>
+            <p:graphicImage value="#{graphicImageView.image}"/>
+        </div>
+
+        <div class="card">
+            <h5>Rendered as DataURI / ViewScoped support</h5>
+            <p:graphicImage value="#{graphicImageView.imageAsByteArray}" stream="false"/>
+        </div>
+
+        <div class="card">
+            <h5>Optimized without buffering</h5>
+            <p:graphicImage value="#{graphicImageView.imageWithoutBuffering}"/>
+        </div>
+
+        <div class="card">
+            <h5>GraphicText</h5>
+            <p:graphicImage value="#{graphicImageView.graphicText}"/>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

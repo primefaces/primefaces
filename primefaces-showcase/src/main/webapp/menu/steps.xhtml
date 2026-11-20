@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Steps <span class="subitem">Steps</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Steps is an indicator for the steps in a workflow with a layout that is optimized for responsive design. Each
+        <b>p:menuitem</b> is rendered as a step. The examples show steps with index and text and, when the menuitems
+        have an <b>icon</b>, with icon and text.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/steps"/>
+    <ui:param name="tagName" value="steps"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Index and Text</h5>
+
+            <p:steps>
+                <p:menuitem value="Personal"/>
+                <p:menuitem value="Seat Selection"/>
+                <p:menuitem value="Payment"/>
+                <p:menuitem value="Confirmation"/>
+            </p:steps>
+        </div>
+
+        <div class="card">
+            <h5>Icon and Text</h5>
+
+            <p:steps>
+                <p:menuitem value="Personal" icon="pi pi-user"/>
+                <p:menuitem value="Seat Selection" icon="pi pi-search"/>
+                <p:menuitem value="Payment" icon="pi pi-wallet"/>
+                <p:menuitem value="Confirmation" icon="pi pi-check"/>
+            </p:steps>
+        </div>
+
+    </ui:define>
+
+</ui:composition>

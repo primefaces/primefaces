@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Tree <span class="subitem">Filter</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Filtering of the nodes is enabled with <b>filterBy</b> or <b>filterFunction</b>. <b>filterBy</b> defines the
+        value that is matched, <b>startsWith</b> is the default <b>filterMatchMode</b>, and <b>filterDelay</b> is the
+        delay in milliseconds before a filter request is sent. <b>filterFunction</b> refers to a method of the bean that
+        decides whether a node matches, here a case-insensitive contains.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tree"/>
+    <ui:param name="componentLink" value="VerticalTree-1"/>
+    <ui:param name="tagName" value="tree"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5>Basic</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" filterBy="#{node}" filterDelay="400">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+
+                <h5>Custom</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" filterFunction="#{treeBasicView.customFilter}">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

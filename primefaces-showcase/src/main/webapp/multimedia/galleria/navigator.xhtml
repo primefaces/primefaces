@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Galleria <span class="subitem">Navigator</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Item navigators are the buttons to go to the previous and next item, enabled with <b>showItemNavigators</b>.
+        Combining them with thumbnails and indicators provides various UI alternatives. The examples also display
+        the navigators only on hover with <b>showItemNavigatorsOnHover</b> and use <b>circular</b> for infinite scrolling.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/galleria"/>
+    <ui:param name="componentLink" value="Galleria"/>
+    <ui:param name="tagName" value="galleria"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Item Navigators and Thumbnails</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showItemNavigators="true" circular="true" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+                <f:facet name="thumbnail">
+                    <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block;" />
+                </f:facet>
+            </p:galleria>
+        </div>
+        
+        <div class="card">
+            <h5>Item Navigators without Thumbnails</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showItemNavigators="true" circular="true" showThumbnails="false" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+            </p:galleria>
+        </div>
+        
+        <div class="card">
+            <h5>Item Navigators on Hover</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showItemNavigators="true" circular="true" showItemNavigatorsOnHover="true" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+                <f:facet name="thumbnail">
+                    <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block;" />
+                </f:facet>
+            </p:galleria>
+        </div>
+        
+        <div class="card">
+            <h5>Item Navigators and Indicators</h5>
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showItemNavigators="true" circular="true" showItemNavigatorsOnHover="true" showThumbnails="false" showIndicators="true" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+            </p:galleria>
+        </div>
+    </ui:define>
+
+</ui:composition>

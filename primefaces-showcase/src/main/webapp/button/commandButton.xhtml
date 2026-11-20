@@ -1,0 +1,159 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+                
+    <ui:define name="head">
+        <style>
+            button.p-button {
+                margin-right: .5rem;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        CommandButton
+    </ui:define>
+
+    <ui:define name="description">
+        CommandButton submits its form, with Ajax by default, and invokes actions and listeners on the server. This page
+        shows icons, the severities and the raised, rounded, flat and outlined variants defined with <b>styleClass</b>.
+        During its Ajax request the button is disabled and shows a loading indicator; <b>disableOnAjax="false"</b> keeps
+        it enabled, and the last button restyles the loading state.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/commandbutton"/>
+    <ui:param name="componentLink" value="CommandButton"/>
+    <ui:param name="tagName" value="commandButton"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5>Basic</h5>
+            <p:commandButton type="button" value="Submit" />
+            <p:commandButton type="button" value="Disabled" disabled="true" />
+
+            <h5>Icons</h5>
+            <p:commandButton type="button" icon="pi pi-check" title="Save"/>
+            <p:commandButton type="button" value="Submit" icon="pi pi-check" />
+            <p:commandButton type="button" value="Submit" icon="pi pi-check" iconPos="right" />
+
+            <h5>Severities</h5>
+            <p:commandButton type="button" value="Primary" />
+            <p:commandButton type="button" value="Secondary" styleClass="p-button-secondary" />
+            <p:commandButton type="button" value="Success" styleClass="p-button-success" />
+            <p:commandButton type="button" value="Info" styleClass="p-button-info" />
+            <p:commandButton type="button" value="Warning" styleClass="p-button-warning" />
+            <p:commandButton type="button" value="Help" styleClass="p-button-help" />
+            <p:commandButton type="button" value="Danger" styleClass="p-button-danger" />
+
+            <h5>Raised Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="p-button-raised" />
+            <p:commandButton type="button" value="Secondary" styleClass="p-button-raised p-button-secondary" />
+            <p:commandButton type="button" value="Success" styleClass="p-button-raised p-button-success" />
+            <p:commandButton type="button" value="Info" styleClass="p-button-raised p-button-info" />
+            <p:commandButton type="button" value="Warning" styleClass="p-button-raised p-button-warning" />
+            <p:commandButton type="button" value="Help" styleClass="p-button-raised p-button-help" />
+            <p:commandButton type="button" value="Danger" styleClass="p-button-raised p-button-danger" />
+
+            <h5>Rounded Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="rounded-button" />
+            <p:commandButton type="button" value="Secondary" styleClass="rounded-button p-button-secondary" />
+            <p:commandButton type="button" value="Success" styleClass="rounded-button p-button-success" />
+            <p:commandButton type="button" value="Info" styleClass="rounded-button p-button-info" />
+            <p:commandButton type="button" value="Warning" styleClass="rounded-button p-button-warning" />
+            <p:commandButton type="button" value="Help" styleClass="rounded-button p-button-help" />
+            <p:commandButton type="button" value="Danger" styleClass="rounded-button p-button-danger" />
+
+            <h5>Flat Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="p-button-flat" />
+            <p:commandButton type="button" value="Secondary" styleClass="p-button-secondary p-button-flat" />
+            <p:commandButton type="button" value="Success" styleClass="p-button-success p-button-flat" />
+            <p:commandButton type="button" value="Info" styleClass="p-button-info p-button-flat" />
+            <p:commandButton type="button" value="Warning" styleClass="p-button-warning p-button-flat" />
+            <p:commandButton type="button" value="Help" styleClass="p-button-help p-button-flat" />
+            <p:commandButton type="button" value="Danger" styleClass="p-button-danger p-button-flat" />
+            <p:commandButton type="button" value="Plain" styleClass="p-button-flat p-button-plain" />
+
+            <h5>Raised Text Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="p-button-raised p-button-flat" />
+            <p:commandButton type="button" value="Secondary" styleClass="p-button-raised p-button-secondary p-button-flat" />
+            <p:commandButton type="button" value="Success" styleClass="p-button-raised p-button-success p-button-flat" />
+            <p:commandButton type="button" value="Info" styleClass="p-button-raised p-button-info p-button-flat" />
+            <p:commandButton type="button" value="Warning" styleClass="p-button-raised p-button-warning p-button-flat" />
+            <p:commandButton type="button" value="Help" styleClass="p-button-raised p-button-help p-button-flat" />
+            <p:commandButton type="button" value="Danger" styleClass="p-button-raised p-button-danger p-button-flat" />
+            <p:commandButton type="button" value="Plain" styleClass="p-button-raised p-button-flat p-button-plain" />
+
+            <h5>Outlined Buttons</h5>
+            <p:commandButton type="button" value="Primary" styleClass="p-button-outlined" />
+            <p:commandButton type="button" value="Secondary" styleClass="p-button-outlined p-button-secondary" />
+            <p:commandButton type="button" value="Success" styleClass="p-button-outlined p-button-success" />
+            <p:commandButton type="button" value="Info" styleClass="p-button-outlined p-button-info" />
+            <p:commandButton type="button" value="Warning" styleClass="p-button-outlined p-button-warning" />
+            <p:commandButton type="button" value="Help" styleClass="p-button-outlined p-button-help" />
+            <p:commandButton type="button" value="Danger" styleClass="p-button-outlined p-button-danger" />
+
+            <h5>Rounded Icon Buttons</h5>
+            <p:commandButton type="button" icon="pi pi-bookmark" styleClass="rounded-button p-button-secondary" />
+            <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-button-success" />
+            <p:commandButton type="button" icon="pi pi-user" styleClass="rounded-button p-button-info" />
+            <p:commandButton type="button" icon="pi pi-bell" styleClass="rounded-button p-button-warning" />
+            <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button p-button-help" />
+            <p:commandButton type="button" icon="pi pi-times" styleClass="rounded-button p-button-danger" />
+            <p:commandButton type="button" icon="pi pi-check" styleClass="rounded-button" />
+
+            <h5>Rounded Text Icon Buttons</h5>
+            <p:commandButton type="button" icon="pi pi-check" styleClass="rounded-button p-button-flat" />
+            <p:commandButton type="button" icon="pi pi-bookmark" styleClass="rounded-button p-button-secondary p-button-flat" />
+            <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-button-success p-button-flat" />
+            <p:commandButton type="button" icon="pi pi-user" styleClass="rounded-button p-button-info p-button-flat" />
+            <p:commandButton type="button" icon="pi pi-bell" styleClass="rounded-button p-button-warning p-button-flat" />
+            <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button p-button-help p-button-flat" />
+            <p:commandButton type="button" icon="pi pi-times" styleClass="rounded-button p-button-danger p-button-flat" />
+            <p:commandButton type="button" icon="pi pi-filter" styleClass="rounded-button p-button-flat p-button-plain" />
+
+            <h5>Rounded and Outlined Icon Buttons</h5>
+            <p:commandButton type="button" icon="pi pi-check" styleClass="rounded-button p-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-bookmark" styleClass="rounded-button p-button-secondary p-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-search" styleClass="rounded-button p-button-success p-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-user" styleClass="rounded-button p-button-info p-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-bell" styleClass="rounded-button p-button-warning p-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-heart" styleClass="rounded-button p-button-help p-button-outlined" />
+            <p:commandButton type="button" icon="pi pi-times" styleClass="rounded-button p-button-danger p-button-outlined" />
+
+            <h5>Ajax Disabling and Status Icon</h5>
+            <h:form>
+                <p:commandButton value="Keep Enabled" disableOnAjax="false" action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Icon Left" icon="pi pi-check" action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Icon Right" icon="pi pi-check" iconPos="right" action="#{buttonBasicView.sleep()}" />
+                <p:commandButton value="Custom" styleClass="custom" action="#{buttonBasicView.sleep()}" />
+            </h:form>
+            <style>
+                html body .custom.p-button.p-button-text-only .p-icon-loading {
+                    opacity: 0;
+                }
+                html body .custom.p-button, html body .custom.p-button * {
+                    transition-property: all;
+                    transition-duration: .2s;
+                }
+                html body .custom.p-button.p-state-loading {
+                    opacity: 1;
+                    background: #888;
+                    border-color: #888;
+                }
+                html body .custom.p-button.p-state-loading.p-button-text-only .p-button-text {
+                    opacity: 1;
+                    padding-left: 2rem;
+                }
+                html body .custom.p-button.p-state-loading.p-button-text-only .p-icon-loading {
+                    opacity: 1;
+                    left: 0;
+                    margin-left: 0.5rem;
+                }
+            </style>
+        </div>
+    </ui:define>
+
+</ui:composition>

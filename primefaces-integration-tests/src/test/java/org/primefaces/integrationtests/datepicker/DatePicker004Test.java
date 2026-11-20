@@ -31,7 +31,6 @@ import org.primefaces.selenium.component.DatePicker;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
@@ -168,13 +167,11 @@ class DatePicker004Test extends AbstractDatePickerTest {
 
         // Act - click Today button
         datePicker.showPanel();
+        LocalDateTime before = LocalDateTime.now();
         datePicker.getTodayButton().click();
 
         // Assert - today button reset to NOW
-        LocalDateTime now = LocalDateTime.now();
-        assertDate(datePicker, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(datePicker, Objects.toString(now.getHour()), Objects.toString(now.getMinute()), null);
-        assertNotNull(datePicker.getValue());
+        assertNow(datePicker, before);
     }
 
     @Test
@@ -248,13 +245,11 @@ class DatePicker004Test extends AbstractDatePickerTest {
 
         // Act - click Today button
         datePicker.showPanel();
+        LocalDateTime before = LocalDateTime.now();
         datePicker.getTodayButton().click();
 
         // Assert - today button reset to NOW
-        LocalDateTime now = LocalDateTime.now();
-        assertDate(datePicker, now.getMonth().name(), Objects.toString(now.getYear()));
-        assertTime(datePicker, Objects.toString(now.getHour()), Objects.toString(now.getMinute()), null);
-        assertNotNull(datePicker.getValue());
+        assertNow(datePicker, before);
     }
 
     private void assertConfiguration(JSONObject cfg, String defaultDate) {

@@ -1,5 +1,3 @@
-@use "mixins";
-
 .customer-badge {
     border-radius: 2px;
     padding: 0.25em 0.5rem;
@@ -132,8 +130,8 @@
     }
 
     .product-list-item {
-        @include mixins.flex();
-        @include mixins.flex-align-center();
+        display: flex;
+        align-items: center;
         padding: 1rem;
 
         &.border-1 {
@@ -150,7 +148,6 @@
 
         .product-list-detail {
             flex: 1 1 0;
-            -ms-flex: 1 1 0;
         }
 
         .p-rating {
@@ -165,8 +162,8 @@
         }
 
         .product-list-action {
-            @include mixins.flex();
-            @include mixins.flex-direction-column();
+            display: flex;
+            flex-direction: column;
         }
 
         .p-button {
@@ -181,9 +178,9 @@
 
         .product-grid-item-top,
         .product-grid-item-bottom {
-            @include mixins.flex();
-            @include mixins.flex-align-center();
-            @include mixins.flex-justify-between();
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         img {
@@ -212,8 +209,8 @@
 @media screen and (max-width: 576px) {
     .product {
         .product-list-item {
-            @include mixins.flex-direction-column();
-            @include mixins.flex-align-center();
+            flex-direction: column;
+            align-items: center;
 
             img {
                 width: 75%;
@@ -229,15 +226,15 @@
             }
 
             .product-list-action {
-                @include mixins.flex();
-                @include mixins.flex-direction-column();
+                display: flex;
+                flex-direction: column;
             }
 
             .product-list-action {
                 margin-top: 2rem;
-                @include mixins.flex-direction-row();
-                @include mixins.flex-justify-between();
-                @include mixins.flex-align-center();
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
                 width: 100%;
             }
         }
@@ -267,10 +264,10 @@
     }
 
     .products-table-header {
-        @include mixins.flex();
-        @include mixins.flex-align-center();
-        @include mixins.flex-justify-between();
-        @include mixins.flex-wrap(wrap);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
     }
 
     .edit-button.p-button {
@@ -293,15 +290,16 @@
 }
 
 @media (max-width: 640px) {
-    .products-table > .p-datatable-tablewrapper > table > thead > tr > th:nth-child(2),
-    .products-table > .p-datatable-tablewrapper > table > tbody > tr > td:nth-child(2) {
+    /* reflow: no title for the selection column (only the checkbox) */
+    .products-table > .p-datatable-tablewrapper > table > thead > tr > th:nth-child(1),
+    .products-table > .p-datatable-tablewrapper > table > tbody > tr > td:nth-child(1) {
         .p-column-title {
             display: none !important;
         }
     }
 
     .products-buttonbar {
-        @include mixins.flex-direction-column();
+        flex-direction: column;
 
         > div {
             &:last-child {

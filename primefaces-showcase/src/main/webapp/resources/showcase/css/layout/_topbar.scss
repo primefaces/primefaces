@@ -16,15 +16,15 @@
     box-shadow: none;
     transition: background-color .2s ease, box-shadow .2s ease;
 
+    /* a bar like the toolbar (p-backdrop-navigation): opaque in the opaque presets, translucent and blurred in Glass */
     &.scrolled {
-        background-color: rgba(255, 255, 255, 0.88);
-        box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+        background-color: var(--p-toolbar-background);
+        box-shadow: 0 1px 0 var(--p-content-border-color);
     }
 
-    @supports (color: color-mix(in srgb, white, black)) {
-        &.scrolled {
-            background-color: color-mix(in srgb, var(--surface-a) 88%, transparent);
-        }
+    /* transparent above the top of the page: nothing to blur */
+    &:not(.scrolled)::before {
+        backdrop-filter: none;
     }
 
     .layout-topbar-inner {
@@ -117,23 +117,25 @@
                 display: block;
                 text-align: center;
                 user-select: none;
-                line-height: calc(var(--layout-topbar-height) - 2px);
-                border-bottom: 2px solid transparent;
-                transition: border-bottom-color .2s, background-color .2s, color .2s;
+                line-height: var(--layout-topbar-height);
+                transition: background-color .2s, color .2s;
                 cursor: pointer;
                 border-radius: 8px;
                 padding: 0 .75rem;
 
-                &:hover, &:focus {
-                    border-bottom-color: transparent;
-                    background-color: rgba(255, 255, 255, 0.55);
+                &:hover {
+                    background-color: var(--surface-c);
                 }
 
+                // the focus ring of the theme, inside the bar (only for the keyboard, not after a click)
                 &:focus {
-                    z-index: 1;
                     outline: 0 none;
-                    transition: box-shadow .2s;
-                    box-shadow: inset 0 0 0 0.2em core.$focusBorderColor;
+                }
+
+                &:focus-visible {
+                    z-index: 1;
+                    outline: var(--p-focus-ring-width) var(--p-focus-ring-style) var(--p-focus-ring-color);
+                    outline-offset: calc(-1 * var(--p-focus-ring-width));
                 }
 
                 .pi {
@@ -162,13 +164,12 @@
                     inset-inline-end: 0;
                     width: 350px;
                     max-height: 450px;
-                    /* popover like the PrimeFaces overlays: translucent and blurred in the Glass preset */
+                    /* popover like the PrimeFaces overlays (p-backdrop-overlay): translucent and blurred in Glass */
                     background-color: var(--p-overlay-popover-background);
                     color: var(--p-overlay-popover-color);
                     border: 1px solid var(--p-overlay-popover-border-color);
                     border-radius: var(--p-overlay-popover-border-radius);
                     box-shadow: var(--p-overlay-popover-shadow);
-                    backdrop-filter: var(--p-overlay-backdrop-filter);
                     overflow: auto;
                     list-style-type: none;
                     padding: 1rem;

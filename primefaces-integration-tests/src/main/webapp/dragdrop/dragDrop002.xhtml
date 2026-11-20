@@ -29,12 +29,14 @@
                     <p:ajax listener="#{dragDrop002.onDrop}" update="msgs dropped languages"/>
                 </p:droppable>
 
-                <p:dataGrid id="languages" value="#{dragDrop002.languages}" var="lang" columns="3" style="width: 600px">
-                    <p:panel id="pnl" header="#{lang.name}">
-                        <h:outputText value="#{lang.firstAppeared}"/>
-                    </p:panel>
-                    <p:draggable id="drag" for="pnl" revert="true" handle=".p-panel-titlebar"/>
-                </p:dataGrid>
+                <p:dataView id="languages" value="#{dragDrop002.languages}" var="lang" layout="grid" style="width: 600px">
+                    <p:dataViewGridItem columns="3">
+                        <p:panel id="pnl" header="#{lang.name}">
+                            <h:outputText value="#{lang.firstAppeared}"/>
+                        </p:panel>
+                        <p:draggable id="drag" for="pnl" revert="true" handle=".p-panel-titlebar"/>
+                    </p:dataViewGridItem>
+                </p:dataView>
             </div>
         </h:form>
 

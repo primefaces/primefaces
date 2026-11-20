@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ImportConstants
+    </ui:define>
+
+    <ui:define name="description">
+        ImportConstants is a utility tag that imports the constant fields of a class into a page, so that they can be
+        used in EL expressions without a bean that offers a getter for each constant. The constants are accessed via
+        the name of the class (default) or via a custom name defined with <b>var</b>, as in this example.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/importconstants"/>
+    <ui:param name="tagName" value="importConstants"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:importConstants type="org.primefaces.util.Constants" var="PFConstants"/>
+
+            <h5 class="mt-0">Library</h5>
+            <h:outputText value="#{PFConstants.LIBRARY}" />
+
+            <h5>DOWNLOAD_COOKIE</h5>
+            <h:outputText value="#{PFConstants.DOWNLOAD_COOKIE}" />
+        </div>
+    </ui:define>
+
+</ui:composition>

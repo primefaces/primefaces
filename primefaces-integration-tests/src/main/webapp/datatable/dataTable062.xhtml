@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces"
+      xmlns:ui="jakarta.faces.facelets">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <f:metadata>
+        <f:viewParam name="mode" value="#{dataTable062.mode}"/>
+    </f:metadata>
+
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <!-- the headerRows are switched by their rendered attribute, see GitHub #10481 -->
+            <p:dataTable id="datatable" value="#{dataTable062.progLanguages}" var="lang">
+                <p:ajax event="sort" listener="#{dataTable062.onSort}" update="form:sortEventHeaderRows"/>
+
+                <p:headerRow field="firstAppeared" rendered="#{dataTable062.mode eq 'year'}">
+                    <p:column colspan="4">
+                        <h:outputText value="#{lang.firstAppeared}"/>
+                    </p:column>
+                </p:headerRow>
+
+                <p:headerRow field="type" rendered="#{dataTable062.mode eq 'type'}">
+                    <p:column colspan="4">
+                        <h:outputText value="#{lang.type}"/>
+                    </p:column>
+                </p:headerRow>
+
+                <p:column field="id" headerText="ID"/>
+                <p:column field="name" headerText="Name"/>
+                <p:column field="firstAppeared" headerText="First appeared"/>
+                <p:column field="type" headerText="Type"/>
+            </p:dataTable>
+
+            <p:dataTable id="lazyDatatable" value="#{dataTable062.lazyModel}" var="lang" lazy="true" rows="10" paginator="true">
+                <p:headerRow field="firstAppeared" rendered="#{dataTable062.mode eq 'year'}">
+                    <p:column colspan="4">
+                        <h:outputText value="#{lang.firstAppeared}"/>
+                    </p:column>
+                </p:headerRow>
+
+                <p:headerRow field="type" rendered="#{dataTable062.mode eq 'type'}">
+                    <p:column colspan="4">
+                        <h:outputText value="#{lang.type}"/>
+                    </p:column>
+                </p:headerRow>
+
+                <p:column field="id" headerText="ID"/>
+                <p:column field="name" headerText="Name"/>
+                <p:column field="firstAppeared" headerText="First appeared"/>
+                <p:column field="type" headerText="Type"/>
+            </p:dataTable>
+
+            <!-- the headerRow field is set by the same action which renders it -->
+            <p:dataTable id="elFieldDatatable" value="#{dataTable062.elFieldLanguages}" var="lang">
+                <p:headerRow field="#{dataTable062.groupField}" rendered="#{not empty dataTable062.groupField}">
+                    <p:column colspan="4">
+                        <h:outputText value="#{lang[dataTable062.groupField]}"/>
+                    </p:column>
+                </p:headerRow>
+
+                <!-- a headerRow which is not rendered must not be evaluated -->
+                <p:headerRow field="#{dataTable062.failingField}" rendered="false">
+                    <p:column colspan="4"/>
+                </p:headerRow>
+
+                <p:column field="id" headerText="ID"/>
+                <p:column field="name" headerText="Name"/>
+                <p:column field="firstAppeared" headerText="First appeared"/>
+                <p:column field="type" headerText="Type"/>
+            </p:dataTable>
+
+            <!-- the same table component is encoded for each iteration, with another client id; only the first one is grouped -->
+            <ui:repeat id="repeat" value="#{[1, 2]}" var="iteration">
+                <p:dataTable id="repeatedDatatable" value="#{iteration eq 1 ? dataTable062.repeatedLanguages : dataTable062.otherRepeatedLanguages}" var="lang">
+                    <p:headerRow field="firstAppeared" rendered="#{iteration eq 1}">
+                        <p:column colspan="4">
+                            <h:outputText value="#{lang.firstAppeared}"/>
+                        </p:column>
+                    </p:headerRow>
+
+                    <p:column field="id" headerText="ID"/>
+                    <p:column field="name" headerText="Name"/>
+                    <p:column field="firstAppeared" headerText="First appeared"/>
+                    <p:column field="type" headerText="Type"/>
+                </p:dataTable>
+            </ui:repeat>
+
+            <!-- a user sortBy for the field of the headerRow -->
+            <p:dataTable id="userSortByDatatable" value="#{dataTable062.userSortByLanguages}" var="lang" sortBy="#{dataTable062.yearDescending}">
+                <p:headerRow field="firstAppeared">
+                    <p:column colspan="4">
+                        <h:outputText value="#{lang.firstAppeared}"/>
+                    </p:column>
+                </p:headerRow>
+
+                <p:column field="id" headerText="ID"/>
+                <p:column field="name" headerText="Name"/>
+                <p:column field="firstAppeared" headerText="First appeared"/>
+                <p:column field="type" headerText="Type"/>
+            </p:dataTable>
+
+            <h:outputText id="lastSortFields" value="#{dataTable062.lazyModel.lastSortFields}"/>
+            <h:outputText id="sortEventHeaderRows" value="#{dataTable062.sortEventHeaderRows}"/>
+
+            <p:commandButton id="none" value="No grouping" update="@form">
+                <f:setPropertyActionListener target="#{dataTable062.mode}" value="none"/>
+            </p:commandButton>
+            <p:commandButton id="year" value="Group by year" update="@form">
+                <f:setPropertyActionListener target="#{dataTable062.mode}" value="year"/>
+            </p:commandButton>
+            <p:commandButton id="type" value="Group by type" update="@form">
+                <f:setPropertyActionListener target="#{dataTable062.mode}" value="type"/>
+            </p:commandButton>
+            <p:commandButton id="groupFieldType" value="Group field type" update="@form">
+                <f:setPropertyActionListener target="#{dataTable062.groupField}" value="type"/>
+            </p:commandButton>
+            <p:commandButton id="groupFieldYear" value="Group field year" update="@form">
+                <f:setPropertyActionListener target="#{dataTable062.groupField}" value="firstAppeared"/>
+            </p:commandButton>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

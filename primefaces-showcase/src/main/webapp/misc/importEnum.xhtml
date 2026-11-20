@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ImportEnum
+    </ui:define>
+
+    <ui:define name="description">
+        ImportEnum imports the values of an enum into a page, so that they can be used in EL expressions without a bean
+        that offers a getter for them. The values are accessed via the name of the class (default) or via a custom name
+        defined with <b>var</b>, as here. The key <b>ALL_VALUES</b> returns all values of the enum.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/importenum"/>
+    <ui:param name="tagName" value="importEnum"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:importEnum type="jakarta.faces.application.ProjectStage" var="FacesProjectStages" />
+
+            <h5 class="mt-0">Development</h5>
+            <h:outputText value="#{FacesProjectStages.Development}" />
+
+            <h5>ALL_VALUES</h5>
+            <p>You can use the special key ALL_VALUES to access all enum values.</p>
+            <ui:repeat var="current" value="#{FacesProjectStages.ALL_VALUES}">
+                <h:outputText value="#{current}" styleClass="mb-2 block"/>
+            </ui:repeat>
+        </div>
+    </ui:define>
+
+</ui:composition>

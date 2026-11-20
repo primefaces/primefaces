@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Horizontal Tree <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        With <b>orientation="horizontal"</b> the Tree displays its nodes in a horizontal layout. Like the vertical tree
+        it has two modes: in client mode all nodes are available at client side, whereas in Ajax mode
+        (<b>dynamic="true"</b>) the children of a node are loaded from the server when the node is expanded.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tree?id=horizontal-tree"/>
+    <ui:param name="componentLink" value="HorizontalTree"/>
+    <ui:param name="tagName" value="tree"/>
+
+    <ui:define name="implementation">
+
+        <h:form>
+
+            <div class="card">
+                <h5 style="margin-top:0">Client</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" orientation="horizontal">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+            </div>
+
+            <div class="card">
+                <h5>Ajax and No Border</h5>
+                <p:tree value="#{treeBasicView.root}" var="node" dynamic="true" orientation="horizontal"
+                         styleClass="p-noborder">
+                    <p:treeNode>
+                        <h:outputText value="#{node}"/>
+                    </p:treeNode>
+                </p:tree>
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

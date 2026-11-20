@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Toolbar
+    </ui:define>
+
+    <ui:define name="description">
+        Toolbar is a horizontal grouping component for buttons and other content. The content is placed in
+        <b>p:toolbarGroup</b> components, here one with buttons and one with <b>align="right"</b> that contains
+        a <b>p:menuButton</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/toolbar"/>
+    <ui:param name="tagName" value="toolbar"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton type="button" value="New" icon="pi pi-file" styleClass="mr-2" />
+                        <p:commandButton type="button" value="Open" icon="pi pi-folder-open" styleClass="p-button-success" />
+
+                        <i class="pi pi-bars px-2"/>
+
+                        <p:commandButton type="button" title="Save" icon="pi pi-save" styleClass="p-button-help mr-2" />
+                        <p:commandButton type="button" title="Print" icon="pi pi-print" styleClass="p-button-warning mr-2"/>
+                        <p:commandButton type="button" title="Delete" icon="pi pi-trash" styleClass="p-button-danger"/>
+                    </p:toolbarGroup>
+
+                    <p:toolbarGroup align="right">
+                        <p:menuButton value="Options">
+                            <p:menuitem value="Save" action="#{toolbarView.save}" update="messages" icon="pi pi-save"/>
+                            <p:menuitem value="Update" action="#{toolbarView.update}" update="messages" icon="pi pi-refresh"/>
+                            <p:menuitem value="Delete" action="#{toolbarView.delete}" ajax="false" icon="pi pi-times"/>
+                            <p:menuitem value="Homepage" url="http://www.primefaces.org" icon="pi pi-home"/>
+                        </p:menuButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

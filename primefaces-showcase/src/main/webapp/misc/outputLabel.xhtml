@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                xmlns:composite="jakarta.faces.composite"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        OutputLabel
+    </ui:define>
+
+    <ui:define name="description">
+        OutputLabel extends the standard <b>h:outputLabel</b>. It shows an indicator when its input is required, passes
+        its value to the input as the label used in validation messages, is displayed with the error style when the
+        validation of the input fails and can focus inputs like <b>p:spinner</b>. Submit the empty form to compare it
+        with the standard label.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/outputlabel"/>
+    <ui:param name="tagName" value="outputLabel"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:messages id="messages"/>
+                <div class="field grid">
+                    <h:outputLabel for="name" value="Standard Label" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+                    <div class="col-12 md:col-10">
+                        <p:inputText id="name" required="true"/>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <p:outputLabel for="@next" value="Extended Label" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+                    <div class="col-12 md:col-10">
+                        <p:inputText id="extended" required="true"/>
+                    </div>
+                </div>
+                <div class="field grid">
+                    <p:outputLabel for="@next" value="Number" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+                    <div class="col-12 md:col-10">
+                        <p:spinner id="number" value="0"/>
+                    </div>
+                </div>
+                <p:commandButton value="Submit" update="@form"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

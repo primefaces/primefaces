@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Lifecycle
+    </ui:define>
+
+    <ui:define name="description">
+        Lifecycle is a utility component which displays the execution time of each Jakarta Faces phase.
+        It also synchronizes automatically after each Ajax request, here of a <b>p:commandButton</b> and of an
+        <b>h:commandButton</b> with <b>f:ajax</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/lifecycle"/>
+    <ui:param name="componentLink" value="Lifecycle"/>
+    <ui:param name="tagName" value="lifecycle"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <div class="mb-5">
+                    <p:commandButton value="Dummy Ajax Request" update="@none" process="@form" styleClass="mr-2" />
+                    <h:commandButton value="Dummy Ajax Request">
+                        <f:ajax render="@none" execute="@form" />
+                    </h:commandButton>
+                </div>
+
+                <div style="overflow-x: auto">
+                    <p:lifecycle />
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataView <span class="subitem">Lazy</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DataView supports lazy loading to deal with large datasets. For this, a <b>LazyDataModel</b> is implemented that
+        queries the datasource when pagination happens. This example uses an in-memory list to mimic a real datasource
+        like a database; in a real application, the query is built from the information passed to the <b>load</b>
+        method.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/dataview"/>
+    <ui:param name="componentLink" value="DataView-1"/>
+    <ui:param name="tagName" value="dataView"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:dataView var="customer" value="#{dtLazyView.lazyModel}" rows="12" paginator="true"
+                            rowsPerPageTemplate="6,12,16"
+                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                    <p:dataViewGridItem>
+                        <div class="card">
+                            <div class="grid">
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Name"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <h:outputText value="#{customer.name}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Country"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <span class="flag flag-#{customer.country.code}"
+                                            style="width: 30px; height: 20px"/>
+                                    <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                    value="#{customer.country.name}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Company"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <h:outputText value="#{customer.company}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Representative"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <p:graphicImage name="images/avatar/#{customer.representative.image}"
+                                                    library="demo"
+                                                    width="32" style="vertical-align: middle"/>
+                                    <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                    value="#{customer.representative.name}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </p:dataViewGridItem>
+
+                    <p:dataViewListItem>
+                        <div class="py-3">
+                            <div class="grid">
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Name"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <h:outputText value="#{customer.name}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Country"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <span class="flag flag-#{customer.country.code}"
+                                          style="width: 30px; height: 20px"/>
+                                    <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                  value="#{customer.country.name}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Company"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <h:outputText value="#{customer.company}"/>
+                                </div>
+                                <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                    <h:outputText value="Representative"/>
+                                </div>
+                                <div class="col-12 sm:col-8">
+                                    <p:graphicImage name="images/avatar/#{customer.representative.image}"
+                                                    library="demo"
+                                                    width="32" style="vertical-align: middle"/>
+                                    <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                                  value="#{customer.representative.name}"/>
+                                </div>
+                            </div>
+                        </div>
+                    </p:dataViewListItem>
+                </p:dataView>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

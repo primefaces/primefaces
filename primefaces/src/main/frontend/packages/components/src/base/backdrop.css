@@ -11,10 +11,16 @@
  * of its absolutely / fixed positioned descendants (overlays appended inside it would be positioned wrong), and
  * translucency belongs to the controls layer above the content (Apple HIG).
  * Zero specificity (:where), so component rules and application CSS win.
+ *
+ * The layout of an application (topbar, drawer menu, own dropdowns) gets the same backdrop with two classes:
+ * .p-backdrop-navigation for bars (like the toolbar: the filter is on a ::before, so the bar must not use ::before
+ * itself; background: --p-toolbar-background) and .p-backdrop-overlay for floating panels (the filter is on the
+ * element; background: --p-overlay-popover-background or --p-overlay-modal-background).
  */
-:where(.p-sidebar, .p-overlaypanel, .p-confirm-popup, .p-input-overlay:not(.p-cascadeselect-panel),
-    .p-selectonemenu-panel, .p-selectcheckboxmenu-panel, .p-autocomplete-panel, .p-tooltip-text, .p-growl-item-container,
-    .p-password-panel, .p-columntoggler, .p-datatable-filter-matchmode-menu, .p-dialog-docked, .p-log) {
+:where(.p-backdrop-overlay, .p-sidebar, .p-overlaypanel, .p-confirm-popup,
+    .p-input-overlay:not(.p-cascadeselect-panel), .p-selectonemenu-panel, .p-selectcheckboxmenu-panel,
+    .p-autocomplete-panel, .p-tooltip-text, .p-growl-item-container, .p-password-panel, .p-columntoggler,
+    .p-dialog-docked, .p-log) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 
@@ -24,9 +30,10 @@
  * on the box or the toolbar makes it the stacking context and containing block of its descendants: the dropdowns inside
  * a toolbar would be painted under the content that follows it.
  * Toolbar only (not menubar / megamenu): an element with a backdrop filter is the backdrop root of its descendants, the
- * submenus would only blur what lies inside the bar.
+ * submenus would only blur what lies inside the bar. .p-backdrop-navigation: bars of the application, same as the
+ * toolbar (a dropdown inside the bar still blurs the page). Not for a scroll container: the ::before scrolls away.
  */
-:where(.p-dialog-box, .p-toolbar)::before {
+:where(.p-dialog-box, .p-toolbar, .p-backdrop-navigation)::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -41,15 +48,15 @@
 }
 
 /* no stacking context on the toolbar: the ::before comes first in the positioned layer, the positioned children follow */
-:where(.p-toolbar) {
+:where(.p-toolbar, .p-backdrop-navigation) {
     position: relative;
 }
 
-:where(.p-toolbar) > * {
+:where(.p-toolbar, .p-backdrop-navigation) > * {
     position: relative;
 }
 
-:where(.p-toolbar)::before {
+:where(.p-toolbar, .p-backdrop-navigation)::before {
     backdrop-filter: var(--p-navigation-backdrop-filter);
 }
 

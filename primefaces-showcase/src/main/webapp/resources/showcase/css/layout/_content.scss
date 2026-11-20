@@ -54,6 +54,10 @@
         width: 100%;
         border-inline-start: 1px solid transparent;
 
+        .submenu-group + .submenu-group {
+            margin-top: 1.25rem;
+        }
+
         .submenu-section-title {
             font-size: .75rem;
             font-weight: 700;
@@ -159,6 +163,12 @@
 
             input[type="hidden"]  + h5 { 
                 margin-top:0;
+            }
+
+            // the demo images and videos in their natural size: never wider than the card (small screens)
+            img:not([width]):not([height]),
+            video {
+                max-width: 100%;
             }
         }
 

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+        <title>PrimeFaces Selenium - Theming</title>
+        <style>
+            .app-topbar {
+                position: fixed;
+                inset: 0 0 auto 0;
+                height: 3.5rem;
+                background: var(--p-toolbar-background);
+            }
+
+            .app-topbar-menu {
+                position: absolute;
+                top: 3.5rem;
+                right: 1rem;
+                width: 12rem;
+                padding: 1rem;
+                background: var(--p-overlay-popover-background);
+            }
+
+            .app-drawer {
+                position: fixed;
+                inset: 0 auto 0 0;
+                width: 15rem;
+                background: var(--p-overlay-modal-background);
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <!-- the backdrop classes on the layout of an application: a bar with a menu inside it, a drawer -->
+        <div id="topbar" class="app-topbar p-backdrop-navigation">
+            <span id="title">Application</span>
+            <div id="topbarMenu" class="app-topbar-menu p-backdrop-overlay">Menu</div>
+        </div>
+        <div id="drawer" class="app-drawer p-backdrop-overlay">Drawer</div>
+
+        <h:form id="form" style="padding-top: 5rem">
+            <p:commandButton id="button" value="Button" type="button" />
+        </h:form>
+    </h:body>
+</f:view>
+
+</html>

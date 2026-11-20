@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Wizard
+    </ui:define>
+
+    <ui:define name="description">
+        Wizard splits a form into steps, one <b>p:tab</b> per step. Only the current step is processed, and the next one
+        is displayed if it passes validation. The optional <b>flowListener</b> changes the sequential flow: it returns
+        the id of the tab to display next. The example uses it to jump to the confirmation when "Skip to last" is
+        checked.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/wizard"/>
+    <ui:param name="componentLink" value="Wizard-1"/>
+    <ui:param name="tagName" value="wizard"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+
+                <p:growl id="growl" sticky="true" showDetail="true"/>
+
+                <p:wizard flowListener="#{userWizard.onFlowProcess}" ref="wizard">
+                    <p:tab id="personal" title="Personal">
+                        <p:focus context="@next"/>
+                        <p:panel header="Personal Details">
+                            <p:messages/>
+                            <div class="formgrid grid p-fluid">
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Firstname"/>
+                                    <p:inputText value="#{userWizard.user.firstname}" required="true" label="Firstname"/>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Lastname"/>
+                                    <p:inputText value="#{userWizard.user.lastname}" required="true" label="Lastname"/>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Age"/>
+                                    <p:inputText value="#{userWizard.user.age}"/>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Skip to last"/>
+                                    <h:selectBooleanCheckbox value="#{userWizard.skip}"/>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </p:tab>
+
+                    <p:tab id="address" title="Address">
+                        <p:focus context="@next"/>
+                        <p:panel header="Address Details">
+                            <p:messages/>
+                            <div class="formgrid grid p-fluid">
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Street"/>
+                                    <p:inputText value="#{userWizard.user.street}"/>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Postal Code"/>
+                                    <p:inputText value="#{userWizard.user.postalCode}"/>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="City"/>
+                                    <p:inputText value="#{userWizard.user.city}"/>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Skip to last"/>
+                                    <h:selectBooleanCheckbox value="#{userWizard.skip}"/>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </p:tab>
+
+                    <p:tab id="contact" title="Contact">
+                        <p:focus context="@next"/>
+                        <p:panel header="Contact Information">
+                            <p:messages/>
+                            <div class="formgrid grid p-fluid">
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Email"/>
+                                    <p:inputText value="#{userWizard.user.email}" required="true" label="Email"/>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Phone"/>
+                                    <p:inputText value="#{userWizard.user.phone}"/>
+                                </div>
+                                <div class="field col-12 md:col-6">
+                                    <p:outputLabel for="@next" value="Additional Info"/>
+                                    <p:inputText value="#{userWizard.user.info}"/>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </p:tab>
+
+                    <p:tab id="confirm" title="Confirmation">
+                        <p:focus context="@next"/>
+                        <p:panel header="Confirmation">
+                            <div class="grid">
+                                <div class="col-12 md:col-4">
+                                    <div class="mb-2">Firstname: <h:outputText value="#{userWizard.user.firstname}" styleClass="font-bold"/></div>
+                                    <div class="mb-2">Lastname: <h:outputText value="#{userWizard.user.lastname}" styleClass="font-bold"/></div>
+                                    <div class="mb-2">Age: <h:outputText value="#{userWizard.user.age}" styleClass="font-bold"/></div>
+                                </div>
+                                <div class="col-12 md:col-4">
+                                    <div class="mb-2">Street: <h:outputText value="#{userWizard.user.street}" styleClass="font-bold"/></div>
+                                    <div class="mb-2">Postal: <h:outputText value="#{userWizard.user.postalCode}" styleClass="font-bold"/></div>
+                                    <div class="mb-2">City: <h:outputText value="#{userWizard.user.city}" styleClass="font-bold"/></div>
+                                </div>
+                                <div class="col-12 md:col-4">
+                                    <div class="mb-2">Email: <h:outputText value="#{userWizard.user.email}" styleClass="font-bold"/></div>
+                                    <div class="mb-2">Phone: <h:outputText value="#{userWizard.user.phone}" styleClass="font-bold"/></div>
+                                    <div class="mb-2">Info: <h:outputText value="#{userWizard.user.info}" styleClass="font-bold"/></div>
+                                </div>
+                            </div>
+
+                            <p:commandButton value="Submit" action="#{userWizard.save}" update="growl" process="@this"/>
+                        </p:panel>
+                    </p:tab>
+                </p:wizard>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

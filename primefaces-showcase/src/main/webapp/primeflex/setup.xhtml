@@ -2,45 +2,64 @@
     xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces" template="/WEB-INF/template.xhtml">
 
     <ui:define name="content">
-        <div class="content-section documentation">
-            <h1>PrimeFlex</h1>
-            <p><a href="https://primeflex.org/" target="_blank" rel="noopener noreferrer">PrimeFlex</a> is a CSS utility library featuring various helpers such as a grid system, flexbox, spacing, elevation and more. Although it is not required, it is highly
-                recommended to add PrimeFlex as it is likely to need such utilities when developing applications with PrimeFaces.</p>
+        <div class="content-section introduction">
+            <div class="feature-intro">
+                <h1>PrimeFlex</h1>
+                <p><a href="https://primeflex.org/" target="_blank" rel="noopener noreferrer">PrimeFlex</a> is a CSS utility library featuring
+                    various helpers such as a grid system, flexbox, spacing, elevation and more.</p>
+            </div>
+        </div>
 
-            <h5>Install</h5>
-            <p>PrimeFlex is available at <a href="https://github.com/primefaces/primeflex" target="_blank" rel="noopener noreferrer">GitHub</a>. Download <i>primeflex.min.css</i>, add it to your application and include the path
-                usign the <i>h:outputStylesheet</i> component.</p>
-            <p>PrimeFaces Showcase refers to version 4.0.0 of PrimeFlex.</p>
+        <div class="content-section documentation">
+            <p>PrimeFlex is not required, but it is highly recommended to add it, as such utilities are likely to be needed when developing
+                applications with PrimeFaces. The PrimeFaces Showcase uses version 4.0.0 of PrimeFlex.</p>
+
+            <h2>Install</h2>
+            <p>The easiest way is the WebJar: add the dependency and include the stylesheet with the <code>h:outputStylesheet</code>
+                component.</p>
+
+<pre class="language-xml"><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.webjars.npm&lt;/groupId&gt;
+    &lt;artifactId&gt;primeflex&lt;/artifactId&gt;
+    &lt;version&gt;4.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+</code></pre>
+
+<pre class="language-xml"><code>
+&lt;h:outputStylesheet library="webjars" name="primeflex/4.0.0/primeflex.min.css" /&gt;
+
+</code></pre>
+
+            <p>Alternatively, PrimeFlex is available at <a href="https://github.com/primefaces/primeflex" target="_blank"
+                rel="noopener noreferrer">GitHub</a>. Download <code>primeflex.min.css</code>, add it to the resources of your
+                application and include its path.</p>
 
 <pre class="language-xml"><code>
 &lt;h:outputStylesheet name="%YOUR_PATH%/primeflex.min.css" /&gt;
+
 </code></pre>
 
-        <p>Or use WebJars...</p>
-       <pre class="language-xml"><code>
-        &lt;dependency&gt;
-           &lt;groupId>org.webjars.npm&lt;/groupId&gt;
-           &lt;artifactId>primeflex&lt;/artifactId&gt;
-           &lt;version>4.0.0&lt;/version&gt;
-        &lt;/dependency&gt;
-        
-        &lt;h:outputStylesheet library="webjars" name="primeflex/4.0.0/primeflex.min.css" /&gt;
-        </code></pre>
-
-            <p>PrimeFlex is a lightweight library, still it is possible to pick the utilities you need to make the file even smaller. For this, you need to remove the include paths and
-                create your own build by compiling it with SASS. For example, if you do not need to use the elevation utilities, comment it out and build your own file. Note that sass cli
-                should be available in your system, refer to <a href="https://sass-lang.com/documentation/cli">documentation</a> for details.
+            <h2>Custom Build</h2>
+            <p>PrimeFlex is a lightweight library, still it is possible to pick the utilities you need to make the file even smaller. For this,
+                remove the imports you do not need from <code>primeflex.scss</code> and create your own build by compiling it with SASS. For example,
+                if you do not use the elevation utilities, comment the import out and build your own file. Note that the sass cli has to be
+                available in your system, refer to the <a href="https://sass-lang.com/documentation/cli" target="_blank"
+                rel="noopener noreferrer">documentation</a> for details.
             </p>
 
 <pre class="language-css"><code>
-@import './src/_variables';
-@import './src/_grid';
-@import './src/_formlayout';
-@import './src/_display';
-@import './src/_text';
-@import './src/flexbox/_flexbox';
-@import './src/_spacing';
-@import './src/_elevation';
+@import './core/_variables';
+@import './core/_mixins';
+@import './core/_grid';
+@import './core/_formlayout';
+@import './core/_display';
+@import './core/_typography';
+@import './core/_flexbox';
+@import './core/_spacing';
+// @import './core/_elevation';
+...
 
 </code></pre>
 
@@ -49,8 +68,8 @@ sass --update primeflex.scss:primeflex.min.css --style compressed
 
 </code></pre>
 
-            <h5>Variables</h5>
-            <p>Predefined values like breakpoints can be customized when creating your own build using the <i>src/_variables</i> file.</p>
+            <h2>Variables</h2>
+            <p>Predefined values like breakpoints can be customized when creating your own build using the <code>core/_variables.scss</code> file.</p>
 
             <div class="doc-tablewrapper">
                 <table class="doc-table">
@@ -79,7 +98,7 @@ sass --update primeflex.scss:primeflex.min.css --style compressed
                         </tr>
                         <tr>
                             <td>$xl</td>
-                            <td>Breakpoint of smaller screens such as desktop monitors.</td>
+                            <td>Breakpoint of larger screens such as desktop monitors.</td>
                             <td>1200px</td>
                         </tr>
                         <tr>
@@ -89,23 +108,23 @@ sass --update primeflex.scss:primeflex.min.css --style compressed
                         </tr>
                         <tr>
                             <td>$fieldMargin</td>
-                            <td>Spacing of a field. Can be vertical of horizontal depending on form layout.</td>
-                            <td>.5rem</td>
+                            <td>Spacing of a field. Can be vertical or horizontal depending on form layout.</td>
+                            <td>1rem</td>
                         </tr>
                         <tr>
                             <td>$fieldLabelMargin</td>
-                            <td>Spacing of a field label. Can be vertical of horizontal depending on form layout.</td>
+                            <td>Spacing of a field label. Can be vertical or horizontal depending on form layout.</td>
                             <td>.5rem</td>
                         </tr>
                         <tr>
                             <td>$helperTextMargin</td>
                             <td>Top spacing of a helper text.</td>
-                            <td>.5rem</td>
+                            <td>.25rem</td>
                         </tr>
                         <tr>
                             <td>$spacer</td>
                             <td>Base value to use in spacing utilities, view spacing documentation for details.</td>
-                            <td>.5rem</td>
+                            <td>1rem</td>
                         </tr>
                     </tbody>
                 </table>

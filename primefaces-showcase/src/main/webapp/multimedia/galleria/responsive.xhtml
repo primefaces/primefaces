@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Galleria <span class="subitem">Responsive</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Galleria responsiveness is defined with the <b>responsiveOptions</b> property. It takes a list of
+        <b>ResponsiveOption</b> objects, each with a breakpoint as max-width and the <b>numVisible</b> to apply
+        up to that width. In this demo <b>numVisible</b> is 7 and changes to 5, 4, 3 and 1 at 1024px, 960px, 768px
+        and 560px.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/galleria"/>
+    <ui:param name="componentLink" value="Galleria"/>
+    <ui:param name="tagName" value="galleria"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="7" circular="true" responsiveOptions="#{galleriaView.responsiveOptions2}" style="max-width: 800px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block" />
+                <f:facet name="thumbnail">
+                    <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block" />
+                </f:facet>
+            </p:galleria>
+        </div>
+    </ui:define>
+
+</ui:composition>

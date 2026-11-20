@@ -1,0 +1,66 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .vis-item.available {
+                background-color: var(--p-green-500);
+                border-color: var(--p-green-700);
+                color: #fff;
+            }
+
+            .vis-item.unavailable {
+                background-color: var(--p-red-500);
+                border-color: var(--p-red-700);
+                color: #fff;
+            }
+
+            .vis-item.maybe {
+                background-color: var(--p-orange-500);
+                border-color: var(--p-orange-700);
+                color: #fff;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Custom</span>
+    </ui:define>
+
+    <ui:define name="description">
+        This example demonstrates the customization of Timeline. The events get a style class from the model, which
+        is styled with custom CSS. The <b>menu</b> facet defines a custom menu, here buttons that move and zoom the
+        timeline with the client side API, and the <b>loading</b> facet defines the loading screen.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="componentLink" value="Timeline-1"/>
+    <ui:param name="tagName" value="timeline"/>
+
+    <ui:define name="implementation">
+        <h:form id="form">
+            <div class="card">
+                <p:timeline id="timeline" value="#{customTimelineView.model}"
+                    editable="true" eventMargin="10" eventMarginAxis="0"
+                    start="#{customTimelineView.start}" end="#{customTimelineView.end}"
+                    stackEvents="false" ref="timeline">
+                    <f:facet name="menu">
+                        <p:commandButton type="button" icon="pi pi-chevron-left" styleClass="ml-2" onclick="PF('timeline').move(-0.3);" />
+                        <p:commandButton type="button" icon="pi pi-chevron-right" styleClass="ml-2" onclick="PF('timeline').move(0.3);" />
+                        <p:commandButton type="button" icon="pi pi-search-minus" styleClass="ml-2" onclick="PF('timeline').zoom(-0.5);" />
+                        <p:commandButton type="button" icon="pi pi-search-plus" styleClass="ml-2" onclick="PF('timeline').zoom(0.5);" />
+                    </f:facet>
+
+                    <f:facet name="loading">
+                        <h1>Loading please wait...</h1>
+                    </f:facet>
+                </p:timeline>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

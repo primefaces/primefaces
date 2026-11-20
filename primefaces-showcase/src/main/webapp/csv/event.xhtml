@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Client Side Validation <span class="subitem">Event</span>
+    </ui:define>
+
+    <ui:define name="description">
+        The <b>p:clientValidator</b> behavior validates a component on the client side instantly when an event occurs,
+        without a click on a button or link. The first input is validated on <b>change</b>, which is the default event,
+        the second one on <b>keyup</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/core/csv?id=events"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <div class="formgrid grid p-fluid">
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="text" value="Text: (Change)"/>
+                        <div class="flex align-items-center gap-2">
+                            <p:inputText id="text" value="#{validationView.text}" required="true">
+                                <f:validateLength minimum="2" maximum="5"/>
+                                <p:clientValidator/>
+                            </p:inputText>
+                            <p:message for="text" display="icon"/>
+                        </div>
+                        <small>Value: <h:outputText value="#{validationView.text}"/></small>
+                    </div>
+                    <div class="field col-12 md:col-6 xl:col-4">
+                        <p:outputLabel for="integer" value="Integer: (Keyup)"/>
+                        <div class="flex align-items-center gap-2">
+                            <p:inputText id="integer" value="#{validationView.integer}">
+                                <p:clientValidator event="keyup"/>
+                            </p:inputText>
+                            <p:message for="integer" display="icon"/>
+                        </div>
+                        <small>Value: <h:outputText value="#{validationView.integer}"/></small>
+                    </div>
+                </div>
+
+                <p:commandButton value="Save" ajax="false" icon="pi pi-check" validateClient="true" styleClass="mt-3" />
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

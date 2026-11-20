@@ -710,6 +710,46 @@ public class DataTable extends DataTableBaseImpl {
         return ComponentTraversalUtils.firstChildRendered(HeaderRow.class, this);
     }
 
+    /**
+     * The sortBy map is built once, with the {@link SortMeta} of the header row rendered at that time. Brings it in line with the
+     * header row rendered now, see GitHub #10481: a header row shown later gets its {@link SortMeta}, one hidden later loses it.
+     * Like the <code>sortBy</code> attribute everywhere else, a rebuilt header row starts from its own attributes. Header rows
+     * which are not rendered are not evaluated.
+     * <p>
+     * Called by the renderer before the table decodes and encodes, so all other methods can rely on the sortBy map holding the
+     * {@link SortMeta} of the rendered header row only.
+     *
+     * @param context the {@link FacesContext}
+     */
+    public void updateHeaderRowSortMeta(FacesContext context) {
+        Map<String, SortMeta> sortBy = getSortByAsMap();
+        SortMeta current = sortBy.values().stream().filter(SortMeta::isHeaderRow).findFirst().orElse(null);
+        HeaderRow headerRow = getHeaderRow();
+
+        if (isSameHeaderRow(current, headerRow)) {
+            return;
+        }
+
+        sortBy.values().removeIf(SortMeta::isHeaderRow);
+        if (headerRow != null) {
+            SortMeta meta = SortMeta.of(context, getVar(), headerRow);
+            sortBy.put(meta.getColumnKey(), meta);
+        }
+        setSortByAsMap(sortBy);
+    }
+
+    /**
+     * Compared by <code>field</code> and <code>groupBy</code>, not by client id, which changes in e.g. a <code>ui:repeat</code>.
+     */
+    private static boolean isSameHeaderRow(SortMeta current, HeaderRow headerRow) {
+        if (current == null || headerRow == null) {
+            return current == null && headerRow == null;
+        }
+        ValueExpression groupBy = headerRow.getValueExpression(HeaderRow.PropertyKeys.groupBy.name());
+        return Objects.equals(current.getField(), headerRow.getField())
+                && (groupBy == null || Objects.equals(groupBy.getExpressionString(), current.getSortBy().getExpressionString()));
+    }
+
     @Override
     public List<UIColumn> getColumns() {
         if (this.columns != null) {

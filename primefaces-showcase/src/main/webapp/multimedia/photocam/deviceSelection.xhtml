@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        PhotoCam
+    </ui:define>
+
+    <ui:define name="description">
+        PhotoCam can use a specific device, like a USB camera or another onboard camera. The demo fills a select with
+        the devices returned by the client side <b>getAvailableDevices()</b> method, sets the chosen one as
+        <b>device</b> on the client and reloads the camera. On mobile devices "user" usually stands for the front camera
+        and "environment" for the rear camera.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/photocam"/>
+    <ui:param name="componentLink" value="PhotoCam-1"/>
+    <ui:param name="tagName" value="photocam"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <div class="grid">
+                    <div class="col-12 md:col-6">
+                        <p:outputPanel id="photoCamPnl">
+                            <p:photoCam ref="pc" listener="#{photoCamView.oncapture}" update="photo" styleClass="max-w-full"/>
+                            <select onchange="reload()" class="photoCamDevices mt-3">
+                                <option value="">Select device</option>
+                                <option value="user">"user" device</option>
+                                <option value="environment">"environment" device</option>
+                            </select>
+                        </p:outputPanel>
+                        <p:commandButton type="button" value="Capture" onclick="PF('pc').capture()" styleClass="mt-3"/>
+                    </div>
+                    <p:outputPanel id="photo" layout="block" styleClass="col-12 md:col-6">
+                        <p:graphicImage name="demo/images/photocam/#{photoCamView.filename}.jpeg"
+                                        rendered="#{not empty photoCamView.filename}" styleClass="max-w-full"/>
+                    </p:outputPanel>
+                </div>
+            </h:form>
+        </div>
+
+        <script>
+
+            //<![CDATA[
+
+            function reload() {
+                var cam = PF('pc');
+                var deviceSelector = document.querySelector("select.photoCamDevices");
+                var device = deviceSelector.value;
+                cam.device = device;
+                cam.reload();
+            }
+
+            function populateDeviceMenu() {
+                var photoCam = PF('pc');
+                if (!photoCam) {
+                    setTimeout(populateDeviceMenu, 100);
+                    return;
+                }
+                var deviceSelector = document.querySelector("select.photoCamDevices");
+                var availableDevices = photoCam.getAvailableDevices();
+                if (availableDevices) {
+                    availableDevices.then(devices => {
+                            while (deviceSelector.options.length > 3) {
+                                deviceSelector.remove(3);
+                            }
+                            devices.forEach(device => {
+                            var option = document.createElement("option");
+                            option.text = device.label || device.deviceId;
+                            option.value = device.deviceId;
+                            deviceSelector.appendChild(option);
+                        });
+                    });
+                } else {
+                    console.log("no devices available");
+                }
+            }
+            document.addEventListener('DOMContentLoaded', function() {
+                populateDeviceMenu();
+            });
+            //]]>
+
+        </script>
+
+    </ui:define>
+
+</ui:composition>

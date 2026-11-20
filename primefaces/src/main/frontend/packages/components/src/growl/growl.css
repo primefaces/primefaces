@@ -4,7 +4,8 @@
  * Markup: .p-growl > .p-growl-item-container.p-growl-<severity> > .p-growl-item
  *         > .p-growl-icon-close.p-growl-close-icon + span.p-growl-image.p-growl-<severity>-icon + .p-growl-message (> .p-growl-title + p)
  * Severity classes only switch the private --_* variables: p-growl-info | -success | -warn | -error | -fatal
- * States: p-growl-sticky. PF only tokens (offset, gap, fatal): the growl block of presets/*.css
+ * States: p-growl-sticky. PF only tokens (offset, gap, fatal): the growl block of presets/*.css,
+ *         --p-toast-<severity>-glow (dark mode severity glow over the glass background): the toast block
  * Variants: p-growl-outlined | p-growl-simple, on the .p-growl container or any ancestor. p:growl has no styleClass
  * and appends its container to the body, so today: on the body (all growls) or added to the component container
  * (PF('growl').jq.addClass('p-growl-outlined')); a styleClass / variant attribute in the core would set it there.
@@ -19,6 +20,7 @@
 
     .p-growl-item-container {
         --_bg: var(--p-toast-info-background);
+        --_glow: var(--p-toast-info-glow);
         --_border-color: var(--p-toast-info-border-color);
         --_color: var(--p-toast-info-color);
         --_detail-color: var(--p-toast-info-detail-color);
@@ -31,7 +33,8 @@
         --_simple-color: var(--p-toast-info-simple-color);
 
         margin: 0 0 var(--p-growl-gap) 0;
-        background: var(--_bg);
+        /* glow: severity tint from the icon corner, transparent where the preset has none (light mode, nora, material) */
+        background: radial-gradient(160% 220% at 0% 0%, var(--_glow), transparent 75%), var(--_bg);
         border-width: var(--p-toast-border-width);
         border-style: solid;
         border-color: var(--_border-color);
@@ -42,6 +45,7 @@
 
         &.p-growl-success {
             --_bg: var(--p-toast-success-background);
+            --_glow: var(--p-toast-success-glow);
             --_border-color: var(--p-toast-success-border-color);
             --_color: var(--p-toast-success-color);
             --_detail-color: var(--p-toast-success-detail-color);
@@ -56,6 +60,7 @@
 
         &.p-growl-warn {
             --_bg: var(--p-toast-warn-background);
+            --_glow: var(--p-toast-warn-glow);
             --_border-color: var(--p-toast-warn-border-color);
             --_color: var(--p-toast-warn-color);
             --_detail-color: var(--p-toast-warn-detail-color);
@@ -70,6 +75,7 @@
 
         &.p-growl-error {
             --_bg: var(--p-toast-error-background);
+            --_glow: var(--p-toast-error-glow);
             --_border-color: var(--p-toast-error-border-color);
             --_color: var(--p-toast-error-color);
             --_detail-color: var(--p-toast-error-detail-color);
@@ -84,6 +90,7 @@
 
         &.p-growl-fatal {
             --_bg: var(--p-growl-fatal-background);
+            --_glow: var(--p-growl-fatal-glow);
             --_border-color: var(--p-growl-fatal-border-color);
             --_color: var(--p-growl-fatal-color);
             --_detail-color: var(--p-growl-fatal-detail-color);
@@ -204,6 +211,7 @@
  */
 :is(.p-growl-outlined.p-growl, .p-growl-outlined .p-growl) .p-growl-item-container {
     --_bg: var(--p-toast-outlined-background);
+    --_glow: transparent;
     --_border-color: var(--_outlined-border-color);
     --_color: var(--_outlined-color);
     --_detail-color: var(--p-toast-outlined-detail-color);
@@ -215,6 +223,7 @@
 
 :is(.p-growl-simple.p-growl, .p-growl-simple .p-growl) .p-growl-item-container {
     --_bg: var(--p-toast-simple-background);
+    --_glow: transparent;
     --_border-color: transparent;
     --_color: var(--_simple-color);
     --_detail-color: var(--p-toast-simple-detail-color);
