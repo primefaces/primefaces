@@ -770,7 +770,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 SortMeta sortMeta) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        UIComponent headerFacet = column.getFacet("header");
+        UIComponent headerFacet = column.getHeaderFacet();
         String headerText = resolveColumnHeaderText(context, column);
         String titleStyleClass = getStyleClassBuilder(context)
                 .add(DataTable.COLUMN_TITLE_CLASS)
@@ -817,6 +817,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
     protected void encodeFilterMatchModePicker(FacesContext context, DataTable component, UIColumn column) throws IOException {
         FilterMeta filterMeta = component.getFilterByAsMap().get(column.getColumnKey());
         if (component.isGlobalFilterOnly() || filterMeta == null || filterMeta.getMatchModeOptions().isEmpty()) {
+            return;
+        }
+        // the options are resolved once, the filter facet may be rendered by now
+        if (FacetUtils.shouldRenderFacet(column.getFilterFacet(), component.isRenderEmptyFacets())) {
             return;
         }
 
@@ -894,7 +898,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent filterFacet = column.getFacet("filter");
+        UIComponent filterFacet = column.getFilterFacet();
 
         if (!FacetUtils.shouldRenderFacet(filterFacet, component.isRenderEmptyFacets())) {
             encodeDefaultFilter(context, component, column, writer);
@@ -1018,7 +1022,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
 
         //Footer content
-        UIComponent facet = column.getFacet("footer");
+        UIComponent facet = column.getFooterFacet();
         String text = column.getFooterText();
         if (FacetUtils.shouldRenderFacet(facet, table.isRenderEmptyFacets())) {
             facet.encodeAll(context);

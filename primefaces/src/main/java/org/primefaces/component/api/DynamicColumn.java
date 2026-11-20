@@ -155,6 +155,21 @@ public class DynamicColumn implements UIColumn {
     }
 
     @Override
+    public UIComponent getHeaderFacet() {
+        return columns.getHeaderFacet();
+    }
+
+    @Override
+    public UIComponent getFooterFacet() {
+        return columns.getFooterFacet();
+    }
+
+    @Override
+    public UIComponent getFilterFacet() {
+        return columns.getFilterFacet();
+    }
+
+    @Override
     public String getHeaderText() {
         return columns.getHeaderText();
     }

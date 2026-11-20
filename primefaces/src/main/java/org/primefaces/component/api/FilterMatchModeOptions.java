@@ -175,7 +175,7 @@ final class FilterMatchModeOptions {
      */
     static List<MatchMode> resolve(FacesContext context, UITable<?> table, UIColumn column) {
         // a custom filter (facet or function) does not filter by match mode, same check as the renderer
-        if (FacetUtils.shouldRenderFacet(column.getFacet("filter"), table.isRenderEmptyFacets()) || column.getFilterFunction() != null) {
+        if (FacetUtils.shouldRenderFacet(column.getFilterFacet(), table.isRenderEmptyFacets()) || column.getFilterFunction() != null) {
             return Collections.emptyList();
         }
 

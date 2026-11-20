@@ -499,7 +499,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
 
         for (int i = 0; i < columns.size(); i++) {
             Column column = columns.get(i);
-            if (column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
+            if (column.isRendered() && (column.getHeaderText() != null || column.getHeaderFacet() != null)) {
                 hasHeader = true;
                 break;
             }
@@ -528,7 +528,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer<SelectCheckbo
                     writer.writeAttribute("style", column.getStyle(), null);
                 }
 
-                UIComponent headerFacet = column.getFacet("header");
+                UIComponent headerFacet = column.getHeaderFacet();
                 if (FacetUtils.shouldRenderFacet(headerFacet)) {
                     headerFacet.encodeAll(context);
                 }

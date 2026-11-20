@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.api;
 
+import org.primefaces.cdk.api.Facet;
 import org.primefaces.component.celleditor.CellEditor;
 import org.primefaces.model.MatchMode;
 import org.primefaces.util.CompositeUtils;
@@ -165,6 +166,21 @@ public interface UIColumn {
 
     UIComponent getFacet(String facet);
 
+    @Facet(description = "Header content of the column.")
+    default UIComponent getHeaderFacet() {
+        return getFacet("header");
+    }
+
+    @Facet(description = "Footer content of the column.")
+    default UIComponent getFooterFacet() {
+        return getFacet("footer");
+    }
+
+    @Facet(description = "Custom filter component of the column.")
+    default UIComponent getFilterFacet() {
+        return getFacet("filter");
+    }
+
     Object getFilterBy();
 
     Object getFilterValue();
@@ -254,7 +270,7 @@ public interface UIColumn {
     Object getConverter();
 
     default EditableValueHolderState getFilterValueHolder(FacesContext context) {
-        UIComponent filterFacet = getFacet("filter");
+        UIComponent filterFacet = getFilterFacet();
         if (filterFacet != null) {
             AtomicReference<EditableValueHolderState> stateRef = new AtomicReference<>(null);
             CompositeUtils.invokeOnDeepestEditableValueHolder(context, filterFacet, (fc, target) -> {
@@ -269,7 +285,7 @@ public interface UIColumn {
     }
 
     default void setFilterValueToValueHolder(FacesContext context, Object value) {
-        UIComponent filterFacet = getFacet("filter");
+        UIComponent filterFacet = getFilterFacet();
 
         CompositeUtils.invokeOnDeepestEditableValueHolder(context, filterFacet, (ctx, component) -> {
             ((EditableValueHolder) component).setValue(value);

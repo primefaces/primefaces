@@ -701,7 +701,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
             UIComponent child = getChildren().get(i);
             if (child.isRendered() && (child instanceof UIColumn column)) {
 
-                if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFacet("footer"))) {
+                if (column.getFooterText() != null || FacetUtils.shouldRenderFacet(column.getFooterFacet())) {
                     return true;
                 }
             }

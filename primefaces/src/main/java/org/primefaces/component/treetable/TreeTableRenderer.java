@@ -714,7 +714,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
     protected void encodeColumnHeaderContent(FacesContext context, TreeTable component, UIColumn column,
                 SortMeta sortMeta) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent headerFacet = column.getFacet("header");
+        UIComponent headerFacet = column.getHeaderFacet();
         String headerText = resolveColumnHeaderText(context, column);
         boolean sortable = component.isColumnSortable(context, column);
         String title = column.getTitle();
@@ -771,7 +771,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        UIComponent filterFacet = column.getFacet("filter");
+        UIComponent filterFacet = column.getFilterFacet();
 
         if (!FacetUtils.shouldRenderFacet(filterFacet)) {
             String separator = String.valueOf(UINamingContainer.getSeparatorChar(context));
@@ -948,7 +948,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
         ResponseWriter writer = context.getResponseWriter();
         int colspan = column.getColspan();
         int rowspan = column.getRowspan();
-        UIComponent footerFacet = column.getFacet("footer");
+        UIComponent footerFacet = column.getFooterFacet();
         String footerText = column.getFooterText();
 
         String style = column.getStyle();

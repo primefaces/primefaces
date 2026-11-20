@@ -561,7 +561,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
         List<Column> columns = component.getColums();
         for (int i = 0; i < columns.size(); i++) {
             Column column = columns.get(i);
-            if (column.isRendered() && (column.getHeaderText() != null || FacetUtils.shouldRenderFacet(column.getFacet("header")))) {
+            if (column.isRendered() && (column.getHeaderText() != null || FacetUtils.shouldRenderFacet(column.getHeaderFacet()))) {
                 hasHeader = true;
                 break;
             }
@@ -580,7 +580,7 @@ public class AutoCompleteRenderer extends InputRenderer<AutoComplete> {
                 }
 
                 String headerText = column.getHeaderText();
-                UIComponent headerFacet = column.getFacet("header");
+                UIComponent headerFacet = column.getHeaderFacet();
                 String styleClass = column.getStyleClass() == null ? "p-state-default" : "p-state-default " + column.getStyleClass();
 
                 writer.startElement("th", null);
