@@ -12,8 +12,10 @@
     <ui:define name="description">
         Client side JavaScript can be attached to the lifecycle of a component with an <b>f:attribute</b> named
         <b>clientPreConstruct</b>, <b>clientPostConstruct</b>, <b>clientPostRefresh</b> or <b>clientPreDestroy</b>:
-        before and after it is created, after it is refreshed by an Ajax update and before it is destroyed. Here each
-        event of the input shows a message: Submit updates the form, Destroy destroys the client side component.
+        before and after it is created, after it is refreshed by an Ajax update and before it is destroyed.
+        <b>clientPreConstruct</b> and <b>clientPostConstruct</b> are called on an Ajax update as well, their
+        <b>refresh</b> parameter tells which. Here each event of the input shows a message: Submit updates the form,
+        Destroy destroys the client side component.
     </ui:define>
 
     <ui:param name="documentationLink" value="/core/components?id=component-lifecycle-events"/>
@@ -28,8 +30,8 @@
                     <div class="field col-12 md:col-6">
                         <p:outputLabel for="name" value="Name"/>
                         <p:inputText id="name" value="#{lifecycleView.text}" ref="name">
-                            <f:attribute name="clientPreConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: cfg.id + ' Component Initialized'})"/>
-                            <f:attribute name="clientPostConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Created'})"/>
+                            <f:attribute name="clientPreConstruct" value="PF('msgs').renderMessage({severity: 'info', summary: cfg.id + (refresh ? ' Component Refreshing' : ' Component Initialized')})"/>
+                            <f:attribute name="clientPostConstruct" value="if (!refresh) PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Created'})"/>
                             <f:attribute name="clientPostRefresh" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Refreshed'})"/>
                             <f:attribute name="clientPreDestroy" value="PF('msgs').renderMessage({severity: 'info', summary: component.id + ' Component Destroyed'})"/>
                         </p:inputText>

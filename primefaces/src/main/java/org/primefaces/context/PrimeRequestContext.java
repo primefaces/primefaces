@@ -174,6 +174,7 @@ public class PrimeRequestContext {
      * @deprecated use {@link #getComponentScriptBuilder()} instead
      */
     @Deprecated(since = "17.0.0", forRemoval = true)
+    @SuppressWarnings("removal")
     public WidgetBuilder getWidgetBuilder() {
         return new WidgetBuilder(context, getApplicationContext().getConfig());
     }

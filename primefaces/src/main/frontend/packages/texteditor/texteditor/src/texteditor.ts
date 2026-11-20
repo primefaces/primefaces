@@ -331,7 +331,7 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
         this.toolbar.find('button').each((i, btn) => {
             const format = this.format(btn);
             if (format) {
-                this.name($(btn), this.ariaText(format, btn.getAttribute('value')));
+                this.name($(btn), this.ariaText(format, btn.getAttribute('value')), true);
             }
         });
 
@@ -341,10 +341,12 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
                 return;
             }
             const jq = $(picker);
-            this.name(jq.children('.ql-picker-label'), this.ariaText(format, null));
+            // color swatches and icons have no visible text
+            const iconItems = jq.is('.ql-color-picker, .ql-icon-picker');
+            this.name(jq.children('.ql-picker-label'), this.ariaText(format, null), true);
             jq.find('.ql-picker-item').each((j, item) => {
                 const value = item.getAttribute('data-value') ?? '';
-                this.name($(item), this.ariaText(format, value, item.getAttribute('data-label') || value || format));
+                this.name($(item), this.ariaText(format, value, item.getAttribute('data-label') || value || format), iconItems);
             });
         });
     }
@@ -364,11 +366,14 @@ export class TextEditor<Cfg extends TextEditorCfg = TextEditorCfg> extends Prime
         return cls?.substring(3);
     }
 
-    // sets the aria-label unless one is present
-    private name(jq: JQuery, text: string): void {
+    // sets the aria-label unless one is present; tooltip: also as title, for controls without a visible text
+    private name(jq: JQuery, text: string, tooltip: boolean = false): void {
         jq.each((i, el) => {
             if (!el.getAttribute('aria-label')) {
                 el.setAttribute('aria-label', text);
+            }
+            if (tooltip && !el.getAttribute('title')) {
+                el.setAttribute('title', el.getAttribute('aria-label')!);
             }
         });
     }
