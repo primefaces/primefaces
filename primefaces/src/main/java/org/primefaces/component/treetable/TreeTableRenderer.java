@@ -778,7 +778,7 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
             boolean disableTabbing = component.getScrollWidth() != null;
 
             String filterId = column.getContainerClientId(context) + separator + "filter";
-            Object filterValue = component.getFilterValue(column);
+            Object filterValue = formatFilterValue(context, column, component.getFilterValue(column));
             filterValue = (filterValue == null) ? Constants.EMPTY_STRING : filterValue.toString();
 
             String filterStyleClass = getStyleClassBuilder(context)

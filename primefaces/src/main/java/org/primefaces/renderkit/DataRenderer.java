@@ -39,11 +39,13 @@ import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
 import org.primefaces.model.MatchMode;
 import org.primefaces.util.ComponentScriptBuilder;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
@@ -251,6 +253,23 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
                 component.popComponentFromEL(context);
             }
         }
+    }
+
+    /**
+     * Formats the filter value of a column for its default filter input: the reverse of the conversion of the submitted value
+     * with the column's {@code converter}, as otherwise the next filter request does not convert anymore.
+     *
+     * @param context the {@link FacesContext}
+     * @param column the column
+     * @param filterValue the filter value
+     * @return the formatted value, {@code filterValue} itself without a converter or for the values of a multi-value match mode
+     */
+    protected Object formatFilterValue(FacesContext context, UIColumn column, Object filterValue) {
+        Object converter = column.getConverter();
+        if (converter == null || filterValue == null || filterValue instanceof Collection || filterValue.getClass().isArray()) {
+            return filterValue;
+        }
+        return ComponentUtils.getConvertedAsString(context, column.asUIComponent(), converter, filterValue);
     }
 
     protected String resolveFilterMatchModeIcon(MatchMode matchMode) {

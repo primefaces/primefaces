@@ -977,6 +977,9 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                     filterValue = (columnFilterValue == null) ? Constants.EMPTY_STRING : columnFilterValue.toString();
                 }
             }
+            else {
+                filterValue = formatFilterValue(context, column, filterValue);
+            }
         }
         return filterValue;
     }
