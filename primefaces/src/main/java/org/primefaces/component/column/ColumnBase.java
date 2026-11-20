@@ -69,8 +69,14 @@ public abstract class ColumnBase extends UIColumn implements org.primefaces.comp
             + " TreeTable). Not set or \"none\": no menu. \"auto\": preset derived from the column's value type (numeric and date"
             + " values only with a converter). Presets: \"text\", \"numeric\", \"date\". Or a comma separated list of match"
             + " modes (e.g. \"contains,startsWith,equals\") or a Collection<MatchMode>. The initial match mode is filterMatchMode if"
-            + " set (it must be one of them), otherwise the first one. Ignored for a filter facet or filterFunction.")
+            + " set (it must be one of them), otherwise the first one. Ignored for a filter facet or filterFunction. With \"in\" /"
+            + " \"notIn\" the filter value is a list of values separated by filterValueSeparator, with \"between\" / \"notBetween\""
+            + " a second input for the end of the range is shown.")
     public abstract Object getFilterMatchModeOptions();
+
+    @Property(description = "Separator of the values of an \"in\" / \"notIn\" filter picked with filterMatchModeOptions.",
+            defaultValue = ";")
+    public abstract String getFilterValueSeparator();
 
     @Property(description = "Location of the column filter with respect to header content. Options are 'bottom'(default) and 'top'.",
             defaultValue = "bottom")

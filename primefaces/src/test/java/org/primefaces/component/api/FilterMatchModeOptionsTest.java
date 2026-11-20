@@ -45,6 +45,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -126,10 +127,19 @@ class FilterMatchModeOptionsTest {
 
     @Test
     void unsupportedMatchModes() {
-        for (String operator : List.of("in", "notIn", "between", "notBetween", "global")) {
-            Column column = column("equals," + operator, null);
-            assertThrows(FacesException.class, () -> FilterMatchModeOptions.resolve(context, table, column), operator);
-        }
+        Column column = column("equals,global", null);
+        assertThrows(FacesException.class, () -> FilterMatchModeOptions.resolve(context, table, column));
+    }
+
+    @Test
+    void multiValueMatchModes() {
+        assertEquals(List.of(MatchMode.EQUALS, MatchMode.IN, MatchMode.NOT_IN, MatchMode.BETWEEN, MatchMode.NOT_BETWEEN),
+                FilterMatchModeOptions.resolve(context, table, column("equals,in,notIn,between,notBetween", null)));
+        assertTrue(FilterMatchModeOptions.TEXT.contains(MatchMode.IN));
+        assertTrue(FilterMatchModeOptions.NUMERIC.containsAll(List.of(MatchMode.IN, MatchMode.BETWEEN)));
+        assertTrue(FilterMatchModeOptions.DATE.contains(MatchMode.BETWEEN));
+        assertFalse(FilterMatchModeOptions.DATE.contains(MatchMode.IN));
+        assertFalse(FilterMatchModeOptions.TEXT.contains(MatchMode.BETWEEN));
     }
 
     @Test
@@ -165,7 +175,8 @@ class FilterMatchModeOptionsTest {
         FilterMatchModeOptions.apply(context, table, column, filterMeta);
 
         FilterMatchModeOptions.validateFilterByMatchMode(filterMeta, MatchMode.GREATER_THAN);
-        for (MatchMode matchMode : List.of(MatchMode.CONTAINS, MatchMode.BETWEEN)) {
+        FilterMatchModeOptions.validateFilterByMatchMode(filterMeta, MatchMode.BETWEEN);
+        for (MatchMode matchMode : List.of(MatchMode.CONTAINS, MatchMode.EXACT)) {
             FacesException e = assertThrows(FacesException.class,
                     () -> FilterMatchModeOptions.validateFilterByMatchMode(filterMeta, matchMode));
             assertTrue(e.getMessage().contains("'" + matchMode.operator() + "'"), e.getMessage());
@@ -257,6 +268,10 @@ class FilterMatchModeOptionsTest {
         // without converter: the trimmed strings, a comma is no separator
         Column text = column("text", null);
         assertEquals(List.of("a, b", "c"), FilterMatchModeOptions.convertFilterValue(context, text, MatchMode.IN, "a, b; c", null));
+
+        // filterValueSeparator, taken literally (no regex)
+        text.setFilterValueSeparator("|");
+        assertEquals(List.of("a", "b;c"), FilterMatchModeOptions.convertFilterValue(context, text, MatchMode.IN, "a | b;c", null));
     }
 
     @Test

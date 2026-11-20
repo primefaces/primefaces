@@ -400,13 +400,23 @@ column (`p:column`, `p:columns`) or on `p:dataTable` as default for all columns,
 (e.g. with `none`). Valid values are:
 
 - **none** (or not set): no menu.
-- **text**: `startsWith`, `notStartsWith`, `endsWith`, `notEndsWith`, `contains`, `notContains`, `exact`, `notExact`.
-- **numeric** and **date**: `equals`, `notEquals`, `lt`, `lte`, `gt`, `gte`.
+- **text**: `startsWith`, `notStartsWith`, `endsWith`, `notEndsWith`, `contains`, `notContains`, `exact`, `notExact`, `in`, `notIn`.
+- **numeric**: `equals`, `notEquals`, `lt`, `lte`, `gt`, `gte`, `between`, `notBetween`, `in`, `notIn`.
+- **date**: `equals`, `notEquals`, `lt`, `lte`, `gt`, `gte`, `between`, `notBetween`.
 - **auto**: `text`, `numeric` or `date`, derived from the type of the column's `field`. Other types (e.g. boolean, enum) get no menu.
 - a comma-separated list of match modes, e.g. `contains,startsWith,exact`, or a `Collection<MatchMode>`.
 
-`in`, `notIn`, `between` and `notBetween` cannot be selected. Columns with a `filter` facet or a `filterFunction` get no
-menu, and TreeTable ignores the attribute.
+Columns with a `filter` facet or a `filterFunction` get no menu, and TreeTable ignores the attribute.
+
+The multi-value match modes filter by a `List`, as `FilterMeta#getFilterValue()` passes it to a `LazyDataModel`:
+
+- **in** / **notIn**: the values are entered in the filter input, separated by `filterValueSeparator` of the column (default
+  `;`, as a comma is part of decimal numbers and date patterns in many locales), e.g. `1; 5; 533`.
+- **between** / **notBetween**: a second input for the end of the range is shown while one of them is selected. Both ends
+  are included, open-ended ranges are not supported.
+
+Each value is converted with the column's `converter`. If one of them is empty (between) or does not convert, the filter is
+inactive.
 
 The initial match mode is `filterMatchMode` if it is set, otherwise the first option. A `filterMatchMode`, or the match mode
 of a `FilterMeta` passed with `filterBy`, which is not one of the options fails with a `FacesException`. `clearFilters()`
