@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        SelectBooleanButton
+    </ui:define>
+
+    <ui:define name="description">
+        SelectBooleanButton is used to select a boolean value with a toggle button. The examples show labels for the two
+        states (<b>onLabel</b>, <b>offLabel</b>), icons (<b>onIcon</b>, <b>offIcon</b>), a button with icons only and the
+        <b>size</b> attribute.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/selectbooleanbutton"/>
+    <ui:param name="componentLink" value="SelectBooleanButton"/>
+    <ui:param name="tagName" value="selectBooleanButton"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="msgs"/>
+
+                <h5>Basic</h5>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No" style="width:6rem"/>
+
+                <h5>With Icon</h5>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No"
+                                        onIcon="pi pi-check" offIcon="pi pi-times" style="width:6rem" />
+
+                <h5>Icon Only</h5>
+                <p:selectBooleanButton onIcon="pi pi-check" offIcon="pi pi-times" />
+
+                <h5>Sizes</h5>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No" size="small" styleClass="w-4rem mr-4"/>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No" styleClass="w-5rem mr-4"/>
+                <p:selectBooleanButton onLabel="Yes" offLabel="No" size="large" styleClass="w-6rem"/>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

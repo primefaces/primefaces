@@ -560,6 +560,29 @@ The **Glass** preset uses the backdrop tokens with translucent backgrounds (`blu
 Content containers deliberately get no backdrop filter: it would make them the containing block of overlays inside
 them.
 
+The layout of your application (topbar, drawer menu, own dropdowns) gets the same backdrop with two classes. They only
+set the `backdrop-filter`, the background stays yours; take the token that belongs to it, so the bar is opaque in the
+opaque presets and translucent in Glass:
+
+| Class | For | Backdrop | Background |
+|---|---|---|---|
+| `p-backdrop-navigation` | bars (topbar, sticky header) | `--p-navigation-backdrop-filter`, on a `::before` like the toolbar: a dropdown inside the bar still blurs the page | `--p-toolbar-background` |
+| `p-backdrop-overlay` | floating panels (drawer menu, own popups) | `--p-overlay-backdrop-filter`, on the element | `--p-overlay-popover-background`, `--p-overlay-modal-background` |
+
+```css
+.topbar {
+    position: fixed;
+    background: var(--p-toolbar-background);
+}
+```
+
+```xml
+<div class="topbar p-backdrop-navigation">...</div>
+```
+
+`p-backdrop-navigation` uses the `::before` of the element and makes its children `position: relative` (zero
+specificity, your own `position` wins). Not for a scroll container: the `::before` would scroll away with the content.
+
 Two techniques the Metal preset uses:
 
 - **An edge lit from above**: a face layer clipped to the padding box and an edge layer clipped to the border box, in

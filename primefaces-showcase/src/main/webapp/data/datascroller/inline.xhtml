@@ -1,0 +1,56 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataScroller <span class="subitem">Inline</span>
+    </ui:define>
+
+    <ui:define name="description">
+        By default DataScroller monitors the scrollbar of the page. With <b>mode="inline"</b> it listens to the scroll
+        event of its own container instead, whose height is defined with <b>scrollHeight</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datascroller"/>
+    <ui:param name="componentLink" value="DataScroller-1"/>
+    <ui:param name="tagName" value="dataScroller"/>
+
+    <ui:define name="implementation">
+        <div class="product card">
+            <h:form>
+                <p:dataScroller value="#{dataScrollerView.products}" var="product" chunkSize="10" mode="inline"
+                                scrollHeight="500">
+                    <f:facet name="header">
+                        Scroll Down to Load More Products
+                    </f:facet>
+
+                    <div class="product">
+                        <div class="product-list-item p-5">
+                            <p:graphicImage name="demo/images/product/#{product.image}"/>
+                            <div class="product-list-detail">
+                                <div class="product-name">#{product.name}</div>
+                                <div class="product-description">#{product.description}</div>
+                                <p:rating readonly="true" value="#{product.rating}"/>
+                                <i class="pi pi-tag product-category-icon"/><span
+                                    class="product-category">#{product.category}</span>
+                            </div>
+                            <div class="product-list-action">
+                                <h:outputText value="#{product.price}" styleClass="product-price">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                                <p:commandButton value="Add To Cart" icon="pi pi-shopping-cart"
+                                                 disabled="#{product.inventoryStatus == 'OUTOFSTOCK'}">
+                                </p:commandButton>
+                                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
+                            </div>
+                        </div>
+                    </div>
+                </p:dataScroller>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,151 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataTable <span class="subitem">Row Group</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Rows can be grouped with the <b>p:headerRow</b> and <b>p:summaryRow</b> components or with <b>groupRow="true"</b>
+        on a column, which spans the cell over the rows of a group. A header row is made toggleable with
+        <b>expandable="true"</b>, and a summary row without a header row defines the group itself with <b>field</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/datatable"/>
+    <ui:param name="componentLink" value="DataTable-1"/>
+    <ui:param name="tagName" value="dataTable"/>
+
+    <ui:define name="implementation">
+
+        <div class="card">
+            <h5 class="first">Header Row</h5>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtRowGroupView.customers}">
+                    <p:headerRow field="representative.name"
+                                 expandable="true" 
+                                 expanded="#{customer.representative.name != 'Stephen Shaw'}">
+                        
+                        <p:column colspan="6">
+                            <div class="inline-flex align-items-center" style="vertical-align: middle">
+                                <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo" width="32" style="vertical-align: middle"/>
+                                <h:outputText styleClass="ml-2" value="#{customer.representative.name}"/>
+                            </div>
+                        </p:column>
+                    </p:headerRow>
+
+                    <p:column headerText="Representative">
+                        <h:outputText value="#{customer.representative.name}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>
+
+                    <p:column headerText="Country">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country}"/>
+                    </p:column>
+
+                    <p:column headerText="Company">
+                        <h:outputText value="#{customer.company}" />
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+
+                    <p:column headerText="Date">
+                        <h:outputText value="#{customer.date}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:summaryRow>
+                        <p:column colspan="5" style="text-align:right">
+                            <h:outputText value="Total Customers:"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{dtRowGroupView.getTotalCount(customer.representative.name)}"/>
+                        </p:column>
+                    </p:summaryRow>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Summary Row</h5>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtRowGroupView.customers}">
+                    <p:column headerText="Representative" sortBy="#{customer.representative.name}" sortOrder="asc">
+                        <h:outputText value="#{customer.representative.name}" />
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>
+
+                    <p:column headerText="Country">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country}"/>
+                    </p:column>
+
+                    <p:column headerText="Company">
+                        <h:outputText value="#{customer.company}" />
+                    </p:column>
+
+                    <!-- no headerRow, the summaryRow defines the group itself -->
+                    <p:summaryRow field="representative.name">
+                        <p:column colspan="3" style="text-align:right">
+                            <h:outputText value="Total Customers:"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{dtRowGroupView.getTotalCount(customer.representative.name)}"/>
+                        </p:column>
+                    </p:summaryRow>
+                </p:dataTable>
+            </h:form>
+        </div>
+
+        <div class="card">
+            <h5>Rowspan</h5>
+            <h:form>
+                <p:dataTable var="customer" value="#{dtRowGroupView.customers}">
+                    <p:column  headerText="Representative" groupRow="true">
+                        <p:graphicImage name="images/avatar/#{customer.representative.image}" library="demo"
+                                        width="32" style="vertical-align: middle"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem"
+                                      value="#{customer.representative.name}"/>
+                    </p:column>
+
+                    <p:column headerText="Name">
+                        <h:outputText value="#{customer.name}" />
+                    </p:column>
+
+                    <p:column headerText="Country">
+                        <span class="flag flag-#{customer.country.code}" style="width: 30px; height: 20px"/>
+                        <h:outputText style="vertical-align: middle; margin-left: .5rem" value="#{customer.country}"/>
+                    </p:column>
+
+                    <p:column headerText="Company">
+                        <h:outputText value="#{customer.company}" />
+                    </p:column>
+
+                    <p:column headerText="Status">
+                        <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
+                    </p:column>
+
+                    <p:column headerText="Date">
+                        <h:outputText value="#{customer.date}">
+                            <f:convertDateTime pattern="MM/dd/yyyy" type="localDate"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

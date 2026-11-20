@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .p-diagram-element {
+                width: 14em;
+                height: 4em;
+                line-height: 4em;
+                text-align: center;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+                border-radius: 4px;
+                border: 1px solid transparent;
+                background-color: #98AFC7;
+                color: #ffffff;
+            }
+
+            .p-diagram-success {
+                background-color: #9CB071;
+                color: #ffffff;
+                border-color: #7ab02c;
+            }
+
+            .p-diagram-fail {
+                background-color: #C34A2C;
+                color: #ffffff;
+            }
+
+            .flow-label {
+                font-size: 24px;
+                font-weight: bold;
+                color: #816A51;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Diagram <span class="subitem">FlowChart</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Flowcharts are created with the FlowChartConnector, which is set as the default connector of the model here.
+        Overlays decorate the connections: an ArrowOverlay shows the direction and a LabelOverlay adds a text such as Yes
+        or No. Single elements get their own look with the <b>styleClass</b> of the element.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/diagram"/>
+    <ui:param name="componentLink" value="Diagram-1"/>
+    <ui:param name="tagName" value="diagram"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:diagram value="#{diagramFlowChartView.model}" style="height:600px" styleClass="p-component-content"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

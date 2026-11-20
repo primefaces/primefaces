@@ -1,0 +1,38 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        ContextMenu <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        ContextMenu is an overlay menu that is displayed on right-click. Without the <b>for</b> attribute it is
+        attached to the whole page, as in this example with Ajax, non-Ajax and navigation menuitems.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/contextmenu"/>
+    <ui:param name="componentLink" value="ContextMenu-1"/>
+    <ui:param name="tagName" value="contextMenu"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            Right click to view the menu options.
+
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:contextMenu>
+                    <p:menuitem value="Save" action="#{menuView.save}" update="messages" icon="pi pi-save"/>
+                    <p:menuitem value="Update" action="#{menuView.update}" update="messages" icon="pi pi-refresh"/>
+                    <p:menuitem value="Delete" action="#{menuView.delete}" ajax="false" icon="pi pi-times"/>
+                    <p:menuitem value="Homepage" url="https://www.primefaces.org" icon="pi pi-home"/>
+                </p:contextMenu>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

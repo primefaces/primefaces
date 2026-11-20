@@ -289,10 +289,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@melloware/coloris@npm:0.25.1":
-  version: 0.25.1
-  resolution: "@melloware/coloris@npm:0.25.1"
-  checksum: 10c0/b09e29535ae2ec6975eef8148ff703de75de09d94bbbfc69914b3b4dd1bcc8f385326b18f4f55cde45293f2a56a056d98374d1c7e91befea4806901daf07dced
+"@melloware/coloris@npm:0.25.2":
+  version: 0.25.2
+  resolution: "@melloware/coloris@npm:0.25.2"
+  checksum: 10c0/910c5b47725b2a410f23e8390c6e5223cbeb885571105bcb10d4724beebc788ed77814e6f3b0e78b5095183911810ef140c063c18cbf5ce63eaa253dd1f238a3
   languageName: node
   linkType: hard
 
@@ -309,7 +309,7 @@ __metadata:
     "@fullcalendar/moment": "npm:~5.11.5"
     "@fullcalendar/moment-timezone": "npm:~5.11.5"
     "@fullcalendar/timegrid": "npm:~5.11.5"
-    "@melloware/coloris": "npm:0.25.1"
+    "@melloware/coloris": "npm:0.25.2"
     "@types/autosize": "npm:4.0.3"
     "@types/culori": "npm:4.0.1"
     "@types/downloadjs": "npm:1.4.6"
@@ -320,7 +320,7 @@ __metadata:
     "@types/jquery-touchswipe": "npm:1.6.0"
     "@types/js-cookie": "npm:3.0.6"
     "@types/moment-jdateformatparser": "npm:1.2.0"
-    "@types/node": "npm:26.6.5"
+    "@types/node": "npm:26.6.6"
     "@types/pnpapi": "npm:0.0.5"
     "@types/raphael": "npm:2.3.10"
     "@types/webcamjs": "npm:1.0.0"
@@ -341,19 +341,19 @@ __metadata:
     esbuild: "npm:0.28.2"
     hammerjs: "npm:2.0.8"
     inputmask: "npm:5.0.10"
-    jquery: "npm:4.0.0"
+    jquery: "npm:4.1.0"
     jquery-cropper: "npm:1.0.2"
     jquery-touchswipe: "npm:1.6.19"
     js-cookie: "npm:3.0.8"
     jsplumb: "npm:2.15.6"
     keycharm: "npm:0.4.0"
-    libphonenumber-js: "npm:1.13.15"
-    lucide-static: "npm:1.62.0"
+    libphonenumber-js: "npm:1.13.16"
+    lucide-static: "npm:1.74.0"
     moment: "npm:2.31.0"
     moment-jdateformatparser: "npm:1.2.1"
-    moment-timezone: "npm:0.6.5"
+    moment-timezone: "npm:0.6.6"
     primeicons: "npm:7.0.0"
-    primelocale: "npm:2.6.2"
+    primelocale: "npm:2.7.0"
     propagating-hammerjs: "npm:3.0.0"
     quill: "npm:2.0.3"
     raphael: "npm:2.3.0"
@@ -443,12 +443,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:26.6.5":
-  version: 26.6.5
-  resolution: "@types/node@npm:26.6.5"
+"@types/node@npm:26.6.6":
+  version: 26.6.6
+  resolution: "@types/node@npm:26.6.6"
   dependencies:
     undici-types: "npm:~8.9.0"
-  checksum: 10c0/4f791f69466ace7842c09e7bef96cb1ddbb65cf3db916ef7e84f0e2b2a17220b6b816dc7539d01520cadfb17ed7169b8214910900493e0a83be8bc7d124ec20a
+  checksum: 10c0/5cb63f644f6e85a257a9cd2403cbcbe196760e2a35fd3ec9fb8b5cff663e14cc832b198cc17b53f870a2e30900ed45a1fb3f53e6589aba26b8e8c484aa672053
   languageName: node
   linkType: hard
 
@@ -807,10 +807,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery@npm:4.0.0":
-  version: 4.0.0
-  resolution: "jquery@npm:4.0.0"
-  checksum: 10c0/06d8d0f51121af5a691f8b59c74823157bb5b60eea915b30eaa920d6c0ffd91e60ba81e9b97bd8203f331f9dd8d0ec9a4b010935ea314bdd2f15453c29bc780b
+"jquery@npm:4.1.0":
+  version: 4.1.0
+  resolution: "jquery@npm:4.1.0"
+  checksum: 10c0/e4fff455c4f604b64594e14b75ceeb89647bdcc79def4cbaa1d6089d9ae81bdcef6f4dab5a795a196939926e2b81e3fb0a7cd762c736ab4aaddaa308ed6a99d6
   languageName: node
   linkType: hard
 
@@ -835,10 +835,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"libphonenumber-js@npm:1.13.15":
-  version: 1.13.15
-  resolution: "libphonenumber-js@npm:1.13.15"
-  checksum: 10c0/041fa295a526566a9e0910240887d1daa678faf546303ef2580479dadafc40c240dae50cc9f1c73632d0772f09fd3d87fbb47ec505d9f569025997807c6fe6ae
+"libphonenumber-js@npm:1.13.16":
+  version: 1.13.16
+  resolution: "libphonenumber-js@npm:1.13.16"
+  checksum: 10c0/72bf6b0246c538e3207e573814cd7802259d604b62be5ac3fb7a22bf712823b4ac2d3b365266524c564b5b2d904725ea93133d1007cf29a168172fec23a0a9cd
   languageName: node
   linkType: hard
 
@@ -863,10 +863,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-static@npm:1.62.0":
-  version: 1.62.0
-  resolution: "lucide-static@npm:1.62.0"
-  checksum: 10c0/ec79d98163031c570a27713a90c44f44aabeaa2a03a910cd139e95d02dbad66dd5cdf53e258364be2dd4855c4d619ac3e1e1407c96fe0a8b57b5c5fb96486a01
+"lucide-static@npm:1.74.0":
+  version: 1.74.0
+  resolution: "lucide-static@npm:1.74.0"
+  checksum: 10c0/8b2e15e8755542eb647bca92dfbf39ba8587e860361bbccf8361dc6b523e327e766cc10593c4910b5c807c8a64bb938db3fb6c28cfee768a7104b4e2b8e49118
   languageName: node
   linkType: hard
 
@@ -877,12 +877,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment-timezone@npm:0.6.5":
-  version: 0.6.5
-  resolution: "moment-timezone@npm:0.6.5"
+"moment-timezone@npm:0.6.6":
+  version: 0.6.6
+  resolution: "moment-timezone@npm:0.6.6"
   dependencies:
     moment: "npm:^2.29.4"
-  checksum: 10c0/f281355d79e1d67714d3bc4ef9d817758ea55fd5e5a1e9bf32832ec0abf0376727eb2062c28c6d1ee1767537bb4a4fbab327a50f122e67dc440ad5f95bfcea1a
+  checksum: 10c0/f1d5eaebe54221b1a54d0f35112d205da39c87db2f9bf35120815f8f34d72ccad6561510fa17cf31f9349dcd7bae7d21619bf05bfd909609fae69ca1fa5cef5b
   languageName: node
   linkType: hard
 
@@ -914,10 +914,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"primelocale@npm:2.6.2":
-  version: 2.6.2
-  resolution: "primelocale@npm:2.6.2"
-  checksum: 10c0/4f11f1c5ce189dfb5b8ec1a24aa4d234bc798fa1a1f096e12504e6f874d59fba263da08a66fb70ffc1c79688307aa6b32e7881fdb244a6ffb369edbcbc328bb6
+"primelocale@npm:2.7.0":
+  version: 2.7.0
+  resolution: "primelocale@npm:2.7.0"
+  checksum: 10c0/9634283ab421c73092b8a8584e98cc8898bce031167045926c6631bd254e8de3b6ebd1e9ed173250f8a522c406b0f98483dfe61f9c2b3149888d64eb5ca0609d
   languageName: node
   linkType: hard
 

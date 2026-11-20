@@ -67,20 +67,7 @@ public abstract class DataView extends AbstractPageableData {
     }
 
     public Layout getActiveLayout() {
-        List<WebElement> layoutButtons = getLayoutOptionsWebElement().findElements(By.className("p-button"));
-        for (WebElement layoutButton: layoutButtons) {
-            WebElement layoutButtonInputHidden = layoutButton.findElement(By.tagName("input"));
-            if ("true".equals(layoutButtonInputHidden.getDomProperty("checked"))) {
-                if ("list".equals(layoutButtonInputHidden.getDomProperty("value"))) {
-                    return Layout.LIST;
-                }
-                else {
-                    return Layout.GRID;
-                }
-            }
-        }
-
-        return null;
+        return PrimeSelenium.hasCssClass(this, "p-dataview-grid") ? Layout.GRID : Layout.LIST;
     }
 
     public void setActiveLayout(Layout layout) {

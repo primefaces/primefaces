@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TabMenu
+    </ui:define>
+
+    <ui:define name="description">
+        TabMenu is a navigation component that displays menuitems as tabs. The active tab is defined with
+        <b>activeIndex</b>, here taken from a request parameter that each menuitem adds to its link. The examples show
+        a menuitem with a badge, a disabled menuitem and the tabs with <b>orientation="left"</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/tabmenu"/>
+    <ui:param name="componentLink" value="TabMenu"/>
+    <ui:param name="tagName" value="tabMenu"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h5 class="mt-0">Basic</h5>
+            <p:tabMenu activeIndex="#{param.i}">
+                <p:menuitem value="Home" outcome="/menu/tabMenu" icon="pi pi-fw pi-home">
+                    <f:param name="i" value="0"/>
+                </p:menuitem>
+                <p:menuitem value="Calendar" outcome="/menu/tabMenu" icon="pi pi-fw pi-calendar"
+                            badge="#{menuBadgeView.badgeModel}">
+                    <f:param name="i" value="1"/>
+                </p:menuitem>
+                <p:menuitem value="Edit" outcome="/menu/tabMenu" icon="pi pi-fw pi-pencil"
+                            disabled="true">
+                    <f:param name="i" value="2"/>
+                </p:menuitem>
+                <p:menuitem value="Documentation" outcome="/menu/tabMenu" icon="pi pi-fw pi-file">
+                    <f:param name="i" value="3"/>
+                </p:menuitem>
+                <p:menuitem value="Settings" outcome="/menu/tabMenu" icon="pi pi-fw pi-cog">
+                    <f:param name="i" value="4"/>
+                </p:menuitem>
+            </p:tabMenu>
+        </div>
+
+        <div class="card">
+            <h5 class="mt-0">Orientation Left</h5>
+            <p:tabMenu activeIndex="#{param.i}" style="width:15rem" orientation="left">
+                <p:menuitem value="Home" outcome="/menu/tabMenu" icon="pi pi-fw pi-home">
+                    <f:param name="i" value="0"/>
+                </p:menuitem>
+                <p:menuitem value="Calendar" outcome="/menu/tabMenu" icon="pi pi-fw pi-calendar">
+                    <f:param name="i" value="1"/>
+                </p:menuitem>
+                <p:menuitem value="Edit" outcome="/menu/tabMenu" icon="pi pi-fw pi-pencil"
+                            disabled="true">
+                    <f:param name="i" value="2"/>
+                </p:menuitem>
+                <p:menuitem value="Documentation" outcome="/menu/tabMenu" icon="pi pi-fw pi-file">
+                    <f:param name="i" value="3"/>
+                </p:menuitem>
+                <p:menuitem value="Settings" outcome="/menu/tabMenu" icon="pi pi-fw pi-cog">
+                    <f:param name="i" value="4"/>
+                </p:menuitem>
+            </p:tabMenu>
+        </div>
+    </ui:define>
+
+</ui:composition>

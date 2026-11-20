@@ -39,6 +39,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 /**
@@ -348,6 +350,167 @@ public abstract class PickList extends AbstractComponent {
      */
     public WebElement getAriaRegion() {
         return findElement(By.id(getId() + "_ariaRegion"));
+    }
+
+    /**
+     * Gets the source list.
+     *
+     * @return the source list element
+     */
+    public WebElement getSourceList() {
+        return sourceList;
+    }
+
+    /**
+     * Gets the target list.
+     *
+     * @return the target list element
+     */
+    public WebElement getTargetList() {
+        return targetList;
+    }
+
+    /**
+     * Gets the "Move to Target" button.
+     *
+     * @return the button
+     */
+    public WebElement getAddButton() {
+        return findElement(By.className("p-picklist-button-add"));
+    }
+
+    /**
+     * Gets the "Move All to Target" button.
+     *
+     * @return the button
+     */
+    public WebElement getAddAllButton() {
+        return findElement(By.className("p-picklist-button-add-all"));
+    }
+
+    /**
+     * Gets the "Move to Source" button.
+     *
+     * @return the button
+     */
+    public WebElement getRemoveButton() {
+        return findElement(By.className("p-picklist-button-remove"));
+    }
+
+    /**
+     * Gets the "Move All to Source" button.
+     *
+     * @return the button
+     */
+    public WebElement getRemoveAllButton() {
+        return findElement(By.className("p-picklist-button-remove-all"));
+    }
+
+    /**
+     * Gets an item of the source or the target list.
+     *
+     * @param item the value or label of the item
+     * @return the item
+     * @throws NoSuchElementException thrown if the item could not be found
+     */
+    public WebElement getItem(final String item) {
+        try {
+            return findListItem(sourceList, item);
+        }
+        catch (NoSuchElementException e) {
+            return findListItem(targetList, item);
+        }
+    }
+
+    /**
+     * Determines if the item is selected.
+     *
+     * @param item the value or label of the item
+     * @return true if the item is selected
+     */
+    public boolean isSelected(final String item) {
+        return PrimeSelenium.hasCssClass(getItem(item), "p-state-highlight");
+    }
+
+    /**
+     * Determines if the item has the focus indicator of the keyboard navigation.
+     *
+     * @param item the value or label of the item
+     * @return true if the item is the focused item of its list
+     */
+    public boolean isFocused(final String item) {
+        return PrimeSelenium.hasCssClass(getItem(item), "p-picklist-outline");
+    }
+
+    /**
+     * Determines if the checkbox of the item is checked.
+     *
+     * @param item the value or label of the item
+     * @return true if the checkbox is checked
+     */
+    public boolean isChecked(final String item) {
+        final WebElement checkbox = getCheckbox(getItem(item));
+        return checkbox != null && PrimeSelenium.hasCssClass(checkbox.findElement(By.className("p-chkbox-box")), "p-state-active");
+    }
+
+    /**
+     * Selects an item with a plain click, which replaces the current selection.
+     *
+     * @param item the value or label of the item
+     */
+    public void select(final String item) {
+        final WebElement element = getItem(item);
+        if (ComponentUtils.hasAjaxBehavior(getRoot(), "select")) {
+            PrimeSelenium.guardAjax(element).click();
+        }
+        else {
+            element.click();
+        }
+    }
+
+    /**
+     * Adds an item to or removes it from the selection with a Cmd (macOS) / Ctrl click.
+     *
+     * @param item the value or label of the item
+     */
+    public void toggleSelection(final String item) {
+        final WebElement element = getItem(item);
+        final boolean ajaxified = ComponentUtils.hasAjaxBehavior(getRoot(), isSelected(item) ? "unselect" : "select");
+        final Keys metaKey = PrimeSelenium.isMacOs() ? Keys.COMMAND : Keys.CONTROL;
+        final Action action = new Actions(getWebDriver()).keyDown(metaKey).click(element).keyUp(metaKey).build();
+        if (ajaxified) {
+            PrimeSelenium.guardAjax(action).perform();
+        }
+        else {
+            action.perform();
+        }
+    }
+
+    /**
+     * Clicks the checkbox of an item, which selects or unselects it, or moves it to the other list if
+     * {@code transferOnCheckboxClick} is enabled. Waits until a move is done.
+     *
+     * @param item the value or label of the item
+     */
+    public void toggleCheckbox(final String item) {
+        final WebElement element = getItem(item);
+        final WebElement checkbox = getCheckbox(element).findElement(By.className("p-chkbox-box"));
+        final boolean transfer = getClientConfiguration().optBoolean("transferOnCheckboxClick");
+        final String behavior = transfer ? "transfer" : (isSelected(item) ? "unselect" : "select");
+        final boolean fromSource = isInList(sourceList, element);
+        if (ComponentUtils.hasAjaxBehavior(getRoot(), behavior)) {
+            PrimeSelenium.guardAjax(checkbox).click();
+        }
+        else {
+            checkbox.click();
+        }
+        if (transfer) {
+            PrimeSelenium.waitGui().until(d -> isInList(fromSource ? targetList : sourceList, element) && PrimeSelenium.isElementDisplayed(element));
+        }
+    }
+
+    private boolean isInList(final WebElement list, final WebElement element) {
+        return list.findElements(By.tagName("li")).contains(element);
     }
 
     /**

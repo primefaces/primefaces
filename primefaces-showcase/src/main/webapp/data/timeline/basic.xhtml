@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Timeline <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Timeline is an interactive chart to visualize events in time. It displays the events of a <b>TimelineModel</b>
+        and can be moved and zoomed (<b>moveable</b>, <b>zoomable</b>). Selecting an event fires the <b>select</b> Ajax
+        event, the listener of this demo shows the selected event in a message.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/timeline"/>
+    <ui:param name="componentLink" value="Timeline-1"/>
+    <ui:param name="tagName" value="timeline"/>
+
+    <ui:define name="implementation">
+        <h:form id="form">
+            <p:growl id="growl" showSummary="true" showDetail="true">
+                <p:autoUpdate />
+            </p:growl>
+
+            <div class="card">
+                <p:timeline id="timeline" value="#{basicTimelineView.model}"
+                    height="250px" selectable="#{basicTimelineView.selectable}"
+                    zoomable="#{basicTimelineView.zoomable}"
+                    moveable="#{basicTimelineView.moveable}"
+                    stackEvents="#{basicTimelineView.stackEvents}"
+                    eventStyle="#{basicTimelineView.eventStyle}"
+                    showCurrentTime="#{basicTimelineView.showCurrentTime}">
+
+                    <p:ajax event="select" listener="#{basicTimelineView.onSelect}" />
+
+                </p:timeline>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

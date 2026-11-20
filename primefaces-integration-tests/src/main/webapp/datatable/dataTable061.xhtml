@@ -12,23 +12,62 @@
     <h:body>
 
         <h:form id="form">
-            <p:messages id="msgs" showDetail="true">
-                <p:autoUpdate/>
-            </p:messages>
+            <!-- table-level default "text", overridden per column -->
+            <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable061.employees}" var="employee"
+                         filteredValue="#{dataTable061.filteredEmployees}" filterMatchModeOptions="text">
 
-            <p:dataTable id="datatable" value="#{dataTable061.lazyDataModel}" lazy="true" var="lang"
-                         selection="#{dataTable061.selectedProgLanguages}" rowKey="#{lang.id}"
-                         paginator="true" rows="3" selectionPageOnly="false">
-                <p:column selectionBox="true" style="width:16px;text-align:center"/>
+                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"/>
 
-                <p:column headerText="ID" field="id"/>
+                <p:column headerText="First name" field="firstName"/>
 
-                <p:column headerText="Name" field="name" sortBy="#{lang.name}" filterBy="#{lang.name}" filterMatchMode="contains"/>
+                <p:column headerText="Last name" field="lastName" filterMatchModeOptions="contains,startsWith,exact"/>
 
-                <p:column headerText="First Appeared" field="firstAppeared"/>
+                <p:column headerText="Salary" field="salary" filterMatchModeOptions="numeric" filterMatchMode="gte"
+                          converter="jakarta.faces.Integer"/>
+
+                <p:column headerText="Birth date" field="birthDate" filterMatchModeOptions="date"
+                          converter="#{dataTable061.birthDateConverter}"/>
+
+                <p:column headerText="Role (EL)" field="role" filterMatchModeOptions="#{dataTable061.roleMatchModes}"/>
+
+                <p:column headerText="Last login" field="lastLoginDateTime" filterMatchModeOptions="none"/>
+
+                <p:column headerText="Facet" field="firstName">
+                    <f:facet name="filter">
+                        <h:inputText onchange="PF('wgtTable').filter()"/>
+                    </f:facet>
+                </p:column>
+
+                <p:column headerText="Function" field="lastName" filterFunction="#{dataTable061.filterNothing}"/>
+
             </p:dataTable>
 
-            <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable061.submit}"/>
+            <p:commandButton id="buttonUpdate" value="Update" update="datatable"/>
+
+            <!-- the presets derived from the value types -->
+            <p:dataTable id="datatableAuto" value="#{dataTable061.employees}" var="employee"
+                         filteredValue="#{dataTable061.filteredEmployeesAuto}" filterMatchModeOptions="auto">
+                <p:column headerText="ID" field="id" converter="jakarta.faces.Integer"/>
+                <p:column headerText="First name" field="firstName"/>
+                <p:column headerText="Salary" field="salary"/>
+                <p:column headerText="Birth date" field="birthDate"/>
+                <p:column headerText="Role" field="role"/>
+            </p:dataTable>
+
+            <!-- no filterMatchModeOptions -->
+            <p:dataTable id="datatablePlain" value="#{dataTable061.employees}" var="employee"
+                         filteredValue="#{dataTable061.filteredEmployeesPlain}">
+                <p:column headerText="ID" field="id" converter="jakarta.faces.Integer" filterMatchMode="gte"/>
+                <p:column headerText="First name" field="firstName"/>
+            </p:dataTable>
+
+            <p:dataTable id="datatableSticky" value="#{dataTable061.employees}" var="employee" stickyHeader="true"
+                         filteredValue="#{dataTable061.filteredEmployeesSticky}" filterMatchModeOptions="text">
+                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"/>
+                <p:columns value="#{dataTable061.columns}" var="column" headerText="#{column.header}" field="#{column.property}">
+                    <h:outputText value="#{employee[column.property]}"/>
+                </p:columns>
+            </p:dataTable>
         </h:form>
 
     </h:body>

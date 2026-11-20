@@ -117,7 +117,7 @@ shortcuts to display simple texts.
 ```
 ## Pagination
 DataTable has a built-in ajax based paginator that is enabled by setting paginator option to true, see
-pagination section in dataGrid documentation for more information about customization options.
+pagination section in dataView documentation for more information about customization options.
 
 ```xhtml
 <p:dataTable var="car" value="#{carBean.cars}" paginator="true" rows="10">
@@ -159,7 +159,7 @@ Here are more examples based on different templates;
 
 ## Paginator Position
 Paginator can be positioned using `paginatorPosition` attribute in three different locations, "top",
-"bottom" or "both" (default).
+"bottom" (default) or "both".
 
 ## Custom Content in Paginator
 Custom content can be placed inside a paginator using a facet name matching a token in the
@@ -392,6 +392,37 @@ Locale is provided as optional in case you need to use a locale aware method lik
 
 This same principle can be applied globally by implementing a `globalFilterFunction`. It takes the
 same parameters of which the first parameter is the row value.
+
+### Match mode selection
+
+With `filterMatchModeOptions`, users pick the match mode of a column filter from a menu in the column header. Set it per
+column (`p:column`, `p:columns`) or on `p:dataTable` as default for all columns, a column overrides the table value
+(e.g. with `none`). Valid values are:
+
+- **none** (or not set): no menu.
+- **text**: `startsWith`, `notStartsWith`, `endsWith`, `notEndsWith`, `contains`, `notContains`, `exact`, `notExact`.
+- **numeric** and **date**: `equals`, `notEquals`, `lt`, `lte`, `gt`, `gte`.
+- **auto**: `text`, `numeric` or `date`, derived from the type of the column's `field`. Other types (e.g. boolean, enum) get no menu.
+- a comma-separated list of match modes, e.g. `contains,startsWith,exact`, or a `Collection<MatchMode>`.
+
+`in`, `notIn`, `between` and `notBetween` cannot be selected. Columns with a `filter` facet or a `filterFunction` get no
+menu, and TreeTable ignores the attribute.
+
+The initial match mode is `filterMatchMode` if it is set, otherwise the first option. A `filterMatchMode`, or the match mode
+of a `FilterMeta` passed with `filterBy`, which is not one of the options fails with a `FacesException`. `clearFilters()`
+resets the menus to the initial match mode.
+
+Numeric and date columns compare the converted filter value, so they need a `converter` (with `auto`, such a column
+without a converter gets no menu).
+
+```xhtml
+<p:dataTable var="car" value="#{carBean.cars}" filterMatchModeOptions="text">
+    <p:column field="brand" headerText="Brand" />
+    <p:column field="year" headerText="Year" filterMatchModeOptions="numeric" filterMatchMode="gte"
+              converter="jakarta.faces.Integer" />
+    <p:column field="color" headerText="Color" filterMatchModeOptions="none" />
+</p:dataTable>
+```
 
 ### Default filtering
 

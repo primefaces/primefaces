@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Galleria <span class="subitem">Caption</span>
+    </ui:define>
+
+    <ui:define name="description">
+        Caption displays a description for an item. It is enabled with <b>showCaption="true"</b> and its content
+        is defined with the <b>caption</b> facet, in this demo the title and the description of the photo.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/galleria"/>
+    <ui:param name="componentLink" value="Galleria"/>
+    <ui:param name="tagName" value="galleria"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:galleria value="#{galleriaView.photos}" var="photo" numVisible="5" responsiveOptions="#{galleriaView.responsiveOptions1}"
+                        showCaption="true" style="max-width: 640px">
+                <p:graphicImage name="#{photo.itemImageSrc}" alt="#{photo.alt}" style="width: 100%; display: block;" />
+                <f:facet name="caption">
+                    <h4 class="mb-2">#{photo.title}</h4>
+                    <p>#{photo.alt}</p>
+                </f:facet>
+                <f:facet name="thumbnail">
+                    <p:graphicImage name="#{photo.thumbnailImageSrc}" alt="#{photo.alt}" style="display: block;" />
+                </f:facet>
+            </p:galleria>
+        </div>
+    </ui:define>
+
+</ui:composition>

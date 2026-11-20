@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .p-analog-clock {
+                width: 200px;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Clock
+    </ui:define>
+
+    <ui:define name="description">
+        Clock displays the date and time of the client or the server live. With <b>mode="server"</b> it starts with the
+        time of the server or a custom <b>value</b> and then runs in the browser; <b>autoSync</b> can synchronize it
+        with the server periodically. The page also shows a custom <b>pattern</b> and the analog clock with
+        <b>displayMode="analog"</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/clock"/>
+    <ui:param name="componentLink" value="Clock-1"/>
+    <ui:param name="tagName" value="clock"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <h5 class="mt-0">Client</h5>
+                <p:clock />
+
+                <h5>Server</h5>
+                <p:clock pattern="HH:mm:ss dd.MM.yyyy" mode="server"/>
+
+                <h5>Custom</h5>
+                <p:clock mode="server" value="#{clockView.dateTime}"/>
+
+                <h5>Analog</h5>
+                <p:clock displayMode="analog"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

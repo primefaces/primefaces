@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DefaultCommand <span class="subitem">Multiple</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DefaultCommand controls which command submits the form when Enter is pressed in an input. Multiple default
+        commands in one form are supported with <b>scope</b>, which refers to an ancestor of the inputs a command is
+        responsible for: Enter triggers Button1 in Panel 1 and Button2 in Panel 2. Within a textarea the default command
+        is not active.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/defaultcommand"/>
+    <ui:param name="componentLink" value="DefaultCommand"/>
+    <ui:param name="tagName" value="defaultCommand"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:growl>
+                    <p:autoUpdate/>
+                </p:growl>
+
+                <p:panel header="Panel 1" id="panel1" styleClass="mb-5">
+                    <div class="formgrid grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <h:outputLabel for="name" value="Name"/>
+                            <p:inputText id="name" value="#{defaultCommandView.text}"/>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <h:outputLabel for="textarea" value="Textarea"/>
+                            <p:inputTextarea id="textarea" value="#{defaultCommandView.text2}"/>
+                        </div>
+                    </div>
+                </p:panel>
+
+                <p:panel header="Panel 2" id="panel2" styleClass="mb-5">
+                    <div class="formgrid grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <h:outputLabel for="otherInput" value="Other input"/>
+                            <p:inputText id="otherInput"/>
+                        </div>
+                    </div>
+                </p:panel>
+
+                <p:commandButton value="Button1" id="btn1" action="#{defaultCommandView.btn1Submit}" styleClass="mr-2" />
+                <p:commandButton value="Button2" id="btn2" action="#{defaultCommandView.btn2Submit}"/>
+
+                <p:defaultCommand target="btn1" scope="panel1"/>
+                <p:defaultCommand target="btn2" scope="panel2"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

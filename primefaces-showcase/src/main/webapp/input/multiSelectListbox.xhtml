@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        MultiSelectListbox
+    </ui:define>
+
+    <ui:define name="description">
+        MultiSelectListbox is used to select an item from a collection of listboxes that are in a parent-child
+        relationship. The items are nested <b>SelectItemGroup</b>s: a group shows its children, only the
+        <b>SelectItem</b>s can be selected. The example sets a <b>header</b> and the <b>slide</b> effect.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/multiselectlistbox"/>
+    <ui:param name="componentLink" value="MultiSelectListbox"/>
+    <ui:param name="tagName" value="multiSelectListbox"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:multiSelectListbox value="#{multiSelectView.selection}" effect="slide" header="Categories"
+                                    showHeaders="true">
+                <f:selectItems value="#{multiSelectView.categories}"/>
+            </p:multiSelectListbox>
+        </div>
+    </ui:define>
+
+</ui:composition>

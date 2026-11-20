@@ -37,12 +37,14 @@ import org.primefaces.component.paginator.PageLinksRenderer;
 import org.primefaces.component.paginator.PaginatorElementRenderer;
 import org.primefaces.component.paginator.PrevPageLinkRenderer;
 import org.primefaces.component.paginator.RowsPerPageDropdownRenderer;
+import org.primefaces.model.MatchMode;
 import org.primefaces.util.ComponentScriptBuilder;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.MapBuilder;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 
 import jakarta.faces.component.UIComponent;
@@ -249,5 +251,9 @@ public class DataRenderer<T extends UIComponent & Pageable> extends CoreRenderer
                 component.popComponentFromEL(context);
             }
         }
+    }
+
+    protected String resolveFilterMatchModeIcon(MatchMode matchMode) {
+        return "p-filter-matchmode-" + matchMode.operator().replaceAll("([a-z])([A-Z])", "$1-$2").toLowerCase(Locale.ROOT) + "-icon";
     }
 }

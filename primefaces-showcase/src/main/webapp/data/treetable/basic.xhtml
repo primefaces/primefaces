@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        TreeTable <span class="subitem">Basic</span>
+    </ui:define>
+
+    <ui:define name="description">
+        TreeTable displays hierarchical data in tabular format. It is populated with a <b>TreeNode</b> as <b>value</b>,
+        which is the root of the tree, and each <b>p:column</b> displays a property of the node data. The button in the
+        last column shows the details of a document in a dialog.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/treetable"/>
+    <ui:param name="componentLink" value="TreeTable-1"/>
+    <ui:param name="tagName" value="treeTable"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+                <p:treeTable value="#{ttBasicView.root}" var="document">
+                    <f:facet name="header">
+                        Document Viewer
+                    </f:facet>
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size">
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type">
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                    <p:column style="width:3rem" ariaHeaderText="Actions">
+                        <p:commandButton update=":form:documentPanel" oncomplete="PF('documentDialog').show()"
+                                       title="View Detail" icon="pi pi-search">
+                            <f:setPropertyActionListener value="#{document}" target="#{ttBasicView.selectedDocument}"/>
+                        </p:commandButton>
+                    </p:column>
+                </p:treeTable>
+
+                <p:dialog id="dialog" header="Document Detail" showEffect="fade" ref="documentDialog" modal="true" resizable="false">
+                    <p:outputPanel id="documentPanel">
+                        <h:panelGroup layout="block" styleClass="grid" rendered="#{not empty ttBasicView.selectedDocument}">
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputLabel for="name" value="Name" />
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText id="name" value="#{ttBasicView.selectedDocument.name}" />
+                            </div>
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputLabel for="size" value="Size" />
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText id="size" value="#{ttBasicView.selectedDocument.size}" />
+                            </div>
+                            <div class="col-12 sm:col-4 pb-0 sm:pb-2 text-secondary">
+                                <h:outputLabel for="type" value="Type" />
+                            </div>
+                            <div class="col-12 sm:col-8">
+                                <h:outputText id="type" value="#{ttBasicView.selectedDocument.type}" />
+                            </div>
+                        </h:panelGroup>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

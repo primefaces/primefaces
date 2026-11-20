@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        DataExporter <span class="subitem">TreeTable</span>
+    </ui:define>
+
+    <ui:define name="description">
+        DataExporter also supports <b>p:treeTable</b> as <b>target</b> and exports it to Excel, PDF, CSV or XML. Besides
+        the whole tree, the export can be limited to the current page with <b>pageOnly="true"</b> or to the selected
+        nodes with <b>selectionOnly="true"</b>.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/dataexporter"/>
+    <ui:param name="tagName" value="dataExporter"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form id="form">
+               <div class="flex justify-content-between">
+                    <div>
+                        <h5>Standard</h5>
+                        <p:commandButton value="XLS" styleClass="mr-2 mb-2">
+                            <p:dataExporter type="xls" target="tbl" fileName="documents"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="XLSX" styleClass="mr-2 mb-2">
+                            <p:dataExporter type="xlsxstream" target="tbl" fileName="documents"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="PDF" styleClass="mr-2 mb-2">
+                            <p:dataExporter type="pdf" target="tbl" fileName="documents"/>
+                        </p:commandButton>
+    
+                        <p:commandButton value="CSV" styleClass="mr-2 mb-2">
+                            <p:dataExporter type="csv" target="tbl" fileName="documents" />
+                        </p:commandButton>
+    
+                        <p:commandButton value="XML" styleClass="mr-2 mb-2">
+                            <p:dataExporter type="xml" target="tbl" fileName="documents"/>
+                        </p:commandButton>
+                    </div>
+
+                    <div>
+                        <h5>Page Only</h5>
+                        <p:commandButton value="XLS" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="xls" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="XLSX" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="xlsxstream" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="PDF" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="pdf" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="CSV" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="csv" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+        
+                        <p:commandButton value="XML" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="xml" target="tbl" fileName="documents" pageOnly="true"/>
+                        </p:commandButton>
+                    </div>
+                    <div>
+                        <h5>Selection Only</h5>
+                        <p:commandButton value="XLS" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="xls" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="XLSX" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="xlsxstream" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="PDF" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="pdf" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="CSV" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="csv" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+
+                        <p:commandButton value="XML" styleClass="mr-2 mb-2 p-button-outlined">
+                            <p:dataExporter type="xml" target="tbl" fileName="documents" selectionOnly="true"/>
+                        </p:commandButton>
+                    </div>
+                </div>
+                <p:treeTable id="tbl" value="#{ttBasicView.root}" var="document" paginator="true" rows="5"
+                    selection="#{ttBasicView.multipleSelectedDocuments}"
+                    selectionMode="checkbox">
+                    <p:column headerText="Name">
+                        <h:outputText value="#{document.name}"/>
+                    </p:column>
+                    <p:column headerText="Size" >
+                        <h:outputText value="#{document.size}"/>
+                    </p:column>
+                    <p:column headerText="Type" >
+                        <h:outputText value="#{document.type}"/>
+                    </p:column>
+                </p:treeTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

@@ -1,6 +1,6 @@
 body {
   .taglib-sidebar {
-    width: 1200px;
+    width: min(1200px, 100vw);
     overflow: auto;
 
     h3 {

@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <style>
+            .p-diagram-element {
+                width: 5em;
+                height: 5em;
+                line-height: 5em;
+                text-align: center;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+                border-radius: 5em;
+                border: 1px solid #404a4e;
+                background-color: #404a4e;
+                color: #cccccc;
+                user-select: none;
+            }
+
+            .p-diagram-element:hover {
+                background-color: #20282b;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        Diagram <span class="subitem">Hierarchical</span>
+    </ui:define>
+
+    <ui:define name="description">
+        A hierarchy such as an organization chart can be built with Diagram by positioning the elements in levels. This
+        example connects the dot endpoint at the bottom of a parent element with the endpoints at the top of its children
+        and uses a StraightConnector for the connections.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/diagram"/>
+    <ui:param name="componentLink" value="Diagram-1"/>
+    <ui:param name="tagName" value="diagram"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <p:diagram value="#{diagramHierarchicalView.model}" style="height:600px" styleClass="p-component-content"/>
+        </div>
+    </ui:define>
+
+</ui:composition>

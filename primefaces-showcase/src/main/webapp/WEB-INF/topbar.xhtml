@@ -15,7 +15,7 @@
         </div>
     </ui:fragment>
 
-    <div class="layout-topbar">
+    <div class="layout-topbar p-backdrop-navigation">
         <div class="layout-topbar-inner">
             <a class="menu-button" tabindex="0">
                 <i class="pi pi-bars"></i>
@@ -31,7 +31,7 @@
                             <i class="pi pi-cog"></i>
                             Settings
                         </a>
-                        <ul class="connected-overlay-in">
+                        <ul class="connected-overlay-in p-backdrop-overlay">
                             <li class="topbar-submenu-header">Locale</li>
                             <p>Change the locale of the datepicker, schedule and client side validation messages.</p>
                             <p:selectOneMenu id="locale" value="#{app.locale}" converter="#{localeConverter}"
@@ -54,7 +54,7 @@
                     </li>
                 <li class="topbar-submenu">
                     <a tabindex="0"><i class="pi pi-graduation-cap"></i>Resources</a>
-                    <ul class="connected-overlay-in">
+                    <ul class="connected-overlay-in p-backdrop-overlay">
                         <li><h:link outcome="/support"><i class="pi pi-briefcase"></i><span>Support</span></h:link></li>
                         <li><a href="https://github.com/orgs/primefaces/discussions"><i class="pi pi-comments"></i><span>Forum</span></a></li>
                         <li><a href="https://discord.gg/gzKFYnpmCY" target="_blank"><i class="pi pi-discord"></i><span>Discord Chat</span></a></li>

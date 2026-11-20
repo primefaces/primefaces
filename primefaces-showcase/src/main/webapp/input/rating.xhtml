@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Rating
+    </ui:define>
+
+    <ui:define name="description">
+        Rating is a star based rating input. The examples show the <b>rate</b> and <b>cancel</b> Ajax events, a readonly
+        and a disabled rating, and a required rating that is validated on submit.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/rating"/>
+    <ui:param name="componentLink" value="Rating-1"/>
+    <ui:param name="tagName" value="rating"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <h5 class="mt-0">Basic</h5>
+                <p:rating id="rating1" value="#{ratingView.rating1}"/>
+
+                <h5>Remote</h5>
+                <p:rating id="rating2" value="#{ratingView.rating2}">
+                    <p:ajax event="rate" listener="#{ratingView.onrate}" update="messages"/>
+                    <p:ajax event="cancel" listener="#{ratingView.oncancel}" update="messages"/>
+                </p:rating>
+
+                <h5>Readonly</h5>
+                <p:rating id="ratingReadOnly" value="#{ratingView.rating3}" readonly="true"/>
+
+                <h5>Disabled</h5>
+                <p:rating id="ratingDisabled" value="#{ratingView.rating3}" disabled="true"/>
+
+                <h5>Required</h5>
+                <div class="flex flex-col gap-2">
+                    <p:rating id="rating4" value="#{ratingView.rating4}" required="true" requiredMessage="Please rate us!" />
+                    <p:commandButton value="Rate" action="#{ratingView.onSubmit}" update="@form" process="@this rating4" />
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

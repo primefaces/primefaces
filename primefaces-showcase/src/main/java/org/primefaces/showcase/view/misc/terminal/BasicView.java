@@ -24,7 +24,8 @@
 package org.primefaces.showcase.view.misc.terminal;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Named;
@@ -43,7 +44,7 @@ public class BasicView implements Serializable {
             }
         }
         else if ("date".equals(command)) {
-            return new Date().toString();
+            return ZonedDateTime.now().format(DateTimeFormatter.RFC_1123_DATE_TIME);
         }
 
         return command + " not found";

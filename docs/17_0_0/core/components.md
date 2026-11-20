@@ -46,12 +46,14 @@ Simply assign the correct `f:attribute` to add your script.
 
 | Event | Attribute | Parameters | Execution |
 | --- | --- | --- | --- |
-| PreConstruct | `clientPreConstruct` | cfg | Always called either on page load or Ajax update of component before the component is created.
-| PostConstruct | `clientPostConstruct` | component | Always called either on page load or Ajax update of component after the component is created.
+| PreConstruct | `clientPreConstruct` | cfg, refresh | Called on page load and on every Ajax update of the component, before the component is created or refreshed, so it can change the configuration (e.g. `cfg.labels`). `refresh` tells which.
+| PostConstruct | `clientPostConstruct` | component, refresh | Called on page load and on every Ajax update of the component, after the component is created or refreshed. `refresh` tells which.
 | PostRefresh | `clientPostRefresh` | component | Only called after Ajax update of the component
 | PreDestroy | `clientPreDestroy` | component | Only called before the component is actually being destroyed
 
-The callbacks receive the component also as parameter `widget` (former name). The former attribute names
+`refresh` is `false` when the component is created and `true` when an existing component is refreshed by an Ajax update.
+The callbacks receive the component also as parameter `widget` (former name), so `refresh` is the third parameter
+of PostConstruct. The former attribute names
 `widgetPreConstruct`, `widgetPostConstruct`, `widgetPostRefresh` and `widgetPreDestroy` still work but are deprecated.
 
 ```xhtml

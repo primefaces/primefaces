@@ -23,54 +23,64 @@
  */
 package org.primefaces.integrationtests.datatable;
 
-import org.primefaces.model.FilterMeta;
-import org.primefaces.model.SortMeta;
+import org.primefaces.model.MatchMode;
 
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Locale;
 
-import jakarta.faces.application.FacesMessage;
-import jakarta.faces.context.FacesContext;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.convert.DateTimeConverter;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import lombok.Data;
+import lombok.Value;
 
 @Named
 @ViewScoped
 @Data
 public class DataTable061 implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
-    private FieldKeyedLazyDataModel lazyDataModel = new FieldKeyedLazyDataModel();
-    private List<ProgrammingLanguage> selectedProgLanguages;
+    private List<Employee> employees;
+    private List<Employee> filteredEmployees;
+    private List<Employee> filteredEmployeesAuto;
+    private List<Employee> filteredEmployeesPlain;
+    private List<Employee> filteredEmployeesSticky;
+    private List<ColumnModel> columns = List.of(new ColumnModel("First name", "firstName"), new ColumnModel("Last name", "lastName"));
 
-    public void submit() {
-        if (selectedProgLanguages != null) {
-            FacesMessage msg = new FacesMessage("Selected ProgrammingLanguage(s)", selectedProgLanguages.stream()
-                        .sorted(Comparator.comparing(ProgrammingLanguage::getId))
-                        .map(lang -> lang.getId().toString())
-                        .collect(Collectors.joining(",")));
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        }
+    @Inject
+    private EmployeeService service;
+
+    @PostConstruct
+    public void init() {
+        employees = service.getEmployees();
     }
 
-    /**
-     * Looks the filter up by field, like the showcase does ({@code filterBy.get("name")}).
-     */
-    public static class FieldKeyedLazyDataModel extends ProgrammingLanguageLazyDataModel {
+    public List<MatchMode> getRoleMatchModes() {
+        return List.of(MatchMode.EQUALS, MatchMode.NOT_EQUALS);
+    }
 
-        private static final long serialVersionUID = 1L;
+    public DateTimeConverter getBirthDateConverter() {
+        DateTimeConverter converter = new DateTimeConverter();
+        converter.setPattern("yyyy-MM-dd");
+        converter.setType("localDate");
+        return converter;
+    }
 
-        @Override
-        protected List<ProgrammingLanguage> sortAndFilterInternal(Map<String, SortMeta> sortBy, Map<String, FilterMeta> filterBy) {
-            FilterMeta name = filterBy == null ? null : filterBy.get("name");
-            return super.sortAndFilterInternal(sortBy, name == null ? Collections.emptyMap() : Map.of("name", name));
-        }
+    public boolean filterNothing(Object value, Object filter, Locale locale) {
+        return true;
+    }
+
+    @Value
+    public static class ColumnModel implements Serializable {
+        @Serial private static final long serialVersionUID = 1L;
+        private String header;
+        private String property;
     }
 }

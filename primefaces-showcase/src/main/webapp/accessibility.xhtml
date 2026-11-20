@@ -1,233 +1,338 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core"
                 xmlns:ui="jakarta.faces.facelets" xmlns:p="primefaces" template="/WEB-INF/template.xhtml">
 
+    <ui:define name="head">
+        <style>
+            .a11y-page p,
+            .a11y-page li {
+                line-height: 1.6;
+            }
+
+            .a11y-page h2 {
+                margin-top: 2.5rem;
+            }
+
+            .a11y-page .card h3 {
+                margin-top: 0;
+                font-size: 1.25rem;
+            }
+
+            .a11y-page kbd {
+                font-family: inherit;
+                font-size: .875em;
+                padding: .1em .4em;
+                border: 1px solid var(--surface-d);
+                border-bottom-width: 2px;
+                border-radius: 4px;
+                background: var(--surface-a);
+            }
+
+            .a11y-demo {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 1rem;
+                margin: 1rem 0;
+            }
+
+            .a11y-swatch {
+                margin: 0;
+                text-align: center;
+            }
+
+            .a11y-swatch > div {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: .5rem;
+                width: 9rem;
+                height: 7rem;
+                border-radius: 10px;
+                font-weight: 700;
+            }
+
+            .a11y-swatch figcaption {
+                margin-top: .5rem;
+                font-size: .875rem;
+                color: var(--text-color-secondary);
+            }
+
+            /* fixed colors on purpose: the samples have to keep their contrast ratio in every theme */
+            .a11y-good { background: #2563eb; color: #ffffff; }
+            .a11y-bad { background: #60a5fa; color: #ffffff; }
+            .a11y-vibrate { background: #ec4899; color: #3b82f6; }
+            .a11y-saturated { background: #111827; color: #4f46e5; }
+            .a11y-desaturated { background: #111827; color: #c7d2fe; }
+        </style>
+    </ui:define>
+
     <ui:define name="content">
         <div class="content-section introduction">
             <div class="feature-intro">
                 <h1>Accessibility</h1>
-                <p>An introduction to accessibility and how it translates to Faces Components.</p>
+                <p>What accessibility means for a web application, what PrimeFaces does for you and what remains your part.</p>
             </div>
         </div>
 
-        <div class="content-section documentation">
-            <p class="line-height-3 bg-indigo-600 text-white p-3 text-lg" style="border-radius:10px">Accessibility is a major concern of the Prime UI libraries and PrimeFaces is no exception. <a href="https://www.primetek.com.tr" class="text-white" target="_blank">PrimeTek</a> teams have initiated a significant process to review and enhance the accessibility features of the components. This guide
-                documents the foundation of the general guidelines that PrimeFaces will follow and each component documentation will have a separate <strong>Accessibility</strong> section that states the keyboard support, screen reader compatibility, the implementation details along
-                with tips to achieve WCAG compliancy. This work has been initiated in Q2 2022 and is planned to be completed in 2023. PrimeVue acts as the reference implementation which then will be ported to PrimeFaces, PrimeNG and PrimeReact.
+        <div class="content-section documentation a11y-page">
+            <p class="text-lg">
+                An accessible application can be used by everyone: with a keyboard instead of a mouse, with a screen reader instead
+                of a screen, zoomed in, or with reduced motion. PrimeFaces components bring keyboard support, WAI-ARIA roles and
+                states and visible focus indicators out of the box. A component library can only provide the building blocks
+                though: labels, page structure, colors and content are up to the page author. This guide covers both sides.
             </p>
 
-            <h2>Introduction</h2>
-            <p>According to the World Health Organization, 15% of the world population has a disability to some degree. As a result,
-                accessibility features in any context such as a ramp for wheelchair users or a multimedia with captions are crucial to ensure content can be consumed by anyone.</p>
-
-            <h3>Disabilities</h3>
-            <p>Types of disabilities are diverse so you need to know your audience well and how they interact with the content created. There four main categories;</p>
-
-            <h4>Visual Impairments</h4>
-            <p>Blindness, low-level vision or color blindness are the common types of visual impairments. Screen magnifiers and the color blind mode
-                are usually built-in features of the browsers whereas for people who rely on screen readers, page developers are required to make sure
-                content is readable by the readers. Popular readers are <a href="https://www.nvaccess.org" target="_blank">NVDA</a>, <a href="https://www.freedomscientific.com/Products/software/JAWS/" target="_blank">JAWS</a> and <a href="https://www.chromevox.com" target="_blank">ChromeVox</a>.
+            <h2>Who Benefits</h2>
+            <p>
+                According to the <a href="https://www.who.int/news-room/fact-sheets/detail/disability-and-health" target="_blank"
+                rel="noopener noreferrer">World Health Organization</a>, about 1.3 billion people, 1 in 6 of us, live with a
+                significant disability. Many more are limited temporarily or by the situation: a broken arm, a screen in bright
+                sunlight, a video in a noisy train. Designing for the four groups below improves the application for all of them.
             </p>
 
-            <h4>Hearing Impairments</h4>
-            <p>Deafness or hearing loss refers to the inability to hear sounds totally or partially. People with hearing impairments use assistive devices however
-                it may not be enough when interacting with a web page. Common implementation is providing textual alternatives, transcripts and captions for content with audio.
+            <div class="grid">
+                <div class="col-12 md:col-6">
+                    <div class="card h-full mb-0">
+                        <h3>Visual</h3>
+                        <p class="mb-0">Blindness, low vision and color blindness. People zoom the page, change colors or use a screen
+                            reader such as NVDA, JAWS, VoiceOver or TalkBack, which reads the page from its markup. The content
+                            therefore has to make sense without seeing it.</p>
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <div class="card h-full mb-0">
+                        <h3>Hearing</h3>
+                        <p class="mb-0">Deafness and hearing loss. Audio and video need a textual alternative: captions and
+                            transcripts. Never signal something by sound alone.</p>
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <div class="card h-full mb-0">
+                        <h3>Mobility</h3>
+                        <p class="mb-0">Paralysis, tremor or a missing limb. A mouse is often not an option; people use the keyboard,
+                            a switch, a head pointer or voice control. Everything has to be reachable and operable with the keyboard,
+                            and targets must not be tiny.</p>
+                    </div>
+                </div>
+                <div class="col-12 md:col-6">
+                    <div class="card h-full mb-0">
+                        <h3>Cognitive</h3>
+                        <p class="mb-0">Learning disabilities, dyslexia, attention deficits. Clear language, a consistent layout,
+                            helpful error messages and no time pressure help here, and they are simply good design for every user.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Standards and Laws</h2>
+            <p>
+                The <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener noreferrer">Web Content
+                Accessibility Guidelines (WCAG)</a> of the W3C are the reference, currently in version 2.2. Their criteria are grouped
+                by four principles: content has to be <strong>perceivable</strong>, <strong>operable</strong>,
+                <strong>understandable</strong> and <strong>robust</strong>. Each criterion has a level: A, AA or AAA.
+                Level AA is the usual target.
+            </p>
+            <p>
+                Many countries made accessibility a legal requirement, and the laws refer to WCAG level AA in practice. The best known are
+                <a href="https://www.section508.gov/manage/laws-and-policies/" target="_blank" rel="noopener noreferrer">Section 508</a>
+                in the US, the <a href="https://digital-strategy.ec.europa.eu/en/policies/web-accessibility" target="_blank"
+                rel="noopener noreferrer">Web Accessibility Directive</a> for the public sector of the European Union, and the
+                <a href="https://eur-lex.europa.eu/eli/dir/2019/882/oj" target="_blank" rel="noopener noreferrer">European
+                Accessibility Act</a>, which applies since June 2025 and also covers private services such as online shops and banking.
             </p>
 
-            <h4>Mobility Impairments</h4>
-            <p>People with mobility impairments have disabilities related to movement due to loss of a limb, paralysis or other varying reasons. Assistive technologies like
-                a head pointer is a device to interact with a screen whereas keyboard or a trackpad remain as solutions for people who are not able to utilize a mouse.
-            </p>
-
-            <h4>Cognitive Impairments</h4>
-            <p>Cognitive impairments have a wider range that includes people with learning disabilities, depression and dyslexia. A well designed content also leads
-                to better user experience for people without disabilities so designing for cognitive impairments result in better design for any user.
-            </p>
-
-            <h2>Web Content</h2>
-            <p>Correct page structure with the aid of assistive technologies are the core ingridients for an accessible web content.
-                HTML is based on an accessible foundation, form controls can be used by keyboard by default and semantic HTML is easier to be processed by a screen reader.</p>
-
-            <h3>WCAG</h3>
-            <p><a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank">WCAG</a> refers to <strong>Web Content Accessibility Guideline</strong>, a standard managed by the WAI (Web Accessibility Initiative) of W3C (World Wide Web Consortium).
-                WCAG consists of recommendations for making the web content more accessible. PrimeFaces components aim high level of WCAG compliancy in the near future.</p>
-
-            <p>Various countries around the globe have governmental policies regarding web accessibility as well. Most well known of these are <a href="https://www.section508.gov/manage/laws-and-policies/" target="_blank">Section 508</a> in the US and <a href="https://digital-strategy.ec.europa.eu/en/policies/web-accessibility" target="_blank">Web Accessibility Directive</a> of the European Union.</p>
-
-            <h3>Form Controls</h3>
-            <p>Native form elements should be preferred instead of elements that are meant for other purposes like presentation. As an example, button below is
-                rendered as a form control by the browser, can receive focus via tabbing and can be used with space key as well to trigger.
-            </p>
-            <h:form rendered="false">
-                <p:messages />
-                <h:commandButton value="Click Button" action="#{accessiblityView.someAction()}">
-                    <f:ajax execute="@form" render="@form" />
-                </h:commandButton>
-                <br/>
-                <p:remoteCommand name="rc" update="@form" action="#{accessiblityView.someOtherAction()}"/>
-                <div class="fancy-button" onclick="rc()">Click div</div>
-                <div class="fancy-button" onclick="rc()" onkeydown="rc()" tabindex="0">Click div improved</div>
-            </h:form>
-            <pre><code class="language-xml">
-                <h:outputText value="#{accessiblityView.htmlFragmentButton}" />
-            </code></pre>
-
-            <p>On the other hand, a fancy css based button using a div has no keyboard or screen reader support.</p>
-            <pre><code class="language-xml">
-                <h:outputText value="#{accessiblityView.htmlFragmentDivAsButton}" />
-            </code></pre>
-
-            <p><code>tabindex</code> is required to make a div element accessible in addition to use a keydown to bring the keyboard support back. To avoid the overload and implementing
-                functionality that is already provided by the browser, native form controls should be preferred.</p>
-            <pre><code class="language-xml">
-                <h:outputText value="#{accessiblityView.htmlFragmentDivAsButtonImproved}" />
-            </code></pre>
-
-            <h3>Relations</h3>
-            <p>Form components must be related to another element that describes what the form element is used for. This is usually achieved with the <i>label</i> element.</p>
-            <pre><code class="language-xml">
-                &lt;label for="myinput"&gt;Username:&lt;/label&gt;
-                &lt;input id="myinput" type="text" name="username" /&gt;
-            </code></pre>
+            <h2>Building Blocks</h2>
 
             <h3>Semantic HTML</h3>
-            <p>HTML offers various element to organize content on a web page that screen readers are aware of. Preferring Semantic HTML for good semantics provide out of the box support
-                for reader which is not possible when regular <i>div</i> elements with classes are used. Consider the following example that do not mean too much for readers.
-            </p>
-            <pre><code class="language-xml">
-                &lt;div class="header"&gt;
-                    &lt;div class="header-text"&gt;Header&lt;/div&gt;
-                &lt;/div&gt;
+            <p>A screen reader announces what an element is and offers shortcuts to jump between headings and regions. A page built
+                from <code>div</code> elements with style classes gives it nothing to work with:</p>
+<pre><code class="language-xml">
+&lt;div class="header"&gt;
+    &lt;div class="header-text"&gt;Orders&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="nav"&gt;&lt;/div&gt;
+&lt;div class="main"&gt;
+    &lt;div class="content"&gt;&lt;/div&gt;
+    &lt;div class="sidebar"&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="footer"&gt;&lt;/div&gt;
 
-                &lt;div class="nav"&gt;&lt;/div&gt;
+</code></pre>
 
-                &lt;div class="main"&gt;
-                    &lt;div class="content"&gt;
-                    &lt;/div&gt;
+            <p>The same layout with semantic elements is understood without any extra attribute. Facelets pages are XHTML, so these
+                elements can be used directly:</p>
+<pre><code class="language-xml">
+&lt;header&gt;
+    &lt;h1&gt;Orders&lt;/h1&gt;
+&lt;/header&gt;
+&lt;nav&gt;&lt;/nav&gt;
+&lt;main&gt;
+    &lt;article&gt;&lt;/article&gt;
+    &lt;aside&gt;&lt;/aside&gt;
+&lt;/main&gt;
+&lt;footer&gt;&lt;/footer&gt;
 
-                    &lt;div class="sidebar"&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
+</code></pre>
 
-                &lt;div class="footer"&gt;
-                &lt;/div&gt;
-            </code></pre>
+            <h3>Native Controls First</h3>
+            <p>A <code>button</code> can be focused with <kbd>Tab</kbd>, triggered with <kbd>Enter</kbd> and <kbd>Space</kbd> and is
+                announced as a button. A <code>div</code> with a click handler has none of this, however much it looks like a button.
+                Try it with the keyboard: the first one receives the focus, the second one is skipped.</p>
 
-            <p>Same layout can be achieved using the semantic elements with screen reader support built-in.</p>
-            <pre><code class="language-xml">
-                &lt;header&gt;
-                    &lt;h1&gt;Header&lt;/h1&gt;
-                &lt;/header&gt;
+            <div class="a11y-demo">
+                <p:commandButton type="button" value="A real button"/>
+                <div class="p-button p-component"><span class="p-button-label">A div</span></div>
+            </div>
 
-                &lt;nav&gt;&lt;/nav&gt;
+<pre><code class="language-xml">
+&lt;p:commandButton value="Save" action="\#{orderView.save}"/&gt;
 
-                &lt;main&gt;
-                    &lt;article&gt;&lt;/article&gt;
+&lt;!-- no focus, no keyboard, no role --&gt;
+&lt;div class="fancy-button" onclick="save()"&gt;Save&lt;/div&gt;
 
-                    &lt;aside&gt;&lt;/aside&gt;
-                &lt;/main&gt;
+</code></pre>
 
-                &lt;footer&gt;
-                &lt;/footer&gt;
-            </code></pre>
+            <h3>Labels and Names</h3>
+            <p>Every control needs a name that can be read out. For an input this is its label: <code>p:outputLabel</code> is linked
+                to the input with <code>for</code>, a click on it focuses the input, and it shows the required indicator on its own.
+                A button that only shows an icon has no text, it gets its name with <code>ariaLabel</code>. Images need an
+                <code>alt</code> text, decorative icons are hidden with <code>aria-hidden="true"</code>.</p>
+<pre><code class="language-xml">
+&lt;p:outputLabel for="email" value="Email"/&gt;
+&lt;p:inputText id="email" value="\#{orderView.email}" required="true"/&gt;
+&lt;p:message for="email"/&gt;
+
+&lt;p:commandButton icon="pi pi-trash" ariaLabel="Delete order" action="\#{orderView.delete}"/&gt;
+
+</code></pre>
 
             <h3>WAI-ARIA</h3>
-            <p>ARIA refers to "Accessible Rich Internet Applications" is a suite to fill the gap where semantic HTML is inadequate. These cases
-                are mainly related to rich UI components/widgets. Although browser support for rich UI components such as a datepicker or colorpicker has been improved over the past years
-                many web developers still utilize UI components derived from standard HTML elements created by them or by other projects like PrimeFaces. These
-                types of components must provide keyboard and screen reader support, the latter case is where the WAI-ARIA is utilized.
-            </p>
-            <p>ARIA consists of roles, properties and attributes. <strong>Roles</strong> define what the element is mainly used for e.g. <i>checkbox</i>, <i>dialog</i>, <i>tablist</i> whereas
-                <strong>States</strong> and <strong>Properties</strong> define the metadata of the element like <i>aria-checked</i>, <i>aria-disabled</i>.</p>
+            <p>HTML has no element for a tab view, a tree or a dialog. <a href="https://www.w3.org/WAI/ARIA/apg/" target="_blank"
+                rel="noopener noreferrer">WAI-ARIA</a> (Accessible Rich Internet Applications) fills this gap with attributes that
+                describe such widgets to a screen reader: a <strong>role</strong> says what the element is (<code>dialog</code>,
+                <code>tablist</code>, <code>checkbox</code>), <strong>states and properties</strong> describe it
+                (<code>aria-checked</code>, <code>aria-expanded</code>, <code>aria-labelledby</code>).</p>
+            <p>ARIA only describes, it does not add behavior. A checkbox built from a <code>div</code> needs the role, the state,
+                a <code>tabindex</code> and a key handler, and all of them have to be kept in sync by script:</p>
+<pre><code class="language-xml">
+&lt;span id="remember-label"&gt;Remember Me&lt;/span&gt;
+&lt;div class="fancy-checkbox" role="checkbox" aria-checked="false" aria-labelledby="remember-label"
+     tabindex="0" onclick="toggle(this)" onkeydown="toggleOnSpace(event)"&gt;&lt;/div&gt;
 
-            <p>Consider the following case of a native checkbox. It has built-in keyboard and screen reader support.</p>
-            <pre><code class="language-xml">
-                &lt;input type="checkbox" value="Prime" name="ui" checked&gt;
-            </code></pre>
+</code></pre>
 
-            <p>A fancy checkbox with css animations might look more appealing but accessibility might be lacking. Checkbox below
-                may display a checked font icon with animations however it is not tabbable, cannot be checked with space key and cannot be read by a reader.
-                (The following 3 examples are based on <a href="https://vuejs.org/" target="_blank">Vue.js</a>, but should give quite a good idea of the challenge we are facing.)
-            </p>
-            <pre><code class="language-xml">
-                &lt;div class="fancy-checkbox"&gt;
-                    &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
-                &lt;/div&gt;
-            </code></pre>
+            <p>The better way is to keep the native element and only replace its look. This is what <code>p:selectBooleanCheckbox</code>
+                does: the styled box sits next to a real checkbox that is hidden visually, but not from the keyboard and the screen
+                reader. Focus, the <kbd>Space</kbd> key and the checked state come from the browser.</p>
+<pre><code class="language-xml">
+&lt;div class="p-selectbooleancheckbox p-chkbox p-component"&gt;
+    &lt;div class="p-hidden-accessible"&gt;
+        &lt;input type="checkbox" aria-labelledby="..."/&gt;
+    &lt;/div&gt;
+    &lt;div class="p-chkbox-box"&gt;...&lt;/div&gt;
+&lt;/div&gt;
 
-            <p>One alternative is using ARIA roles for readers and use javascript for keyboard support. Notice the usage of <i>aria-labelledby</i> as a replacement of the <i>label</i> tag with for.</p>
-            <pre><code class="language-xml">
-                &lt;span id="chk-label"&gt;Remember Me&lt;/span&gt;
-                &lt;div class="fancy-checkbox" role="checkbox" aria-checked="false" tabindex="0" aria-labelledby="chk-label"
-                @click="toggle" @keydown="onKeyDown(event)"&gt;
-                    &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
-                &lt;/div&gt;
-            </code></pre>
+</code></pre>
 
-            <p>However the best practice is combining semantic HTML for accessibility while keeping the design for UX. This approach
-                involves hiding a native checkbox for accessibility and using javascript events to update its state. Notice the usage of <code>p-sr-only</code>
-                that hides the elements from the user but not from the screen reader.
-            </p>
-            <pre><code class="language-xml">
-                &lt;label for="chkbox"&gt;Remember Me&lt;/label&gt;
-                &lt;div class="fancy-checkbox" @click="toggle"&gt;
-                    &lt;input class="p-sr-only" type="checkbox" id="chkbox" @focus="updateParentVisuals" @blur="updateParentVisuals"
-                        @keydown="onKeyDown(event)"&gt;
-                    &lt;i class="checked-icon" v-if="checked"&gt;&lt;/i&gt;
-                &lt;/div&gt;
-            </code></pre>
+            <h:form styleClass="a11y-demo">
+                <p:selectBooleanCheckbox id="binary" value="#{accessiblityView.binary}"/>
+                <p:outputLabel for="binary" value="Remember Me"/>
+            </h:form>
 
-            <p>A working sample is the PrimeFaces checkbox that is tabbable, keyboard accessible and is compliant with a screen reader. Instead of ARIA
-                roles it relies on a hidden native checkbox.
-            </p>
+            <h2>What PrimeFaces Does for You</h2>
+            <ul>
+                <li><strong>Keyboard and ARIA.</strong> Roles, states and keyboard handling are part of the components and need no
+                    configuration. A dialog for example is a <code>dialog</code> with <code>aria-modal</code>, a confirm dialog an
+                    <code>alertdialog</code>, and the focus returns to where it was when the dialog closes.</li>
+                <li><strong>Form state.</strong> Required and invalid inputs are rendered with <code>aria-required</code> and
+                    <code>aria-invalid</code>, so a failed validation is not only a red border.</li>
+                <li><strong>Announcements.</strong> <code>p:messages</code>, <code>p:message</code> and <code>p:growl</code> are live
+                    regions (<code>aria-live</code>): a screen reader reads the messages of an Ajax request without a page reload.</li>
+                <li><strong>Localized texts.</strong> Texts that only a screen reader reads, such as the close button of a dialog,
+                    come from the <code>aria</code> section of the client side locale and can be translated or changed.</li>
+                <li><strong>User preferences.</strong> With <code>prefers-reduced-motion</code> animations and transitions are off,
+                    with <code>prefers-reduced-transparency</code> there is no blur, and icons and focus rings stay visible in the
+                    high contrast mode of Windows.</li>
+                <li><strong>Themes.</strong> Every preset has a visible focus ring, a light and a dark color scheme, and small icon
+                    controls get a hit area of at least 24px as asked by WCAG 2.2.</li>
+            </ul>
 
-            <div class="flex align-items-center">
-                <h:form>
-                    <p:outputLabel for="@next" class="mr-2" value="Remember Me" />
-                    <p:selectBooleanCheckbox id="binary" value="#{accessiblityView.binary}" />
-                </h:form>
+            <h2>Colors</h2>
+
+            <h3>Contrast</h3>
+            <p>WCAG level AA asks for a contrast ratio of at least <strong>4.5:1</strong> between text and its background, and
+                <strong>3:1</strong> for large text, icons and the borders of controls. Check it whenever you change the primary
+                color or a token of the theme.</p>
+            <div class="a11y-demo">
+                <figure class="a11y-swatch">
+                    <div class="a11y-good">GOOD</div>
+                    <figcaption>5.2:1</figcaption>
+                </figure>
+                <figure class="a11y-swatch">
+                    <div class="a11y-bad">BAD</div>
+                    <figcaption>2.5:1</figcaption>
+                </figure>
             </div>
 
-            <h3>Colors</h3>
-            <p>Colors on a web page should aim a contrast ratio of at least <strong>4.5:1</strong> and consider a selection of colors that do not
-                cause vibration.</p>
+            <h3>Not by Color Alone</h3>
+            <p>About 1 in 12 men cannot tell some colors apart, most often red and green. A state must therefore not be shown by color
+                only: add a text or an icon to an error, a status or a required field.</p>
 
-            <h4>Good Contrast</h4>
-            <p>Color contrast between the background and the foreground content should be sufficient enough to ensure readability. Example below displays two cases with good and bad samples.</p>
-
-            <div class="flex">
-                <div class="h-8rem w-8rem flex justify-content-center align-items-center mr-5 font-bold bg-blue-600" style="border-radius:10px">
-                    <span class="text-white">GOOD</span>
-                </div>
-                <div class="h-8rem w-8rem flex justify-content-center align-items-center mr-5 font-bold bg-blue-400" style="border-radius:10px">
-                    <span class="text-white">BAD</span>
-                </div>
+            <h3>Vibration</h3>
+            <p>Two saturated colors of similar brightness next to each other seem to flicker, and the text is hard to read although
+                the colors are clearly different.</p>
+            <div class="a11y-demo">
+                <figure class="a11y-swatch">
+                    <div class="a11y-vibrate">VIBRATE</div>
+                    <figcaption>1.0:1</figcaption>
+                </figure>
             </div>
 
-            <h4>Vibration</h4>
-            <p>Color vibration is leads to an illusion of motion due to choosing colors that have low visibility against each other. Color combinations
-                need to be picked with caution to avoid vibration.
-            </p>
-
-            <div class="flex">
-                <div class="h-8rem w-8rem flex justify-content-center align-items-center mr-5 font-bold bg-pink-500" style="border-radius:10px">
-                    <span class="text-blue-500">VIBRATE</span>
-                </div>
+            <h3>Dark Mode</h3>
+            <p>On a dark background, highly saturated colors strain the eyes and often miss the contrast. Lighter, desaturated shades
+                work better.</p>
+            <div class="a11y-demo">
+                <figure class="a11y-swatch">
+                    <div class="a11y-saturated">
+                        <span>Indigo 600</span>
+                        <span class="pi pi-times-circle text-xl" aria-hidden="true"></span>
+                    </div>
+                    <figcaption>2.8:1</figcaption>
+                </figure>
+                <figure class="a11y-swatch">
+                    <div class="a11y-desaturated">
+                        <span>Indigo 200</span>
+                        <span class="pi pi-check-circle text-xl" aria-hidden="true"></span>
+                    </div>
+                    <figcaption>11.9:1</figcaption>
+                </figure>
             </div>
 
-            <h4>Dark Mode</h4>
-            <p>Highly saturated colors should be avoided when used within a dark design scheme as they cause eye strain. Instead desaturated colors should be preferred.</p>
+            <h2>Checklist</h2>
+            <p>The components cannot know your content. These points are up to the page:</p>
+            <ul>
+                <li>Every input has a label, every icon button an <code>ariaLabel</code>, every image an <code>alt</code> text.</li>
+                <li>The page has one <code>h1</code>, headings in order without skipping a level, and the landmarks
+                    <code>header</code>, <code>nav</code> and <code>main</code>.</li>
+                <li>The <code>lang</code> attribute of the page is set, so the screen reader picks the right voice.</li>
+                <li>Everything works with the keyboard alone, in a sensible order, and the focus is always visible.</li>
+                <li>Text and controls have enough contrast, and no information is given by color alone.</li>
+                <li>The page still works zoomed to 200% and on a narrow screen.</li>
+            </ul>
 
-            <div class="flex">
-                <div class="h-8rem w-8rem flex flex-column justify-content-center align-items-center mr-5 font-bold bg-gray-900" style="border-radius:10px">
-                    <span class="text-indigo-500">Indigo 500</span>
-                    <span class="text-indigo-500 pi pi-times-circle mt-3 text-xl"></span>
-                </div>
-                <div class="h-8rem w-8rem flex flex-column justify-content-center align-items-center mr-5 font-bold bg-gray-900" style="border-radius:10px">
-                    <span class="text-indigo-200">Indigo 200</span>
-                    <span class="text-indigo-200 pi pi-check-circle mt-3 text-xl"></span>
-                </div>
-            </div>
+            <h2>Testing</h2>
+            <ul>
+                <li><strong>Keyboard.</strong> Put the mouse away and use the page with <kbd>Tab</kbd>, <kbd>Shift</kbd>+<kbd>Tab</kbd>,
+                    the arrow keys, <kbd>Enter</kbd>, <kbd>Space</kbd> and <kbd>Escape</kbd>. This takes five minutes and finds most
+                    of the serious problems.</li>
+                <li><strong>Screen reader.</strong> <a href="https://www.nvaccess.org" target="_blank" rel="noopener noreferrer">NVDA</a>
+                    is free for Windows, VoiceOver is part of macOS and iOS, TalkBack of Android.</li>
+                <li><strong>Automated checks.</strong> <a href="https://www.deque.com/axe/" target="_blank"
+                    rel="noopener noreferrer">axe</a>, <a href="https://wave.webaim.org" target="_blank"
+                    rel="noopener noreferrer">WAVE</a> or Lighthouse in the browser developer tools find missing labels, wrong ARIA
+                    attributes and low contrast. They only find a part of the problems, so they do not replace the two tests above.</li>
+            </ul>
         </div>
     </ui:define>
-    
+
 </ui:composition>

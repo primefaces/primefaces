@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Schedule <span class="subitem">Lazy</span>
+    </ui:define>
+
+    <ui:define name="description">
+        By default Schedule expects that all events are provided eagerly in the ScheduleModel. With a large number of
+        events, a LazyScheduleModel improves performance: its <b>loadEvents</b> method is called with the start and end of
+        the displayed time frame every time it changes, so only the events of that time frame are loaded.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/schedule"/>
+    <ui:param name="componentLink" value="Schedule-1"/>
+    <ui:param name="tagName" value="schedule"/>
+
+    <ui:define name="implementation">
+        <div class="card">
+            <h:form>
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:schedule value="#{scheduleJava8View.lazyEventModel}"
+                            timeZone="#{scheduleJava8View.serverTimeZone}" clientTimeZone="#{scheduleJava8View.serverTimeZone}"/>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>

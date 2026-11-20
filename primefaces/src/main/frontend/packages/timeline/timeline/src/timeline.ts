@@ -572,7 +572,7 @@ export class Timeline<Cfg extends TimelineCfg = TimelineCfg> extends PrimeFaces.
                 });
 
                 // check if draggable is within a data iteration component
-                const uiData = ui.draggable.closest(".p-datatable, .p-datagrid, .p-datalist, .p-carousel, .p-treetable");
+                const uiData = ui.draggable.closest(".p-datatable, .p-dataview, .p-carousel, .p-treetable");
                 if (uiData.length > 0) {
                     params.push({
                         name: this.id + '_uiDataId',
