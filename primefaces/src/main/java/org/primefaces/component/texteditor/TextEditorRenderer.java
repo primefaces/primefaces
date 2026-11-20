@@ -95,8 +95,7 @@ public class TextEditorRenderer extends InputRenderer {
             writer.writeAttribute("style", style, null);
         }
 
-        renderARIARequired(context, editor);
-        renderARIAInvalid(context, editor);
+        // the textbox role and its ARIA state go to the contenteditable created by Quill, see encodeScript
 
         if (editor.isToolbarVisible() && ComponentUtils.shouldRenderFacet(toolbar)) {
             writer.startElement("div", editor);
@@ -131,7 +130,11 @@ public class TextEditorRenderer extends InputRenderer {
                 .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("disabled", editor.isDisabled(), false)
-                .attr("placeholder", editor.getPlaceholder(), null);
+                .attr("placeholder", editor.getPlaceholder(), null)
+                .attr("ariaLabel", editor.getAriaLabel(), null)
+                .attr("ariaLabelledBy", editor.getLabelledBy(), null)
+                .attr("ariaRequired", editor.isRequired(), false)
+                .attr("ariaInvalid", !editor.isValid(), false);
 
         List formats = editor.getFormats();
         if (formats != null) {
