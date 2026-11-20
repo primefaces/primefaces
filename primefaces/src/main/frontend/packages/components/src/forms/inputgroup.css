@@ -120,12 +120,15 @@
         font-size: var(--p-inputgroup-addon-font-size);
         font-weight: var(--p-inputgroup-addon-font-weight);
 
-        &:first-child {
+        /* :where(.class): a class to index the rule by, see forms/inputfield.css */
+        &:where(.p-inputgroup-addon):first-child,
+        &:where(.p-inputgroup-addon-checkbox):first-child {
             border-start-start-radius: var(--p-inputgroup-addon-border-radius);
             border-end-start-radius: var(--p-inputgroup-addon-border-radius);
         }
 
-        &:last-child {
+        &:where(.p-inputgroup-addon):last-child,
+        &:where(.p-inputgroup-addon-checkbox):last-child {
             border-start-end-radius: var(--p-inputgroup-addon-border-radius);
             border-end-end-radius: var(--p-inputgroup-addon-border-radius);
         }

@@ -14,7 +14,13 @@
     justify-content: center;
 }
 
-/* onIcon / offIcon: both icons are stacked in the handle, the inactive one is rotated out */
+/*
+ * onIcon / offIcon: both icons are stacked in the handle, the inactive one is rotated out. The off icon is the second
+ * one, selected with :not(:first-child) in the selector of the rule itself (same specificity as the rule of both
+ * icons before it). Not with "& + span": a sibling combinator between bare tags makes the browser restyle every span
+ * of a container whenever a child is inserted into or removed from it, on every page. And not nested as
+ * "&:not(:first-child)": the browser would have to test such a rule against every span of the page.
+ */
 .p-toggleswitch-dual-icon {
     .p-toggleswitch-handler > span:not(.p-ink-container) {
         position: absolute;
@@ -23,40 +29,38 @@
         transition-property: opacity, transform;
         opacity: 0;
         transform: rotate(-90deg);
+    }
 
-        /* the off icon. Not "& + span": a sibling combinator between bare tags makes the browser restyle every span of
-           a container whenever a child is inserted into or removed from it (on every page, not only in the switch) */
-        &:not(:first-child) {
-            opacity: 1;
-            transform: rotate(0deg);
-        }
+    .p-toggleswitch-handler > span:not(.p-ink-container, :first-child) {
+        opacity: 1;
+        transform: rotate(0deg);
     }
 
     &.p-toggleswitch-checked .p-toggleswitch-handler > span:not(.p-ink-container) {
         opacity: 1;
         transform: rotate(0deg);
+    }
 
-        &:not(:first-child) {
-            opacity: 0;
-            transform: rotate(90deg);
-        }
+    &.p-toggleswitch-checked .p-toggleswitch-handler > span:not(.p-ink-container, :first-child) {
+        opacity: 0;
+        transform: rotate(90deg);
     }
 
     /* RTL: the handle rolls to the left, so the icons rotate the other way */
     &:dir(rtl) .p-toggleswitch-handler > span:not(.p-ink-container) {
         transform: rotate(90deg);
+    }
 
-        &:not(:first-child) {
-            transform: rotate(0deg);
-        }
+    &:dir(rtl) .p-toggleswitch-handler > span:not(.p-ink-container, :first-child) {
+        transform: rotate(0deg);
     }
 
     &.p-toggleswitch-checked:dir(rtl) .p-toggleswitch-handler > span:not(.p-ink-container) {
         transform: rotate(0deg);
+    }
 
-        &:not(:first-child) {
-            transform: rotate(-90deg);
-        }
+    &.p-toggleswitch-checked:dir(rtl) .p-toggleswitch-handler > span:not(.p-ink-container, :first-child) {
+        transform: rotate(-90deg);
     }
 }
 

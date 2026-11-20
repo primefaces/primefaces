@@ -55,8 +55,8 @@
     }
 
     /* filled: both alternatives have the same specificity; border, focus ring and line like forms/inputfield.css */
-    .p-input-filled &,
-    &.p-input-filled {
+    /* written as one selector, see forms/inputfield.css */
+    &:is(.p-input-filled *, .p-input-filled) {
         --_line-width: var(--p-form-field-filled-indicator-width);
         --_line: linear-gradient(var(--_border-color), var(--_border-color)) bottom / 100% var(--_line-width) no-repeat
             border-box;

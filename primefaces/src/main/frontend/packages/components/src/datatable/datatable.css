@@ -499,7 +499,8 @@
         .p-rowgroup-toggler[aria-expanded="false"] > .p-datatable-row-toggle-icon {
             --_icon: var(--p-datatable-row-toggle-collapsed-icon);
 
-            &:dir(rtl) {
+            /* :where(.class): a class to index the rule by, see forms/inputfield.css */
+            &:where(.p-datatable-row-toggle-icon):dir(rtl) {
                 transform: rotate(180deg);
             }
         }

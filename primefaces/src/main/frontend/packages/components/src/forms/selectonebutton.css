@@ -62,8 +62,8 @@
         border-color var(--p-togglebutton-transition-duration), outline-color var(--p-togglebutton-transition-duration),
         box-shadow var(--p-togglebutton-transition-duration);
 
-    /* inner pill of the checked state */
-    &::before {
+    /* inner pill of the checked state. :where(.p-button): a class to index the rule by, see forms/inputfield.css */
+    &:where(.p-button)::before {
         content: "";
         position: absolute;
         inset: var(--p-togglebutton-padding);
@@ -74,7 +74,7 @@
 
     /* hover (unchecked only) */
     &.p-state-hover:not(.p-state-active, .p-state-disabled),
-    &:not(.p-state-active, .p-state-disabled):hover {
+    &:where(.p-button):not(.p-state-active, .p-state-disabled):hover {
         background: var(--p-togglebutton-hover-background);
         border-color: var(--p-togglebutton-border-color);
         color: var(--p-togglebutton-hover-color);
@@ -189,7 +189,7 @@
         padding: var(--p-togglebutton-sm-padding);
         font-size: var(--p-togglebutton-sm-font-size);
 
-        &::before {
+        &:where(.p-button)::before {
             inset: var(--p-togglebutton-sm-padding);
         }
 
@@ -202,7 +202,7 @@
         padding: var(--p-togglebutton-lg-padding);
         font-size: var(--p-togglebutton-lg-font-size);
 
-        &::before {
+        &:where(.p-button)::before {
             inset: var(--p-togglebutton-lg-padding);
         }
 

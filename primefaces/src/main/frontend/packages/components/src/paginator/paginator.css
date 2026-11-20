@@ -99,8 +99,12 @@
         transition: background var(--p-paginator-transition-duration), color var(--p-paginator-transition-duration),
             outline-color var(--p-paginator-transition-duration), box-shadow var(--p-paginator-transition-duration);
 
+        /* :where(.class): a class to index the rule by, see forms/inputfield.css */
         &.p-state-hover,
-        &:not(.p-state-disabled):hover {
+        &:where(.p-paginator-first):not(.p-state-disabled):hover,
+        &:where(.p-paginator-prev):not(.p-state-disabled):hover,
+        &:where(.p-paginator-next):not(.p-state-disabled):hover,
+        &:where(.p-paginator-last):not(.p-state-disabled):hover {
             background: var(--p-paginator-nav-button-hover-background);
             color: var(--p-paginator-nav-button-hover-color);
         }
@@ -112,7 +116,10 @@
             box-shadow: var(--p-paginator-nav-button-focus-ring-shadow);
         }
 
-        &:dir(rtl) {
+        &:where(.p-paginator-first):dir(rtl),
+        &:where(.p-paginator-prev):dir(rtl),
+        &:where(.p-paginator-next):dir(rtl),
+        &:where(.p-paginator-last):dir(rtl) {
             transform: rotate(180deg);
         }
     }
@@ -221,7 +228,8 @@
             box-shadow var(--p-select-transition-duration);
 
         &.p-state-hover,
-        &:not(:disabled, .p-state-disabled):hover {
+        &:where(.p-paginator-rpp-options):not(:disabled, .p-state-disabled):hover,
+        &:where(.p-paginator-jtp-select):not(:disabled, .p-state-disabled):hover {
             border-color: var(--p-select-hover-border-color);
         }
 
@@ -233,7 +241,8 @@
             box-shadow: var(--p-select-focus-ring-shadow);
         }
 
-        &:disabled,
+        &:where(.p-paginator-rpp-options):disabled,
+        &:where(.p-paginator-jtp-select):disabled,
         &.p-state-disabled {
             background: var(--p-select-disabled-background);
             color: var(--p-select-disabled-color);

@@ -8,19 +8,21 @@
  * (not the thin width, which is not inherited). The forced colors mode resets both to the system scrollbars.
  * p:scrollPanel draws its own scrollbars (scrollpanel/scrollpanel/src/scrollpanel.css), the tabView navigator scrolls with buttons.
  */
-:where(
-    /* overlays and dropdown lists */
-    .p-autocomplete-panel, .p-selectonemenu-items-wrapper, .p-selectcheckboxmenu-items-wrapper,
-    .p-splitbuttonmenu-list-wrapper, .p-columntoggler, .p-menu-dynamic-maxheight, .p-slidemenu-content,
-    /* lists */
-    .p-selectlistbox-listcontainer, .p-multiselectlistbox-listcontainer, .p-picklist-list, .p-orderlist-list,
-    .p-tree-container, .p-log-content, .p-terminal, textarea.p-inputfield,
-    /* data */
-    .p-datatable-tablewrapper, .p-datatable-scrollable-body, .p-treetable-scrollable-body,
-    .p-datascroller-inline .p-datascroller-content, .p-carousel-content,
-    /* panels, dialogs, navigation */
-    .p-dialog, .p-dialog-content, .p-sidebar, .p-accordion-content, .p-panelmenu-content, .p-tabmenu-nav
-) {
+/* one :where() per class: a selector list inside :where() would be tested against every element of the page */
+/* overlays and dropdown lists */
+:where(.p-autocomplete-panel), :where(.p-selectonemenu-items-wrapper), :where(.p-selectcheckboxmenu-items-wrapper),
+:where(.p-splitbuttonmenu-list-wrapper), :where(.p-columntoggler), :where(.p-menu-dynamic-maxheight),
+:where(.p-slidemenu-content),
+/* lists */
+:where(.p-selectlistbox-listcontainer), :where(.p-multiselectlistbox-listcontainer), :where(.p-picklist-list),
+:where(.p-orderlist-list), :where(.p-tree-container), :where(.p-log-content), :where(.p-terminal),
+:where(textarea.p-inputfield),
+/* data */
+:where(.p-datatable-tablewrapper), :where(.p-datatable-scrollable-body), :where(.p-treetable-scrollable-body),
+:where(.p-datascroller-inline .p-datascroller-content), :where(.p-carousel-content),
+/* panels, dialogs, navigation */
+:where(.p-dialog), :where(.p-dialog-content), :where(.p-sidebar), :where(.p-accordion-content),
+:where(.p-panelmenu-content), :where(.p-tabmenu-nav) {
     scrollbar-width: var(--p-scrollbar-width);
     scrollbar-color: var(--p-scrollbar-thumb-color) var(--p-scrollbar-track-color);
 }

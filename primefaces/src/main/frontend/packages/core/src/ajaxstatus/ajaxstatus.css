@@ -58,7 +58,10 @@
     pointer-events: none;
     background: var(--p-ajaxstatus-bar-background);
 
-    &::before {
+    /* :where(...): a class / attribute to index the rule by, the bare "&" of a selector list is tested against every
+       element of the page */
+    &:where(.p-ajaxstatus-bar)::before,
+    &:where([id$="_start"])::before {
         content: "";
         position: absolute;
         top: 0;

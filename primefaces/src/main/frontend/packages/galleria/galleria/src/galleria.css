@@ -564,7 +564,10 @@
             transition: background var(--p-galleria-transition-duration), color var(--p-galleria-transition-duration),
                 outline-color var(--p-galleria-transition-duration), box-shadow var(--p-galleria-transition-duration);
 
-            &:not(.p-state-disabled):hover {
+            /* :where(.class): a class to index the rule by, the bare "&" of a selector list is tested against every
+               element of the page */
+            &:where(.p-galleria-thumbnail-prev):not(.p-state-disabled):hover,
+            &:where(.p-galleria-thumbnail-next):not(.p-state-disabled):hover {
                 background: var(--p-galleria-thumbnail-nav-button-hover-background);
                 color: var(--p-galleria-thumbnail-nav-button-hover-color);
             }

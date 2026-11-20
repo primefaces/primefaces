@@ -17,10 +17,13 @@
  * itself; background: --p-toolbar-background) and .p-backdrop-overlay for floating panels (the filter is on the
  * element; background: --p-overlay-popover-background or --p-overlay-modal-background).
  */
-:where(.p-backdrop-overlay, .p-sidebar, .p-overlaypanel, .p-confirm-popup,
-    .p-input-overlay:not(.p-cascadeselect-panel), .p-selectonemenu-panel, .p-selectcheckboxmenu-panel,
-    .p-autocomplete-panel, .p-tooltip-text, .p-growl-item-container, .p-password-panel, .p-columntoggler,
-    .p-dialog-docked, .p-log) {
+/* one :where() per class (here and below): the browser cannot index a selector list inside :where() by class, it
+   would test the rule against every element of the page */
+:where(.p-backdrop-overlay), :where(.p-sidebar), :where(.p-overlaypanel), :where(.p-confirm-popup),
+:where(.p-input-overlay:not(.p-cascadeselect-panel)), :where(.p-selectonemenu-panel),
+:where(.p-selectcheckboxmenu-panel), :where(.p-autocomplete-panel), :where(.p-tooltip-text),
+:where(.p-growl-item-container), :where(.p-password-panel), :where(.p-columntoggler), :where(.p-dialog-docked),
+:where(.p-log) {
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 
@@ -33,7 +36,7 @@
  * submenus would only blur what lies inside the bar. .p-backdrop-navigation: bars of the application, same as the
  * toolbar (a dropdown inside the bar still blurs the page). Not for a scroll container: the ::before scrolls away.
  */
-:where(.p-dialog-box, .p-toolbar, .p-backdrop-navigation)::before {
+:where(.p-dialog-box)::before, :where(.p-toolbar)::before, :where(.p-backdrop-navigation)::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -48,15 +51,15 @@
 }
 
 /* no stacking context on the toolbar: the ::before comes first in the positioned layer, the positioned children follow */
-:where(.p-toolbar, .p-backdrop-navigation) {
+:where(.p-toolbar), :where(.p-backdrop-navigation) {
     position: relative;
 }
 
-:where(.p-toolbar, .p-backdrop-navigation) > * {
+:where(.p-toolbar) > *, :where(.p-backdrop-navigation) > * {
     position: relative;
 }
 
-:where(.p-toolbar, .p-backdrop-navigation)::before {
+:where(.p-toolbar)::before, :where(.p-backdrop-navigation)::before {
     backdrop-filter: var(--p-navigation-backdrop-filter);
 }
 
@@ -71,8 +74,8 @@
     backdrop-filter: var(--p-overlay-backdrop-filter);
 }
 
-:where(.p-menu-dynamic:not(.p-menu-dynamic-maxheight), .p-menu-child:not(.p-slidemenu *),
-    .p-cascadeselect-items)::before {
+:where(.p-menu-dynamic:not(.p-menu-dynamic-maxheight))::before, :where(.p-menu-child:not(.p-slidemenu *))::before,
+:where(.p-cascadeselect-items)::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -87,6 +90,6 @@
 }
 
 /* modal mask: blurs the page behind a modal dialog / sidebar / blockUI */
-:where(.p-component-overlay, .p-dialog-mask) {
+:where(.p-component-overlay), :where(.p-dialog-mask) {
     backdrop-filter: var(--p-mask-backdrop-filter);
 }

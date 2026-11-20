@@ -12,14 +12,16 @@
 }
 
 /* WCAG 2.2 target size: small icon controls get an invisible 24px hit area (centered), the layout stays the same */
-:where(.p-chips-token-icon, .p-autocomplete-token-icon, .p-selectcheckboxmenu-token-icon, .p-password-icon,
-    .p-chip-remove-icon, .p-breadcrumb-home-icon)::after {
+/* one :where() per class: a selector list inside :where() would be tested against every element of the page */
+:where(.p-chips-token-icon)::after, :where(.p-autocomplete-token-icon)::after,
+:where(.p-selectcheckboxmenu-token-icon)::after, :where(.p-password-icon)::after, :where(.p-chip-remove-icon)::after,
+:where(.p-breadcrumb-home-icon)::after {
     content: "";
     position: absolute;
     inset: calc(50% - 12px);
 }
 
-:where(.p-chip-remove-icon, .p-breadcrumb-home-icon) {
+:where(.p-chip-remove-icon), :where(.p-breadcrumb-home-icon) {
     position: relative;
 }
 

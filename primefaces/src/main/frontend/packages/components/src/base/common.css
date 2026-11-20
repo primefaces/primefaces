@@ -53,7 +53,7 @@
     color: var(--p-component-highlight-color);
 }
 
-:where(.p-state-highlight a, .p-state-active a) {
+:where(.p-state-highlight a), :where(.p-state-active a) {
     color: inherit;
 }
 
@@ -152,9 +152,10 @@
 /*
  * Native form elements outside of components. In :where(): otherwise the :hover / :focus rules would beat the inputs
  * inside components (p:autoComplete multiple, p:chips, p:selectCheckboxMenu, p:knob, ...).
+ * One :where() per element: a selector list inside :where() would be tested against every element of the page.
  */
-:where(select,
-input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
+:where(select),
+:where(input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
     .p-component, .p-inputfield)) {
     color: var(--p-form-field-color);
     background: var(--p-form-field-background);
@@ -170,14 +171,14 @@ input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [
         box-shadow var(--p-form-field-transition-duration);
 }
 
-:where(select:hover,
-input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
+:where(select:hover),
+:where(input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
     .p-component, .p-inputfield):hover) {
     border-color: var(--p-form-field-hover-border-color);
 }
 
-:where(select:focus,
-input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
+:where(select:focus),
+:where(input:not([role="combobox"], [type="file"], [type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="hidden"],
     .p-component, .p-inputfield):focus) {
     border-color: var(--p-form-field-focus-border-color);
     outline: var(--p-form-field-focus-ring-width) var(--p-form-field-focus-ring-style) var(--p-form-field-focus-ring-color);

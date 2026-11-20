@@ -95,8 +95,9 @@ textarea::placeholder {
     /* filled: both alternatives have the same specificity. Border and focus ring are shown with
        --p-form-field-filled-border-opacity, a line in the border color is drawn at the bottom
        (--p-form-field-filled-indicator-width, thicker on focus): Material 0% and a line, the M3 filled field */
-    .p-input-filled &,
-    &.p-input-filled {
+    /* written as one selector: nested under a selector list, the browser cannot index "&:hover" or "&:disabled" by
+       class and tests them against every element of the page */
+    &:is(.p-input-filled *, .p-input-filled) {
         --_line-width: var(--p-form-field-filled-indicator-width);
         --_line: linear-gradient(var(--_border-color), var(--_border-color)) bottom / 100% var(--_line-width) no-repeat
             border-box;
@@ -393,7 +394,10 @@ textarea::placeholder {
         width: 100%;
     }
 
-    &:has(> .p-inputfield:not(:disabled, .p-state-disabled):is(:focus-within, .p-state-focus)) {
+    /* :where(.class): a class to index the rule by (specificity 0), the bare "&" of a selector list is tested against
+       every element of the page */
+    &:where(.p-autocomplete):has(> .p-inputfield:not(:disabled, .p-state-disabled):is(:focus-within, .p-state-focus)),
+    &:where(.p-calendar):has(> .p-inputfield:not(:disabled, .p-state-disabled):is(:focus-within, .p-state-focus)) {
         outline: var(--p-inputtext-focus-ring-width) var(--p-inputtext-focus-ring-style) var(--p-inputtext-focus-ring-color);
         outline-offset: var(--p-inputtext-focus-ring-offset);
         box-shadow: var(--p-inputtext-focus-ring-shadow);

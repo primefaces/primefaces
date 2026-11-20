@@ -193,12 +193,16 @@
         transition: background var(--p-datepicker-transition-duration), color var(--p-datepicker-transition-duration),
             outline-color var(--p-datepicker-transition-duration), box-shadow var(--p-datepicker-transition-duration);
 
-        &:not(.p-state-disabled):hover {
+        /* :where(.class): a class to index the rule by, the bare "&" of a selector list is tested against every
+           element of the page */
+        &:where(.p-datepicker-next):not(.p-state-disabled):hover,
+        &:where(.p-datepicker-prev):not(.p-state-disabled):hover {
             background: var(--p-button-text-secondary-hover-background);
             color: var(--p-button-text-secondary-color);
         }
 
-        &:not(.p-state-disabled):active {
+        &:where(.p-datepicker-next):not(.p-state-disabled):active,
+        &:where(.p-datepicker-prev):not(.p-state-disabled):active {
             background: var(--p-button-text-secondary-active-background);
         }
 
@@ -512,12 +516,14 @@
         transition: background var(--p-datepicker-transition-duration), color var(--p-datepicker-transition-duration),
             outline-color var(--p-datepicker-transition-duration), box-shadow var(--p-datepicker-transition-duration);
 
-        &:hover {
+        &:where(.p-picker-up):hover,
+        &:where(.p-picker-down):hover {
             background: var(--p-button-text-secondary-hover-background);
             color: var(--p-button-text-secondary-color);
         }
 
-        &:active {
+        &:where(.p-picker-up):active,
+        &:where(.p-picker-down):active {
             background: var(--p-button-text-secondary-active-background);
         }
 

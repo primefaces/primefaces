@@ -535,12 +535,15 @@ button.p-button::-moz-focus-inner {
     outline-color: transparent;
     transition: color var(--p-button-transition-duration), outline-color var(--p-button-transition-duration);
 
-    &:hover {
+    /* :where(.class): a class to index the rule by, see forms/inputfield.css */
+    &:where(.p-commandlink):hover,
+    &:where(.p-link):hover {
         color: var(--p-button-link-hover-color);
         text-decoration: underline;
     }
 
-    &:active {
+    &:where(.p-commandlink):active,
+    &:where(.p-link):active {
         color: var(--p-button-link-active-color);
     }
 
