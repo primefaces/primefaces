@@ -74,7 +74,8 @@ Toolbar of editor is easy to customize using the `toolbar` facet:
 ## Accessibility
 The editing area is a multiline `textbox`, labelled by a `p:outputLabel for` or the `ariaLabel` attribute; without
 either it falls back to the `texteditor.EDITOR` label of the locale. Toolbar buttons and pickers get an `aria-label` from
-the `texteditor.*` labels of the locale; an `aria-label` set on a button of the `toolbar` facet is kept.
+the `texteditor.*` labels of the locale; an `aria-label` set on a button of the `toolbar` facet is kept. Controls
+without a visible text also get it as `title`, unless they have one.
 
 ## Client Side API
 Component: _PrimeFaces.component.Editor_
