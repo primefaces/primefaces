@@ -29,7 +29,6 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.EscapeUtils;
 import org.primefaces.util.FacetUtils;
-import org.primefaces.util.HTML;
 import org.primefaces.util.HtmlSanitizer;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
@@ -97,14 +96,12 @@ public class TextEditorRenderer extends InputRenderer {
 
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute(HTML.ARIA_ROLE, HTML.ARIA_ROLE_TEXTBOX, null);
         writer.writeAttribute("class", styleClass, null);
         if (LangUtils.isNotBlank(style)) {
             writer.writeAttribute("style", style, null);
         }
 
-        renderARIARequired(context, editor);
-        renderARIAInvalid(context, editor);
+        // the textbox role and its ARIA state go to the contenteditable created by Quill, see encodeScript
 
         if (editor.isToolbarVisible() && FacetUtils.shouldRenderFacet(toolbar)) {
             writer.startElement("div", editor);
@@ -139,7 +136,11 @@ public class TextEditorRenderer extends InputRenderer {
                 .attr("toolbarVisible", editor.isToolbarVisible())
                 .attr("readOnly", editor.isReadonly(), false)
                 .attr("disabled", editor.isDisabled(), false)
-                .attr("placeholder", editor.getPlaceholder(), null);
+                .attr("placeholder", editor.getPlaceholder(), null)
+                .attr("ariaLabel", editor.getAriaLabel(), null)
+                .attr("ariaLabelledBy", editor.getLabelledBy(), null)
+                .attr("ariaRequired", editor.isRequired(), false)
+                .attr("ariaInvalid", !editor.isValid(), false);
 
         List formats = editor.getFormats();
         if (formats != null) {

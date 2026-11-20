@@ -23,6 +23,7 @@
  */
 package org.primefaces.component.texteditor;
 
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.Widget;
 
 import java.util.List;
@@ -30,7 +31,7 @@ import java.util.List;
 import javax.faces.component.UIInput;
 import javax.faces.component.behavior.ClientBehaviorHolder;
 
-public abstract class TextEditorBase extends UIInput implements Widget, ClientBehaviorHolder {
+public abstract class TextEditorBase extends UIInput implements InputHolder, Widget, ClientBehaviorHolder {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -52,7 +53,8 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         allowStyles,
         allowImages,
         formats,
-        secure
+        secure,
+        ariaLabel
     }
 
     public TextEditorBase() {
@@ -182,5 +184,13 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
 
     public void setDisabled(boolean disabled) {
         getStateHelper().put(PropertyKeys.disabled, disabled);
+    }
+
+    public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+    public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 }

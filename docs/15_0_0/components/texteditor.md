@@ -46,6 +46,7 @@ allowStyles | true | Boolean | Whether to allow styles to be included.
 allowLinks | true | Boolean | Whether to allow links to be included.
 allowImages | true | Boolean | Whether to allow images to be included.
 formats | null | List | Define a list of formats to allow in the editor. By default all formats are allowed.
+ariaLabel | null | String | ARIA label of the editing area, if there is no p:outputLabel for it.
 
 ## Getting started with the Editor
 !> TextEditor requires the [`owasp-java-html-sanitizer`](https://search.maven.org/artifact/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer) dependency added to your pom.xml to prevent XSS.
@@ -115,6 +116,11 @@ Toolbar of editor is easy to customize using the `toolbar` facet:
     </f:facet>
 </p:textEditor>
 ```
+
+## Accessibility
+The editing area is a multiline `textbox`, labelled by a `p:outputLabel for` or the `ariaLabel` attribute; without
+either it falls back to the `texteditor.EDITOR` label of the locale. Toolbar buttons and pickers get an `aria-label` from
+the `texteditor.*` labels of the locale; an `aria-label` set on a button of the `toolbar` facet is kept.
 
 ## Client Side API
 Widget: _PrimeFaces.widget.Editor_

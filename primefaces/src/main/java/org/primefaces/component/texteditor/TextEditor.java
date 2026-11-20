@@ -52,4 +52,27 @@ public class TextEditor extends TextEditorBase {
     public String getDefaultEventName() {
         return "change";
     }
+
+    /**
+     * The whole component, e.g. as the target of message tooltips; the value input is hidden.
+     */
+    @Override
+    public String getInputClientId() {
+        return getClientId(getFacesContext());
+    }
+
+    @Override
+    public String getValidatableInputClientId() {
+        return getClientId(getFacesContext()) + "_input";
+    }
+
+    @Override
+    public String getLabelledBy() {
+        return (String) getStateHelper().get("labelledby");
+    }
+
+    @Override
+    public void setLabelledBy(String labelledBy) {
+        getStateHelper().put("labelledby", labelledBy);
+    }
 }
