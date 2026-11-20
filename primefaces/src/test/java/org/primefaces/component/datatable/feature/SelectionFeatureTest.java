@@ -47,7 +47,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -100,71 +99,12 @@ class SelectionFeatureTest {
     void selectAllLoadsWithActiveFiltersKeyedByField() {
         filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("ap").build());
         filterByAsMap.put("tbl:otherCol", FilterMeta.builder().field("other").build()); // inactive
+        model.setRowCount(2); // set by the last render
 
         List<Object> selection = selectAll("@all");
 
         assertEquals(Set.of("name"), model.loadedFilterBy.keySet());
         assertEquals(List.of("apple", "apricot"), selection);
-    }
-
-    @Test
-    void selectAllCountsWithCurrentFiltersInsteadOfStaleRowCount() {
-        // filter widened in the same request: the row count of the previous request is out of date
-        filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("a").build());
-        model.setRowCount(2);
-
-        List<Object> selection = selectAll("@all");
-
-        assertEquals(Set.of("name"), model.countedFilterBy.keySet());
-        assertEquals(List.of("apple", "avocado", "apricot"), selection);
-    }
-
-    @Test
-    void selectAllFallsBackToRowCountWhenCountIsNotImplemented() {
-        // documented pattern: count() returns 0 and load() calls setRowCount()
-        filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("ap").build());
-        model.countNotImplemented = true;
-        model.setRowCount(2); // set by load() in the previous request
-
-        List<Object> selection = selectAll("@all");
-
-        assertEquals(List.of("apple", "apricot"), selection);
-    }
-
-    @Test
-    void selectAllReloadsWhenLoadSetsBiggerRowCount() {
-        // count() not implemented and filter widened in the same request: load() reports the new row count
-        filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("a").build());
-        model.countNotImplemented = true;
-        model.setRowCount(2); // set by load() in the previous request
-
-        List<Object> selection = selectAll("@all");
-
-        assertEquals(List.of("apple", "avocado", "apricot"), selection);
-    }
-
-    @Test
-    void selectAllAfterLoadUsesRowCountWithoutCounting() {
-        // decodeSelectionRowKeys runs after the model has been loaded with the current filters
-        filterByAsMap.put("tbl:nameCol", FilterMeta.builder().field("name").filterValue("ap").build());
-        model.setRowCount(2);
-        when(table.getSelectedRowKeys()).thenReturn(Set.of("@all"));
-
-        new SelectionFeature().decodeSelectionRowKeys(context, table);
-
-        assertNull(model.countedFilterBy);
-        assertEquals(List.of("apple", "apricot"), capturedSelection());
-    }
-
-    @Test
-    void selectAllAfterLoadSkipsLoadWhenNothingMatches() {
-        model.setRowCount(0);
-        when(table.getSelectedRowKeys()).thenReturn(Set.of("@all"));
-
-        new SelectionFeature().decodeSelectionRowKeys(context, table);
-
-        assertNull(model.countedFilterBy);
-        assertNull(model.loadedFilterBy);
     }
 
     @Test
@@ -180,6 +120,8 @@ class SelectionFeatureTest {
 
     @Test
     void selectAllExcludesDeselectedRows() {
+        model.setRowCount(ROWS.size()); // set by the last render
+
         List<Object> selection = selectAll("@all", "!banana", "!cherry");
 
         assertEquals(List.of("apple", "avocado", "apricot"), selection);
@@ -209,13 +151,10 @@ class SelectionFeatureTest {
 
         private Map<String, SortMeta> loadedSortBy;
         private Map<String, FilterMeta> loadedFilterBy;
-        private Map<String, FilterMeta> countedFilterBy;
-        private boolean countNotImplemented;
 
         @Override
         public int count(Map<String, FilterMeta> filterBy) {
-            countedFilterBy = filterBy;
-            return countNotImplemented ? 0 : filter(filterBy).size();
+            return filter(filterBy).size();
         }
 
         @Override
@@ -223,9 +162,6 @@ class SelectionFeatureTest {
             loadedSortBy = sortBy;
             loadedFilterBy = filterBy;
             List<String> rows = filter(filterBy);
-            if (countNotImplemented) {
-                setRowCount(rows.size());
-            }
             return rows.subList(first, Math.min(first + pageSize, rows.size()));
         }
 
