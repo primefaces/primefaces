@@ -1802,6 +1802,48 @@ declare global {
             "messages.FATAL"?: string;
             "messages.INFO"?: string;
             "messages.WARN"?: string;
+            "texteditor.EDITOR"?: string;
+            "texteditor.TOOLBAR"?: string;
+            "texteditor.FONT"?: string;
+            "texteditor.SANS_SERIF"?: string;
+            "texteditor.SERIF"?: string;
+            "texteditor.MONOSPACE"?: string;
+            "texteditor.SIZE"?: string;
+            "texteditor.SMALL"?: string;
+            "texteditor.NORMAL"?: string;
+            "texteditor.LARGE"?: string;
+            "texteditor.HUGE"?: string;
+            "texteditor.HEADING"?: string;
+            "texteditor.HEADING_LEVEL"?: string;
+            "texteditor.BOLD"?: string;
+            "texteditor.ITALIC"?: string;
+            "texteditor.UNDERLINE"?: string;
+            "texteditor.STRIKE"?: string;
+            "texteditor.COLOR"?: string;
+            "texteditor.BACKGROUND"?: string;
+            "texteditor.DEFAULT"?: string;
+            "texteditor.SUBSCRIPT"?: string;
+            "texteditor.SUPERSCRIPT"?: string;
+            "texteditor.BLOCKQUOTE"?: string;
+            "texteditor.CODE"?: string;
+            "texteditor.CODE_BLOCK"?: string;
+            "texteditor.ORDERED_LIST"?: string;
+            "texteditor.BULLET_LIST"?: string;
+            "texteditor.CHECK_LIST"?: string;
+            "texteditor.OUTDENT"?: string;
+            "texteditor.INDENT"?: string;
+            "texteditor.RTL"?: string;
+            "texteditor.ALIGN"?: string;
+            "texteditor.ALIGN_LEFT"?: string;
+            "texteditor.ALIGN_CENTER"?: string;
+            "texteditor.ALIGN_RIGHT"?: string;
+            "texteditor.ALIGN_JUSTIFY"?: string;
+            "texteditor.LINK"?: string;
+            "texteditor.IMAGE"?: string;
+            "texteditor.VIDEO"?: string;
+            "texteditor.FORMULA"?: string;
+            "texteditor.CLEAN"?: string;
+            "texteditor.URL"?: string;
         }
 
         /**

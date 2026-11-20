@@ -28,6 +28,7 @@ import org.primefaces.cdk.api.FacesBehaviorEvents;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.InputHolder;
 import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
 import org.primefaces.component.api.Widget;
@@ -55,7 +56,7 @@ import jakarta.faces.event.AjaxBehaviorEvent;
     @FacesBehaviorEvent(name = "mouseup", event = AjaxBehaviorEvent.class, description = "Fires when a mouse button is released over the element."),
     @FacesBehaviorEvent(name = "select", event = AjaxBehaviorEvent.class, description = "Fires when some text is selected in the element."),
 })
-public abstract class TextEditorBase extends PrimeUIInput implements Widget, StyleAware {
+public abstract class TextEditorBase extends PrimeUIInput implements InputHolder, Widget, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -108,4 +109,7 @@ public abstract class TextEditorBase extends PrimeUIInput implements Widget, Sty
 
     @Property(description = "Secure the component with the HTML Sanitizer library on the classpath.", defaultValue = "true")
     public abstract boolean isSecure();
+
+    @Property(description = "ARIA label of the editing area, if there is no p:outputLabel for it.")
+    public abstract String getAriaLabel();
 }
