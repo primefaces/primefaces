@@ -10,6 +10,9 @@
  *                             tr.p-row-editing, td.p-cell-editing
  */
 .p-datatable {
+    /* set by the row above a selected row (see "rows"): must not reach a table nested in one of its cells */
+    --_row-border-color: initial;
+
     /* header / footer facets */
     .p-datatable-header {
         background: var(--p-datatable-header-background);
@@ -262,6 +265,7 @@
             padding: var(--p-datatable-body-cell-padding);
             border: 1px solid var(--p-datatable-body-cell-border-color);
             border-width: 0 0 1px 0;
+            border-bottom-color: var(--_row-border-color, var(--p-datatable-body-cell-border-color));
             font-size: var(--p-datatable-body-cell-font-size);
             font-weight: var(--p-datatable-body-cell-font-weight);
             text-align: start;
@@ -308,10 +312,15 @@
         }
 
         &.p-state-highlight > td,
-        &.p-state-highlight > th,
-        &:has(+ tr.p-state-highlight) > td,
-        &:has(+ tr.p-state-highlight) > th {
+        &.p-state-highlight > th {
             border-bottom-color: var(--p-datatable-body-cell-selected-border-color);
+        }
+
+        /* the row above a selected row: its bottom border is the top border of the selection. :has() only sets a
+           property on the row itself, which the cells read: with ":has(...) > td" the browser restyles the cells of
+           all rows above on every row hover, selection and added / removed row (1000 rows: 70 - 140 ms each) */
+        &:has(+ tr.p-state-highlight) {
+            --_row-border-color: var(--p-datatable-body-cell-selected-border-color);
         }
 
         &.p-datatable-selectable {

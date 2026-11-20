@@ -24,7 +24,9 @@
         opacity: 0;
         transform: rotate(-90deg);
 
-        & + span {
+        /* the off icon. Not "& + span": a sibling combinator between bare tags makes the browser restyle every span of
+           a container whenever a child is inserted into or removed from it (on every page, not only in the switch) */
+        &:not(:first-child) {
             opacity: 1;
             transform: rotate(0deg);
         }
@@ -34,7 +36,7 @@
         opacity: 1;
         transform: rotate(0deg);
 
-        & + span {
+        &:not(:first-child) {
             opacity: 0;
             transform: rotate(90deg);
         }
@@ -44,7 +46,7 @@
     &:dir(rtl) .p-toggleswitch-handler > span:not(.p-ink-container) {
         transform: rotate(90deg);
 
-        & + span {
+        &:not(:first-child) {
             transform: rotate(0deg);
         }
     }
@@ -52,7 +54,7 @@
     &.p-toggleswitch-checked:dir(rtl) .p-toggleswitch-handler > span:not(.p-ink-container) {
         transform: rotate(0deg);
 
-        & + span {
+        &:not(:first-child) {
             transform: rotate(-90deg);
         }
     }

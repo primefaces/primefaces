@@ -8,6 +8,9 @@
  *                             td.p-cell-editing
  */
 .p-treetable {
+    /* set by the row above a selected row (see "rows"): must not reach a table nested in one of its cells */
+    --_row-border-color: initial;
+
     /* header / footer facets */
     .p-treetable-header {
         background: var(--p-treetable-header-background);
@@ -203,6 +206,7 @@
             padding: var(--p-treetable-body-cell-padding);
             border: 1px solid var(--p-treetable-body-cell-border-color);
             border-width: 0 0 1px 0;
+            border-bottom-color: var(--_row-border-color, var(--p-treetable-body-cell-border-color));
             font-size: var(--p-treetable-body-cell-font-size);
             font-weight: var(--p-treetable-body-cell-font-weight);
             text-align: start;
@@ -293,9 +297,13 @@
             }
         }
 
-        &.p-state-highlight > td,
-        &:has(+ tr.p-state-highlight) > td {
+        &.p-state-highlight > td {
             border-bottom-color: var(--p-treetable-body-cell-selected-border-color);
+        }
+
+        /* the row above a selected row, as a property on the row which the cells read (see datatable.css) */
+        &:has(+ tr.p-state-highlight) {
+            --_row-border-color: var(--p-treetable-body-cell-selected-border-color);
         }
     }
 
