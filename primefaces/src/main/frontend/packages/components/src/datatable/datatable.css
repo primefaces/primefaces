@@ -185,6 +185,22 @@
         margin: var(--p-datatable-column-filter-gap) auto auto auto;
     }
 
+    /* between / notBetween: the second input (end of the range) beside the first one, so the header row keeps its height;
+       floats, as inline the first input would join the line of the column title */
+    .p-column-filter:has(+ .p-datatable-filter-to:not(.p-hidden)),
+    .p-column-filter.p-datatable-filter-to {
+        float: inline-start;
+        width: calc(50% - var(--p-datatable-header-cell-gap) / 2);
+    }
+
+    .p-column-filter:has(+ .p-datatable-filter-to:not(.p-hidden)) {
+        clear: both;
+    }
+
+    .p-column-filter.p-datatable-filter-to {
+        margin-inline-start: var(--p-datatable-header-cell-gap);
+    }
+
     .p-column-filter .p-inputfield,
     .p-column-customfilter .p-inputfield,
     .p-column-customfilter .p-selectonemenu {

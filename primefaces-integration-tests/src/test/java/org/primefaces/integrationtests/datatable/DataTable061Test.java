@@ -52,10 +52,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DataTable061Test extends AbstractPrimePageTest {
 
     private static final List<String> TEXT = List.of("startsWith", "notStartsWith", "endsWith", "notEndsWith",
-            "contains", "notContains", "exact", "notExact", "in", "notIn");
-    private static final List<String> NUMERIC = List.of("equals", "notEquals", "lt", "lte", "gt", "gte", "between", "notBetween",
-            "in", "notIn");
-    private static final List<String> DATE = List.of("equals", "notEquals", "lt", "lte", "gt", "gte", "between", "notBetween");
+            "contains", "notContains", "exact", "notExact");
+    private static final List<String> NUMERIC = List.of("equals", "notEquals", "lt", "lte", "gt", "gte", "between", "notBetween");
 
     @Test
     @Order(1)
@@ -80,7 +78,7 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertEquals(NUMERIC, cell(dataTable, "ID").getFilterMatchModeOptions());
         assertEquals(TEXT, cell(dataTable, "First name").getFilterMatchModeOptions());
         assertEquals(List.of("contains", "startsWith", "exact"), cell(dataTable, "Last name").getFilterMatchModeOptions());
-        assertEquals(DATE, cell(dataTable, "Birth date").getFilterMatchModeOptions());
+        assertEquals(NUMERIC, cell(dataTable, "Birth date").getFilterMatchModeOptions());
         assertEquals(List.of("equals", "notEquals"), cell(dataTable, "Role (EL)").getFilterMatchModeOptions());
         assertNoJavascriptErrors();
     }
@@ -359,8 +357,8 @@ class DataTable061Test extends AbstractPrimePageTest {
 
     @Test
     @Order(14)
-    @DisplayName("DataTable: GitHub #7427 between with a second input and in with separated values")
-    void betweenAndIn(Page page) {
+    @DisplayName("DataTable: GitHub #7427 between with a second input for the end of the range")
+    void between(Page page) {
         // Arrange
         DataTable dataTable = page.datatable;
         HeaderCell id = cell(dataTable, "ID");
@@ -374,6 +372,9 @@ class DataTable061Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(filterTo.isDisplayed());
         assertEquals("Filter ID To", filterTo.getDomAttribute("aria-label"));
+        assertEquals("ID", filterTo.getDomAttribute("placeholder"));
+        // beside the first input, on the same line
+        assertEquals(id.getColumnFilter().getLocation().getY(), filterTo.getLocation().getY());
         assertEquals(8, dataTable.getRows().size());
 
         // Act
@@ -397,36 +398,142 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertEquals("6", filterTo(id).getDomProperty("value"));
         assertEquals(List.of("1", "2", "11", "533"), ids(dataTable));
 
-        // Act - another match mode hides and clears the second input
-        dataTable.filterMatchMode("ID", "in");
-
-        // Assert
-        assertFalse(filterTo(id).isDisplayed());
-        assertEquals("", filterTo(id).getDomProperty("value"));
-        assertEquals(List.of("3"), ids(dataTable));
-
-        // Act
-        setValueAndFilter(dataTable, id.getColumnFilter(), " 1;5 ; 533;");
-
-        // Assert
-        assertEquals(List.of("1", "5", "533"), ids(dataTable));
-
         // Act - a value which does not convert makes the filter inactive
-        setValueAndFilter(dataTable, id.getColumnFilter(), "1;x");
+        setValueAndFilter(dataTable, filterTo(id), "x");
 
         // Assert
         assertEquals(8, dataTable.getRows().size());
 
-        // Act - rendered back with the separator
-        setValueAndFilter(dataTable, id.getColumnFilter(), "1;5");
-        page.buttonUpdate.click();
+        // Act - another match mode hides and clears the second input
+        dataTable.filterMatchMode("ID", "gt");
 
         // Assert
-        id = cell(dataTable, "ID");
-        assertEquals("1; 5", id.getColumnFilter().getDomProperty("value"));
-        dataTable.filterMatchMode("ID", "notIn");
-        assertEquals(List.of("2", "3", "4", "6", "11", "533"), ids(dataTable));
+        assertFalse(filterTo(id).isDisplayed());
+        assertEquals("", filterTo(id).getDomProperty("value"));
+        assertEquals(List.of("4", "5", "6", "11", "533"), ids(dataTable));
         assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("DataTable: GitHub #7427 clearFilters() hides and clears the second input")
+    void betweenClearFilters(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatable;
+        dataTable.filter("ID", "3");
+        dataTable.filterMatchMode("ID", "between");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+        assertEquals(4, dataTable.getRows().size());
+
+        // Act
+        dataTable.clearFilters();
+
+        // Assert
+        HeaderCell id = cell(dataTable, "ID");
+        assertEquals("equals", id.getFilterMatchMode());
+        assertFalse(filterTo(id).isDisplayed());
+        assertEquals("", filterTo(id).getDomProperty("value"));
+        assertEquals(8, dataTable.getRows().size());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("DataTable: GitHub #7427 toggleFilter() shows the second input only for between")
+    void betweenToggleFilter(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatable;
+        HeaderCell id = cell(dataTable, "ID");
+
+        // Act
+        dataTable.filterMatchMode("ID", "between");
+        PrimeSelenium.executeScript("PF('wgtTable').toggleFilter();");
+
+        // Assert
+        assertFalse(id.getColumnFilter().isDisplayed());
+        assertFalse(filterTo(id).isDisplayed());
+
+        // Act
+        PrimeSelenium.executeScript("PF('wgtTable').toggleFilter();");
+
+        // Assert
+        assertTrue(id.getColumnFilter().isDisplayed());
+        assertTrue(filterTo(id).isDisplayed());
+
+        // Act - visible filters, another match mode
+        dataTable.filterMatchMode("ID", "gt");
+        PrimeSelenium.executeScript("PF('wgtTable').toggleFilter();");
+        PrimeSelenium.executeScript("PF('wgtTable').toggleFilter();");
+
+        // Assert - the second input is not shown with the others
+        assertTrue(id.getColumnFilter().isDisplayed());
+        assertFalse(filterTo(id).isDisplayed());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(17)
+    @Tag("DataTable-scrolling")
+    @DisplayName("DataTable: GitHub #7427 between with stickyHeader, the copy of the header follows the second input")
+    void betweenStickyHeader(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatableSticky;
+        int height = clonedHeader(dataTable).getSize().getHeight();
+
+        // Act
+        dataTable.filterMatchMode("ID", "between");
+
+        // Assert - the copy shows the second input as well, the header keeps its height
+        WebElement clonedFilterTo = clonedHeader(dataTable).findElement(By.className("p-datatable-filter-to"));
+        assertTrue(clonedFilterTo.isDisplayed());
+        assertFalse(clonedFilterTo.isEnabled());
+        assertEquals(height, clonedHeader(dataTable).getSize().getHeight());
+
+        // Act
+        dataTable.filter("ID", "3");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+
+        // Assert - the disabled copy is not submitted
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+
+        // Act
+        dataTable.clearFilters();
+
+        // Assert
+        assertFalse(clonedHeader(dataTable).findElement(By.className("p-datatable-filter-to")).isDisplayed());
+        assertEquals(height, clonedHeader(dataTable).getSize().getHeight());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(18)
+    @Tag("DataTable-mvs")
+    @DisplayName("DataTable: GitHub #7427 multiViewState restores both values of between")
+    void betweenMultiViewState(MultiViewStatePage page, OtherPage otherPage) {
+        // Arrange
+        PrimeSelenium.goTo(page);
+        DataTable dataTable = page.datatable;
+        dataTable.filter("Salary", "2300");
+        dataTable.filterMatchMode("Salary", "between");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Salary")), "2800");
+        assertEquals(List.of("2", "6", "11", "533"), ids(dataTable));
+
+        // Act
+        PrimeSelenium.goTo(otherPage);
+        PrimeSelenium.goTo(page);
+
+        // Assert
+        HeaderCell salary = cell(dataTable, "Salary");
+        assertEquals("between", salary.getFilterMatchMode());
+        assertEquals("2300", salary.getColumnFilter().getDomProperty("value"));
+        assertTrue(filterTo(salary).isDisplayed());
+        assertEquals("2800", filterTo(salary).getDomProperty("value"));
+        assertEquals(List.of("2", "6", "11", "533"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    private static WebElement clonedHeader(DataTable dataTable) {
+        return dataTable.findElement(By.cssSelector(".p-datatable-tablewrapper > table > thead"));
     }
 
     private static WebElement filterTo(HeaderCell cell) {

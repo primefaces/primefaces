@@ -43,7 +43,6 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import jakarta.el.ValueExpression;
 import jakarta.el.ValueReference;
@@ -66,9 +65,8 @@ import jakarta.faces.convert.ConverterException;
  * request, also with an empty filter value, so the server side {@link FilterMeta} (and with it AJAX updates and the multi view
  * state) always knows the picked match mode.
  * <p>
- * The multi-value match modes get a {@link java.util.List} as filter value (see {@link #convertFilterValue}): {@code in} /
- * {@code notIn} the values of the filter input separated by the column's {@code filterValueSeparator}, {@code between} /
- * {@code notBetween} the values of the filter input and of a second input {@code <column clientId>:filter_to}.
+ * {@code between} / {@code notBetween} get a {@link java.util.List} as filter value (see {@link #convertFilterValue}): the
+ * values of the filter input and of a second input {@code <column clientId>:filter_to}.
  */
 final class FilterMatchModeOptions {
 
@@ -79,28 +77,19 @@ final class FilterMatchModeOptions {
 
     static final List<MatchMode> TEXT = List.of(
             MatchMode.STARTS_WITH, MatchMode.NOT_STARTS_WITH, MatchMode.ENDS_WITH, MatchMode.NOT_ENDS_WITH,
-            MatchMode.CONTAINS, MatchMode.NOT_CONTAINS, MatchMode.EXACT, MatchMode.NOT_EXACT,
-            MatchMode.IN, MatchMode.NOT_IN);
+            MatchMode.CONTAINS, MatchMode.NOT_CONTAINS, MatchMode.EXACT, MatchMode.NOT_EXACT);
 
     static final List<MatchMode> NUMERIC = List.of(
             MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN, MatchMode.LESS_THAN_EQUALS,
-            MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS, MatchMode.BETWEEN, MatchMode.NOT_BETWEEN,
-            MatchMode.IN, MatchMode.NOT_IN);
-
-    static final List<MatchMode> DATE = List.of(
-            MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN, MatchMode.LESS_THAN_EQUALS,
             MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS, MatchMode.BETWEEN, MatchMode.NOT_BETWEEN);
 
-    /**
-     * Default separator of the values of an {@code in} / {@code notIn} filter: not a comma, which is part of decimal numbers
-     * and date patterns in many locales.
-     */
-    static final String VALUE_SEPARATOR = ";";
+    static final List<MatchMode> DATE = NUMERIC;
 
     /**
-     * Match modes that are not offered by the picker: {@code global} is no column filter.
+     * Match modes that are not offered by the picker: {@code global} is no column filter, {@code in} / {@code notIn} need a
+     * collection, e.g. from a filter facet.
      */
-    private static final Set<MatchMode> UNSUPPORTED = Set.of(MatchMode.GLOBAL);
+    private static final Set<MatchMode> UNSUPPORTED = Set.of(MatchMode.GLOBAL, MatchMode.IN, MatchMode.NOT_IN);
 
     private FilterMatchModeOptions() {
         // NOOP
@@ -167,60 +156,32 @@ final class FilterMatchModeOptions {
     }
 
     /**
-     * Converts the submitted filter value of a column with a match mode picker with the column's converter. The multi-value
-     * match modes get a {@link List}: {@code in} / {@code notIn} the tokens of {@code value} split by the column's
-     * {@code filterValueSeparator} (see {@link #valueSeparator}),
-     * {@code between} / {@code notBetween} the two values {@code value} and {@code valueTo}.
+     * Converts the submitted filter value of a column with a match mode picker with the column's converter. {@code between} /
+     * {@code notBetween} get a {@link List} of the two values {@code value} and {@code valueTo}.
      *
      * @param context the {@link FacesContext}
      * @param column the column
      * @param matchMode the column's match mode
      * @param value the submitted filter value
      * @param valueTo the submitted second filter value, only used by {@code between} / {@code notBetween}
-     * @return the filter value, {@code null} if it is empty or does not convert (a multi-value filter is only active if all its
-     *         values convert)
+     * @return the filter value, {@code null} if it is empty or does not convert (a range is only active if both of its values
+     *         convert)
      */
     static Object convertFilterValue(FacesContext context, UIColumn column, MatchMode matchMode, String value, String valueTo) {
         try {
-            switch (matchMode) {
-                case IN:
-                case NOT_IN: {
-                    List<Object> values = new ArrayList<>();
-                    String separator = Pattern.quote(valueSeparator(column));
-                    for (String token : LangUtils.isBlank(value) ? new String[0] : value.split(separator)) {
-                        if (LangUtils.isNotBlank(token)) {
-                            values.add(convert(context, column, token.trim()));
-                        }
-                    }
-                    return values.isEmpty() || values.contains(null) ? null : values;
+            if (matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN) {
+                if (LangUtils.isBlank(value) || LangUtils.isBlank(valueTo)) {
+                    return null;
                 }
-                case BETWEEN:
-                case NOT_BETWEEN: {
-                    if (LangUtils.isBlank(value) || LangUtils.isBlank(valueTo)) {
-                        return null;
-                    }
-                    Object from = convert(context, column, value.trim());
-                    Object to = convert(context, column, valueTo.trim());
-                    return from == null || to == null ? null : Arrays.asList(from, to);
-                }
-                default:
-                    return convert(context, column, value);
+                Object from = convert(context, column, value.trim());
+                Object to = convert(context, column, valueTo.trim());
+                return from == null || to == null ? null : Arrays.asList(from, to);
             }
+            return convert(context, column, value);
         }
         catch (ConverterException e) {
             return null;
         }
-    }
-
-    /**
-     * The separator of the values of an {@code in} / {@code notIn} filter: the column's {@code filterValueSeparator}.
-     *
-     * @param column the column
-     * @return the separator, {@link #VALUE_SEPARATOR} if it is not set
-     */
-    static String valueSeparator(UIColumn column) {
-        Object separator = column.asUIComponent().getAttributes().get("filterValueSeparator");
-        return separator == null || separator.toString().isEmpty() ? VALUE_SEPARATOR : separator.toString();
     }
 
     private static Object convert(FacesContext context, UIColumn column, String value) {
