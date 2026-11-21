@@ -143,8 +143,6 @@
 .p-filter-matchmode-lte-icon { --_icon: var(--p-icon-less-equal); }
 .p-filter-matchmode-gt-icon { --_icon: var(--p-icon-greater); }
 .p-filter-matchmode-gte-icon { --_icon: var(--p-icon-greater-equal); }
-.p-filter-matchmode-in-icon { --_icon: var(--p-icon-in); }
-.p-filter-matchmode-not-in-icon { --_icon: var(--p-icon-not-in); }
 .p-filter-matchmode-between-icon { --_icon: var(--p-icon-between); }
 .p-filter-matchmode-not-between-icon { --_icon: var(--p-icon-not-between); }
 

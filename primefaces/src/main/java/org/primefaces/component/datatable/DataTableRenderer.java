@@ -60,7 +60,6 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import jakarta.el.ELContext;
 import jakarta.el.MethodExpression;
@@ -924,7 +923,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         Object filterValue = findFilterValueForColumn(context, component, column, filterId);
         String filterStyleClass = column.getFilterStyleClass();
 
-        // match mode picker with multi-value match modes: the values of the List back as text, between has a second input
+        // match mode picker with between: the two values of the List in two inputs
         FilterMeta filterMeta = component.getFilterByAsMap().get(column.getColumnKey());
         List<MatchMode> options = filterMeta == null ? Collections.emptyList() : filterMeta.getMatchModeOptions();
         boolean range = options.contains(MatchMode.BETWEEN) || options.contains(MatchMode.NOT_BETWEEN);
@@ -932,14 +931,8 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         if (!options.isEmpty() && filterValue instanceof List<?> values) {
             MatchMode matchMode = filterMeta.getMatchMode();
             if ((matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN) && values.size() == 2) {
-                filterValue = getFilterValueAsString(context, column, values.get(0));
-                filterValueTo = getFilterValueAsString(context, column, values.get(1));
-            }
-            else if (matchMode == MatchMode.IN || matchMode == MatchMode.NOT_IN) {
-                String valueSeparator = (String) column.asUIComponent().getAttributes().get("filterValueSeparator");
-                filterValue = values.stream()
-                        .map(v -> getFilterValueAsString(context, column, v))
-                        .collect(Collectors.joining(valueSeparator + " "));
+                filterValue = formatFilterValue(context, column, values.get(0));
+                filterValueTo = formatFilterValue(context, column, values.get(1));
             }
         }
 
@@ -982,11 +975,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         if (column.getFilterMaxLength() != Integer.MAX_VALUE) {
             writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
         }
+        if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
+            writer.writeAttribute("placeholder", column.getFilterPlaceholder(), null);
+        }
         writer.endElement("input");
-    }
-
-    protected String getFilterValueAsString(FacesContext context, UIColumn column, Object value) {
-        return ComponentUtils.getConvertedAsString(context, column.asUIComponent(), column.getConverter(), value);
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,

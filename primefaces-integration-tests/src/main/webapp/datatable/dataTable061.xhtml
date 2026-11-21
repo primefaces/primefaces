@@ -16,7 +16,8 @@
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable061.employees}" var="employee"
                          filteredValue="#{dataTable061.filteredEmployees}" filterMatchModeOptions="text">
 
-                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"/>
+                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"
+                          filterPlaceholder="ID"/>
 
                 <p:column headerText="First name" field="firstName"/>
 

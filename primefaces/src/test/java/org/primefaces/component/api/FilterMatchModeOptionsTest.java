@@ -127,18 +127,18 @@ class FilterMatchModeOptionsTest {
 
     @Test
     void unsupportedMatchModes() {
-        Column column = column("equals,global", null);
-        assertThrows(FacesException.class, () -> FilterMatchModeOptions.resolve(context, table, column));
+        for (String operator : List.of("in", "notIn", "global")) {
+            Column column = column("equals," + operator, null);
+            assertThrows(FacesException.class, () -> FilterMatchModeOptions.resolve(context, table, column), operator);
+        }
     }
 
     @Test
-    void multiValueMatchModes() {
-        assertEquals(List.of(MatchMode.EQUALS, MatchMode.IN, MatchMode.NOT_IN, MatchMode.BETWEEN, MatchMode.NOT_BETWEEN),
-                FilterMatchModeOptions.resolve(context, table, column("equals,in,notIn,between,notBetween", null)));
-        assertTrue(FilterMatchModeOptions.TEXT.contains(MatchMode.IN));
-        assertTrue(FilterMatchModeOptions.NUMERIC.containsAll(List.of(MatchMode.IN, MatchMode.BETWEEN)));
-        assertTrue(FilterMatchModeOptions.DATE.contains(MatchMode.BETWEEN));
-        assertFalse(FilterMatchModeOptions.DATE.contains(MatchMode.IN));
+    void rangeMatchModes() {
+        assertEquals(List.of(MatchMode.EQUALS, MatchMode.BETWEEN, MatchMode.NOT_BETWEEN),
+                FilterMatchModeOptions.resolve(context, table, column("equals,between,notBetween", null)));
+        assertTrue(FilterMatchModeOptions.NUMERIC.containsAll(List.of(MatchMode.BETWEEN, MatchMode.NOT_BETWEEN)));
+        assertTrue(FilterMatchModeOptions.DATE.containsAll(List.of(MatchMode.BETWEEN, MatchMode.NOT_BETWEEN)));
         assertFalse(FilterMatchModeOptions.TEXT.contains(MatchMode.BETWEEN));
     }
 
@@ -253,25 +253,6 @@ class FilterMatchModeOptionsTest {
         assertEquals(42, FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.EQUALS, "42", null));
         assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.EQUALS, "x", null));
         assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.EQUALS, " ", null));
-    }
-
-    @Test
-    void convertIn() {
-        Column column = integerColumn();
-        assertEquals(List.of(1, 2, 3), FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.IN, " 1; 2 ;;3; ", null));
-        assertEquals(List.of(7), FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.NOT_IN, "7", null));
-        // not a partial filter if one value does not convert
-        assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.IN, "1;x", null));
-        assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.IN, " ; ", null));
-        assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.IN, null, null));
-
-        // without converter: the trimmed strings, a comma is no separator
-        Column text = column("text", null);
-        assertEquals(List.of("a, b", "c"), FilterMatchModeOptions.convertFilterValue(context, text, MatchMode.IN, "a, b; c", null));
-
-        // filterValueSeparator, taken literally (no regex)
-        text.setFilterValueSeparator("|");
-        assertEquals(List.of("a", "b;c"), FilterMatchModeOptions.convertFilterValue(context, text, MatchMode.IN, "a | b;c", null));
     }
 
     @Test

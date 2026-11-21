@@ -1058,17 +1058,24 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param matchMode The operator of the match mode, e.g. `between`.
      */
     private updateFilterValueTo(trigger: JQuery, matchMode: string | undefined): void {
-        var filterTo = trigger.siblings('.p-datatable-filter-to');
-        if (!filterTo.length) {
+        var filterTo = trigger.siblings('.p-datatable-filter-to'),
+            range = matchMode === 'between' || matchMode === 'notBetween';
+        if (!filterTo.length || range === !filterTo.hasClass('p-hidden')) {
             return;
         }
 
-        if (matchMode === 'between' || matchMode === 'notBetween') {
+        if (range) {
             // as visible as the filter input, which toggleFilter() may have shown or hidden
-            filterTo.removeClass('p-hidden').css('display', trigger.siblings('.p-column-filter').not(filterTo).css('display'));
+            var filter = trigger.siblings('.p-column-filter').not(filterTo);
+            filterTo.removeClass('p-hidden').css('display', filter.css('display') === 'none' ? 'none' : 'block');
         }
         else {
             filterTo.addClass('p-hidden').css('display', '').val('');
+        }
+
+        // the disabled copy of the header in the table must keep the height of the sticky header
+        if (this.cfg.stickyHeader && this.clone) {
+            this.reclone();
         }
     }
 
@@ -5635,8 +5642,8 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
     reclone(): void {
         PrimeFaces.utils.cleanseDomElement(this.clone);
         this.clone = this.thead.clone(false);
-        // the match mode of the clone would be submitted first
-        this.clone.find('.p-datatable-filter-matchmode-input, .p-datatable-filter-matchmode-trigger').prop('disabled', true);
+        // as in setupStickyHeader: the filters of the clone are not submitted
+        this.clone.find('.p-column-filter, .p-datatable-filter-matchmode-input, .p-datatable-filter-matchmode-trigger').prop('disabled', true);
         this.jq.find('.p-datatable-tablewrapper > table').prepend(this.clone);
     }
 
