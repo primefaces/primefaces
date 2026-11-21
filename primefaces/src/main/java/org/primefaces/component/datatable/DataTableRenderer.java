@@ -936,6 +936,12 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
             }
         }
 
+        // both inputs of a range in a wrapper, which lays them out side by side
+        if (range) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.FILTER_RANGE_CLASS, null);
+        }
+
         encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
 
         if (range) {
@@ -944,6 +950,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
                 filterValueTo = context.getExternalContext().getRequestParameterMap().get(filterId + "_to");
             }
             encodeFilterValueToInput(context, column, writer, disableTabbing, filterId + "_to", hidden, filterValueTo);
+            writer.endElement("div");
         }
     }
 

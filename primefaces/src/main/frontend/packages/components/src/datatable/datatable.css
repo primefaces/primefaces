@@ -186,19 +186,16 @@
     }
 
     /* between / notBetween: the second input (end of the range) beside the first one, so the header row keeps its height;
-       floats, as inline the first input would join the line of the column title */
-    .p-column-filter:has(+ .p-datatable-filter-to:not(.p-hidden)),
-    .p-column-filter.p-datatable-filter-to {
-        float: inline-start;
-        width: calc(50% - var(--p-datatable-header-cell-gap) / 2);
-    }
+       the first input takes the full width while the second one is hidden */
+    .p-datatable-filter-range {
+        display: flex;
+        gap: var(--p-datatable-header-cell-gap);
 
-    .p-column-filter:has(+ .p-datatable-filter-to:not(.p-hidden)) {
-        clear: both;
-    }
-
-    .p-column-filter.p-datatable-filter-to {
-        margin-inline-start: var(--p-datatable-header-cell-gap);
+        > .p-column-filter {
+            flex: 1 1 0;
+            min-width: 0;
+            margin-inline: 0;
+        }
     }
 
     .p-column-filter .p-inputfield,
