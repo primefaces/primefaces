@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -532,6 +533,152 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(19)
+    @DisplayName("DataTable: GitHub #7427 between with a DefaultLazyDataModel")
+    void betweenLazyDefault(LazyPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableDefault;
+        dataTable.filter("Salary", "2300");
+        dataTable.filterMatchMode("Salary", "between");
+
+        // Act
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Salary")), "2800");
+
+        // Assert
+        assertEquals(List.of("2", "6", "11", "533"), ids(dataTable));
+
+        // Act
+        dataTable.filterMatchMode("Salary", "notBetween");
+
+        // Assert - like the in-memory filtering of a non-lazy table, null (3) is not between
+        assertEquals(List.of("1", "3", "4", "5"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(20)
+    @DisplayName("DataTable: GitHub #7427 between with a JPALazyDataModel, filtered in the database query")
+    void betweenLazyJpa(LazyPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableJpa;
+        dataTable.filter("Population (M)", "140");
+        dataTable.filterMatchMode("Population (M)", "between");
+
+        // Act
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Population (M)")), "220");
+
+        // Assert
+        assertEquals(List.of("Bangladesh", "Brazil", "Russian Federation"), sorted(ids(dataTable)));
+
+        // Act
+        PrimeSelenium.executeScript("arguments[0].value = '1';", cell(dataTable, "Population (M)").getColumnFilter());
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Population (M)")), "1400");
+        dataTable.filterMatchMode("Population (M)", "notBetween");
+
+        // Assert
+        assertEquals(List.of("China"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(21)
+    @DisplayName("DataTable: GitHub #7427 between with filterPosition=top, the inputs above the column title")
+    void betweenFilterPositionTop(LayoutPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableTop;
+        HeaderCell id = cell(dataTable, "ID");
+        int titleY = id.getColumnTitle().getLocation().getY();
+        int height = dataTable.getHeader().getWebElement().getSize().getHeight();
+
+        // Act
+        dataTable.filterMatchMode("ID", "between");
+
+        // Assert - beside each other above the title, the header keeps its height
+        id = cell(dataTable, "ID");
+        WebElement filter = id.getColumnFilter();
+        WebElement filterTo = filterTo(id);
+        assertTrue(filterTo.isDisplayed());
+        assertEquals(filter.getLocation().getY(), filterTo.getLocation().getY());
+        assertTrue(filter.getLocation().getX() < filterTo.getLocation().getX());
+        assertTrue(filter.getLocation().getY() + filter.getSize().getHeight() <= id.getColumnTitle().getLocation().getY());
+        assertEquals(titleY, id.getColumnTitle().getLocation().getY());
+        assertEquals(height, dataTable.getHeader().getWebElement().getSize().getHeight());
+
+        // Act
+        dataTable.filter("ID", "3");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+
+        // Assert
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(22)
+    @DisplayName("DataTable: GitHub #7427 between in a right-to-left page, the second input on the left")
+    void betweenRtl(LayoutPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableRtl;
+        int height = dataTable.getHeader().getWebElement().getSize().getHeight();
+
+        // Act
+        dataTable.filterMatchMode("ID", "between");
+
+        // Assert
+        HeaderCell id = cell(dataTable, "ID");
+        WebElement filter = id.getColumnFilter();
+        WebElement filterTo = filterTo(id);
+        assertTrue(filterTo.isDisplayed());
+        assertEquals(filter.getLocation().getY(), filterTo.getLocation().getY());
+        assertTrue(filterTo.getLocation().getX() + filterTo.getSize().getWidth() <= filter.getLocation().getX());
+        // both inside the cell
+        WebElement th = id.getWebElement();
+        assertTrue(filterTo.getLocation().getX() >= th.getLocation().getX());
+        assertTrue(filter.getLocation().getX() + filter.getSize().getWidth() <= th.getLocation().getX() + th.getSize().getWidth());
+        assertEquals(height, dataTable.getHeader().getWebElement().getSize().getHeight());
+
+        // Act
+        dataTable.filter("ID", "3");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+
+        // Assert
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(23)
+    @Tag("DataTable-scrolling")
+    @DisplayName("DataTable: GitHub #7427 stickyHeader with resizableColumns, the copy of the header stays disabled after a resize")
+    void stickyHeaderResize(LayoutPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableResizable;
+        dataTable.filterMatchMode("ID", "between");
+        WebElement th = cell(dataTable, "ID").getWebElement();
+        int width = th.getSize().getWidth();
+
+        // Act
+        WebElement resizer = th.findElement(By.className("p-column-resizer"));
+        new Actions(PrimeSelenium.getWebDriver()).clickAndHold(resizer).moveByOffset(10, 0).moveByOffset(30, 0).release().perform();
+
+        // Assert - resized, and the recloned copy is disabled and shows the second input
+        assertTrue(cell(dataTable, "ID").getWebElement().getSize().getWidth() > width);
+        List<WebElement> clonedInputs = clonedHeader(dataTable).findElements(
+                By.cssSelector(".p-column-filter, .p-datatable-filter-matchmode-input, .p-datatable-filter-matchmode-trigger"));
+        assertFalse(clonedInputs.isEmpty());
+        clonedInputs.forEach(input -> assertFalse(input.isEnabled()));
+        assertTrue(clonedHeader(dataTable).findElement(By.className("p-datatable-filter-to")).isDisplayed());
+
+        // Act
+        dataTable.filter("ID", "3");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+
+        // Assert
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
     private static WebElement clonedHeader(DataTable dataTable) {
         return dataTable.findElement(By.cssSelector(".p-datatable-tablewrapper > table > thead"));
     }
@@ -555,6 +702,10 @@ class DataTable061Test extends AbstractPrimePageTest {
 
     private static List<String> ids(DataTable dataTable) {
         return dataTable.getRows().stream().map(row -> row.getCell(0).getText()).collect(Collectors.toList());
+    }
+
+    private static List<String> sorted(List<String> values) {
+        return values.stream().sorted().collect(Collectors.toList());
     }
 
     private static WebElement activeElement() {
@@ -594,6 +745,35 @@ class DataTable061Test extends AbstractPrimePageTest {
         @Override
         public String getLocation() {
             return "datatable/dataTable061MultiViewState.xhtml";
+        }
+    }
+
+    public static class LazyPage extends AbstractPrimePage {
+        @FindBy(id = "form:datatableDefault")
+        DataTable datatableDefault;
+
+        @FindBy(id = "form:datatableJpa")
+        DataTable datatableJpa;
+
+        @Override
+        public String getLocation() {
+            return "datatable/dataTable061Lazy.xhtml";
+        }
+    }
+
+    public static class LayoutPage extends AbstractPrimePage {
+        @FindBy(id = "form:datatableTop")
+        DataTable datatableTop;
+
+        @FindBy(id = "form:datatableRtl")
+        DataTable datatableRtl;
+
+        @FindBy(id = "form:datatableResizable")
+        DataTable datatableResizable;
+
+        @Override
+        public String getLocation() {
+            return "datatable/dataTable061Layout.xhtml";
         }
     }
 

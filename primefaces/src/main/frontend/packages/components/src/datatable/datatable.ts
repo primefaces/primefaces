@@ -840,7 +840,8 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
         this.cfg.filterEvent = this.cfg.filterEvent||'keyup';
         this.cfg.filterDelay = this.cfg.filterDelay||300;
 
-        filterColumns.children('.p-column-filter').each((_i, el) => {
+        // the inputs of a between range are in a wrapper
+        filterColumns.find('> .p-column-filter, > .p-datatable-filter-range > .p-column-filter').each((_i, el) => {
             var filter = $(el);
 
             if(filter.is("input[type='search']")) {
@@ -871,7 +872,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             if (filter && title) {
                 filter.attr('aria-label', this.getLabel('filter') + " " + title.text());
                 // the end of a between range, its title is "To"
-                var filterTo = filterColumn.children('.p-datatable-filter-to');
+                var filterTo = filterColumn.find('.p-datatable-filter-to');
                 filterTo.attr('aria-label', this.getLabel('filter') + " " + title.text() + " " + filterTo.attr('title'));
             }
         });
@@ -1058,7 +1059,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
      * @param matchMode The operator of the match mode, e.g. `between`.
      */
     private updateFilterValueTo(trigger: JQuery, matchMode: string | undefined): void {
-        var filterTo = trigger.siblings('.p-datatable-filter-to'),
+        var filterTo = trigger.parent().find('.p-datatable-filter-to'),
             range = matchMode === 'between' || matchMode === 'notBetween';
         if (!filterTo.length || range === !filterTo.hasClass('p-hidden')) {
             return;
@@ -1066,7 +1067,7 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
 
         if (range) {
             // as visible as the filter input, which toggleFilter() may have shown or hidden
-            var filter = trigger.siblings('.p-column-filter').not(filterTo);
+            var filter = trigger.parent().find('.p-column-filter').not(filterTo);
             filterTo.removeClass('p-hidden').css('display', filter.css('display') === 'none' ? 'none' : 'block');
         }
         else {
@@ -4719,7 +4720,8 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             }
         };
 
-        var standardFilters = this.thead.find('> tr > th.p-filter-column > .p-column-filter:not(:disabled):not([readonly])');
+        var standardFilters = this.thead.find('> tr > th.p-filter-column > .p-column-filter:not(:disabled):not([readonly]), '
+            + '> tr > th.p-filter-column > .p-datatable-filter-range > .p-column-filter:not(:disabled):not([readonly])');
         resetInputFields(standardFilters);
 
         // the match mode pickers back to their initial match mode
