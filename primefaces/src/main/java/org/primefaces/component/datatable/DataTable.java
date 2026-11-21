@@ -145,6 +145,8 @@ public class DataTable extends DataTableBaseImpl {
     public static final String FILTER_MATCH_MODE_MENU_CLASS = "p-datatable-filter-matchmode-menu p-input-overlay p-hidden";
     public static final String FILTER_MATCH_MODE_OPTION_CLASS = "p-datatable-filter-matchmode-option";
     public static final String FILTER_MATCH_MODE_LABEL_CLASS = "p-datatable-filter-matchmode-label";
+    public static final String FILTER_VALUE_TO_CLASS = "p-datatable-filter-to";
+    public static final String FILTER_RANGE_CLASS = "p-datatable-filter-range";
     public static final String RESIZABLE_COLUMN_CLASS = "p-resizable-column";
     public static final String DRAGGABLE_COLUMN_CLASS = "p-draggable-column";
     public static final String EXPANDED_ROW_CLASS = "p-expanded-row";

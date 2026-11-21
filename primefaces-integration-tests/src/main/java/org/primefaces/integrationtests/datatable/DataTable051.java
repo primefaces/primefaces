@@ -60,12 +60,12 @@ public class DataTable051 implements Serializable {
 
     @PostConstruct
     public void init() {
-        seedData();
+        seedData(countryJpaService);
         lazyDataModel = new TrackingJPALazyDataModel<>(countryJpaService.entityManagerSupplier(), "dataTable051",
                 CountryJpaEntity.class, CountryJpaEntity::getId);
     }
 
-    private void seedData() {
+    static void seedData(CountryJpaService countryJpaService) {
         if (countryJpaService.isInitialized()) {
             return;
         }

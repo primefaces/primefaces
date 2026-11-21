@@ -52,6 +52,7 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.MessageFactory;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -921,7 +922,70 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         String filterId = column.getContainerClientId(context) + separator + "filter";
         Object filterValue = findFilterValueForColumn(context, component, column, filterId);
         String filterStyleClass = column.getFilterStyleClass();
+
+        // match mode picker with between: the two values of the List in two inputs
+        FilterMeta filterMeta = component.getFilterByAsMap().get(column.getColumnKey());
+        List<MatchMode> options = filterMeta == null ? Collections.emptyList() : filterMeta.getMatchModeOptions();
+        boolean range = options.contains(MatchMode.BETWEEN) || options.contains(MatchMode.NOT_BETWEEN);
+        Object filterValueTo = null;
+        if (!options.isEmpty() && filterValue instanceof List<?> values) {
+            MatchMode matchMode = filterMeta.getMatchMode();
+            if ((matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN) && values.size() == 2) {
+                filterValue = formatFilterValue(context, column, values.get(0));
+                filterValueTo = formatFilterValue(context, column, values.get(1));
+            }
+        }
+
+        // both inputs of a range in a wrapper, which lays them out side by side
+        if (range) {
+            writer.startElement("div", null);
+            writer.writeAttribute("class", DataTable.FILTER_RANGE_CLASS, null);
+        }
+
         encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
+
+        if (range) {
+            boolean hidden = filterMeta.getMatchMode() != MatchMode.BETWEEN && filterMeta.getMatchMode() != MatchMode.NOT_BETWEEN;
+            if (filterValueTo == null && !component.isReset() && !hidden) {
+                filterValueTo = context.getExternalContext().getRequestParameterMap().get(filterId + "_to");
+            }
+            encodeFilterValueToInput(context, column, writer, disableTabbing, filterId + "_to", hidden, filterValueTo);
+            writer.endElement("div");
+        }
+    }
+
+    /**
+     * Encodes the second input of a {@code between} / {@code notBetween} filter (end of the range), hidden while another match
+     * mode is picked.
+     */
+    protected void encodeFilterValueToInput(FacesContext context, UIColumn column, ResponseWriter writer, boolean disableTabbing,
+            String filterId, boolean hidden, Object filterValue) throws IOException {
+        String styleClass = DataTable.COLUMN_INPUT_FILTER_CLASS + " " + DataTable.FILTER_VALUE_TO_CLASS + (hidden ? " p-hidden" : "");
+        if (column.getFilterStyleClass() != null) {
+            styleClass += " " + column.getFilterStyleClass();
+        }
+
+        writer.startElement("input", null);
+        writer.writeAttribute("id", filterId, null);
+        writer.writeAttribute("name", filterId, null);
+        writer.writeAttribute("type", "search", null);
+        writer.writeAttribute("class", styleClass, null);
+        writer.writeAttribute("value", filterValue == null ? Constants.EMPTY_STRING : filterValue, null);
+        writer.writeAttribute("autocomplete", "off", null);
+        writer.writeAttribute("title", MessageFactory.getMessage(context, "primefaces.datatable.FILTER_VALUE_TO"), null);
+        if (disableTabbing) {
+            writer.writeAttribute("tabindex", "-1", null);
+        }
+        if (column.getFilterStyle() != null) {
+            writer.writeAttribute("style", column.getFilterStyle(), null);
+        }
+        if (column.getFilterMaxLength() != Integer.MAX_VALUE) {
+            writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
+        }
+        if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
+            writer.writeAttribute("placeholder", column.getFilterPlaceholder(), null);
+        }
+        writer.endElement("input");
     }
 
     protected void encodeFilterInput(UIColumn column, ResponseWriter writer, boolean disableTabbing,

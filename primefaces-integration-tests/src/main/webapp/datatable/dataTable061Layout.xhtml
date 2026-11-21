@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:dataTable id="datatableTop" value="#{dataTable061.employees}" var="employee">
+                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"
+                          filterPosition="top"/>
+                <p:column headerText="First name" field="firstName" filterMatchModeOptions="text" filterPosition="top"/>
+            </p:dataTable>
+
+            <div dir="rtl">
+                <p:dataTable id="datatableRtl" value="#{dataTable061.employees}" var="employee">
+                    <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"/>
+                    <p:column headerText="First name" field="firstName" filterMatchModeOptions="text"/>
+                </p:dataTable>
+            </div>
+
+            <p:dataTable id="datatableResizable" value="#{dataTable061.employees}" var="employee" stickyHeader="true"
+                         resizableColumns="true">
+                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"/>
+                <p:column headerText="First name" field="firstName" filterMatchModeOptions="text"/>
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

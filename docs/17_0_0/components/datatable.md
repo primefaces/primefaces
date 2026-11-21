@@ -401,12 +401,17 @@ column (`p:column`, `p:columns`) or on `p:dataTable` as default for all columns,
 
 - **none** (or not set): no menu.
 - **text**: `startsWith`, `notStartsWith`, `endsWith`, `notEndsWith`, `contains`, `notContains`, `exact`, `notExact`.
-- **numeric** and **date**: `equals`, `notEquals`, `lt`, `lte`, `gt`, `gte`.
+- **numeric** and **date**: `equals`, `notEquals`, `lt`, `lte`, `gt`, `gte`, `between`, `notBetween`.
 - **auto**: `text`, `numeric` or `date`, derived from the type of the column's `field`. Other types (e.g. boolean, enum) get no menu.
 - a comma-separated list of match modes, e.g. `contains,startsWith,exact`, or a `Collection<MatchMode>`.
 
-`in`, `notIn`, `between` and `notBetween` cannot be selected. Columns with a `filter` facet or a `filterFunction` get no
-menu, and TreeTable ignores the attribute.
+`in` and `notIn` cannot be selected, they need a collection as filter value, e.g. from a `filter` facet with a
+`selectCheckboxMenu`. Columns with a `filter` facet or a `filterFunction` get no menu, and TreeTable ignores the attribute.
+
+With **between** / **notBetween**, a second input for the end of the range is shown while one of them is selected. Both
+ends are included. Each value is converted with the column's `converter`, the filter value is a `List` of the two (as
+`FilterMeta#getFilterValue()` passes it to a `LazyDataModel`). If one of them is empty or does not convert, the filter is
+inactive, open-ended ranges are not supported.
 
 The initial match mode is `filterMatchMode` if it is set, otherwise the first option. A `filterMatchMode`, or the match mode
 of a `FilterMeta` passed with `filterBy`, which is not one of the options fails with a `FacesException`. `clearFilters()`
