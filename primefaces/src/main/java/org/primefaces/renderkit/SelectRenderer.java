@@ -381,8 +381,8 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
     }
 
     /**
-     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted -
-     * this may occur with client side manipulation (#3264)
+     * Restores checked, disabled select items (#3296) and leaves out submitted disabled select items which were not
+     * checked before - this may occur with client side manipulation (#3264, #13954)
      *
      * @param context The FacesContext
      * @param component The component
@@ -390,7 +390,6 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
      * @param submittedValues The submitted value(s)
      *
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
-     * @throws jakarta.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
     protected List<String> validateSubmittedValues(FacesContext context, T component, Object[] oldValues, String... submittedValues)
             throws FacesException {
@@ -438,12 +437,12 @@ public abstract class SelectRenderer<T extends UIInput & PrimeSelect> extends In
                 String selectItemVal = getOptionAsString(context, component, converter, selectItem.getValue());
 
                 if (selectItem.isDisabled()) {
-                    if (submittedValuesSet.contains(selectItemVal) && !LangUtils.contains(oldValues, selectItemVal)) {
-                        // disabled select item has been selected
-                        // #13954: ignore it silently for now
-                        //throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
-                    }
-                    else if (LangUtils.contains(oldValues, selectItemVal)) {
+                    // a disabled item is only valid when it was already checked (#3296).
+                    // a submitted disabled item which was not checked before can only come from client side
+                    // manipulation (#3264); it is left out here instead of throwing an exception (#13954):
+                    // SelectOneRenderer#decode() then treats it as an empty value like h:selectOneMenu does,
+                    // and SelectManyRenderer simply drops it from the submitted values
+                    if (LangUtils.contains(oldValues, selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
                     }
                 }
