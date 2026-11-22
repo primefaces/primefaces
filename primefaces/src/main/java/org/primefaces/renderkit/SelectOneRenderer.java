@@ -24,6 +24,8 @@
 package org.primefaces.renderkit;
 
 import org.primefaces.component.api.PrimeSelect;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +60,7 @@ public abstract class SelectOneRenderer<T extends UISelectOne & PrimeSelect> ext
         else if (isDisabledSelectItemValue(context, component, submittedValue)) {
             // #13954: a disabled item can only be submitted with client side manipulation;
             // like h:selectOneMenu, treat it as no value instead of accepting it
-            component.setSubmittedValue("");
+            component.setSubmittedValue(Constants.EMPTY_STRING);
         }
         else {
             // unknown value, let UISelectOne validation reject it
@@ -76,7 +78,7 @@ public abstract class SelectOneRenderer<T extends UISelectOne & PrimeSelect> ext
      * @return true if the value is not empty and matches a disabled select item
      */
     protected boolean isDisabledSelectItemValue(FacesContext context, T component, String submittedValue) {
-        if (submittedValue == null || submittedValue.isEmpty()) {
+        if (LangUtils.isEmpty(submittedValue)) {
             return false;
         }
         SelectItem item = findSelectItemByValue(context, component, component.getConverter(), getSelectItems(context, component), submittedValue);
