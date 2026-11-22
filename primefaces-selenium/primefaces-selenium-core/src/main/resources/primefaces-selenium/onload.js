@@ -42,7 +42,7 @@ window.addEventListener("beforeunload", function() {
     window.pfselenium.navigating = true;
     window.pfselenium.submitting = false;
 });
-window.addEventListener("unload", function() {
+window.addEventListener("pagehide", function() {
     window.pfselenium.navigating = true;
     window.pfselenium.submitting = false;
 });
