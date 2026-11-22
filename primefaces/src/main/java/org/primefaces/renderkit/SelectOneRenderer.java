@@ -49,11 +49,38 @@ public abstract class SelectOneRenderer<T extends UISelectOne & PrimeSelect> ext
 
         String submittedValue = params.getOrDefault(clientId, "");
         List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValue);
-        component.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
-                ? submittedValue
-                : validSubmittedValues.get(0));
+        if (validSubmittedValues.contains(submittedValue)) {
+            component.setSubmittedValue(submittedValue);
+        }
+        else if (!validSubmittedValues.isEmpty()) {
+            component.setSubmittedValue(validSubmittedValues.get(0));
+        }
+        else if (isDisabledSelectItemValue(context, component, submittedValue)) {
+            // #13954: a disabled item can only be submitted with client side manipulation;
+            // like h:selectOneMenu, treat it as no value instead of accepting it
+            component.setSubmittedValue("");
+        }
+        else {
+            // unknown value, let UISelectOne validation reject it
+            component.setSubmittedValue(submittedValue);
+        }
 
         decodeBehaviors(context, component);
+    }
+
+    /**
+     * Checks if the given submitted value matches a disabled select item.
+     * @param context the FacesContext
+     * @param component the component
+     * @param submittedValue the submitted value
+     * @return true if the value is not empty and matches a disabled select item
+     */
+    protected boolean isDisabledSelectItemValue(FacesContext context, T component, String submittedValue) {
+        if (submittedValue == null || submittedValue.isEmpty()) {
+            return false;
+        }
+        SelectItem item = findSelectItemByValue(context, component, component.getConverter(), getSelectItems(context, component), submittedValue);
+        return item != null && item.isDisabled();
     }
 
     protected Object getValues(T component) {
