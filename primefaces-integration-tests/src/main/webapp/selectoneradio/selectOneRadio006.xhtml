@@ -12,9 +12,7 @@
     <h:body>
 
         <h:form id="form">
-            <p:messages id="msgs"/>
-
-            <p:selectOneRadio id="selectoneradio" value="#{selectOneRadio006.value}" label="Radio">
+            <p:selectOneRadio id="selectoneradio" value="#{selectOneRadio006.value}">
                 <f:selectItem itemValue="one" itemLabel="One"/>
                 <f:selectItem itemValue="two" itemLabel="Two"/>
                 <f:selectItem itemValue="three-disabled" itemLabel="Three (disabled)" itemDisabled="true"/>
@@ -22,8 +20,6 @@
             </p:selectOneRadio>
 
             <p:commandButton id="submit" update="@form" value="Submit"/>
-
-            <h:outputText id="value" value="#{selectOneRadio006.value}"/>
         </h:form>
 
     </h:body>

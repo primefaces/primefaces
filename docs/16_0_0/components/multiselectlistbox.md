@@ -69,10 +69,6 @@ enable() | - | void | Enables the component.
 disable() | - | void | Disables the component.
 showItemGroup(item) | li element as jQuery object | void | Shows subcategories of a given item.
 
-## Disabled Items
-A disabled select item (`itemDisabled="true"`) cannot be selected, submitting it fails validation. See
-[Disabled Select Items](/core/misc.md?id=disabled-select-items).
-
 ## Skinning
 MultiSelectListbox resides in a main container which _style_ and _styleClass_ attributes apply. As
 skinning style classes are global, see the main theming section for more information. Following is

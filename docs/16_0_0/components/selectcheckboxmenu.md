@@ -82,10 +82,6 @@ Widget: _PrimeFaces.widget.SelectCheckBoxMenu_
 | hide() | - | void | Hides the overlay panel with the available checkbox options. |
 | togglePanel() | - | void | Bring up the overlay panel if its not showing or hide it if it is showing. |
 
-## Disabled Items
-A disabled select item (`itemDisabled="true"`) cannot be selected, submitting it fails validation. See
-[Disabled Select Items](/core/misc.md?id=disabled-select-items).
-
 ## Skinning
 SelectCheckboxMenu resides in a main container which _style_ and _styleClass_ attributes apply. As
 skinning style classes are global, see the main theming section for more information. Following is

@@ -25,7 +25,6 @@ package org.primefaces.renderkit;
 
 import org.primefaces.component.api.PrimeSelect;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -46,18 +45,8 @@ public abstract class SelectManyRenderer<T extends UISelectMany & PrimeSelect> e
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 
         String[] submittedValues = params.containsKey(submitParam) ? params.get(submitParam) : new String[0];
-        List<String> disabledSubmittedValues = new ArrayList<>(1);
-        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component),
-                disabledSubmittedValues, submittedValues);
-
-        if (disabledSubmittedValues.isEmpty()) {
-            component.setSubmittedValue(validSubmittedValues.toArray(new String[validSubmittedValues.size()]));
-        }
-        else {
-            // #13954: a disabled item has been submitted (client side manipulation or disabled after rendering)
-            component.setSubmittedValue(submittedValues);
-            invalidateDisabledSelectItem(context, component, UISelectMany.INVALID_MESSAGE_ID);
-        }
+        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValues);
+        component.setSubmittedValue(validSubmittedValues.toArray(new String[validSubmittedValues.size()]));
 
         decodeBehaviors(context, component);
     }
