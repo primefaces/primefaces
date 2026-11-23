@@ -27,6 +27,7 @@ import org.primefaces.component.api.PrimeSelect;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -49,40 +50,25 @@ public abstract class SelectOneRenderer<T extends UISelectOne & PrimeSelect> ext
         String clientId = getSubmitParam(context, component);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String submittedValue = params.getOrDefault(clientId, "");
-        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValue);
-        if (validSubmittedValues.contains(submittedValue)) {
-            component.setSubmittedValue(submittedValue);
-        }
-        else if (!validSubmittedValues.isEmpty()) {
-            component.setSubmittedValue(validSubmittedValues.get(0));
-        }
-        else if (isDisabledSelectItemValue(context, component, submittedValue)) {
-            // #13954: a disabled item can only be submitted with client side manipulation;
-            // like h:selectOneMenu, treat it as no value instead of accepting it
-            component.setSubmittedValue(Constants.EMPTY_STRING);
-        }
-        else {
-            // unknown value, let UISelectOne validation reject it
-            component.setSubmittedValue(submittedValue);
+        String submittedValue = params.getOrDefault(clientId, Constants.EMPTY_STRING);
+        List<String> disabledSubmittedValues = new ArrayList<>(1);
+        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component),
+                disabledSubmittedValues, submittedValue);
+
+        component.setSubmittedValue(submittedValue);
+        if (!validSubmittedValues.contains(submittedValue)) {
+            if (!disabledSubmittedValues.isEmpty()) {
+                // #13954: a disabled item has been submitted (client side manipulation or disabled after rendering)
+                invalidateDisabledSelectItem(context, component, UISelectOne.INVALID_MESSAGE_ID);
+            }
+            else if (LangUtils.isEmpty(submittedValue) && !validSubmittedValues.isEmpty()) {
+                // the browser does not submit a checked, disabled item: restore it (#3296)
+                component.setSubmittedValue(validSubmittedValues.get(0));
+            }
+            // else: empty or unknown value, handled by required and UISelectOne validation
         }
 
         decodeBehaviors(context, component);
-    }
-
-    /**
-     * Checks if the given submitted value matches a disabled select item.
-     * @param context the FacesContext
-     * @param component the component
-     * @param submittedValue the submitted value
-     * @return true if the value is not empty and matches a disabled select item
-     */
-    protected boolean isDisabledSelectItemValue(FacesContext context, T component, String submittedValue) {
-        if (LangUtils.isEmpty(submittedValue)) {
-            return false;
-        }
-        SelectItem item = findSelectItemByValue(context, component, component.getConverter(), getSelectItems(context, component), submittedValue);
-        return item != null && item.isDisabled();
     }
 
     protected Object getValues(T component) {
