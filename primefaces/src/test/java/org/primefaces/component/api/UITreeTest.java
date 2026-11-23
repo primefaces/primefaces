@@ -31,10 +31,17 @@ import org.primefaces.model.TreeNode;
 
 import java.util.List;
 
+import jakarta.faces.component.UIOutput;
+import jakarta.faces.event.AbortProcessingException;
+import jakarta.faces.event.ActionEvent;
+import jakarta.faces.event.FacesEvent;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UITreeTest {
 
@@ -99,5 +106,23 @@ class UITreeTest {
         List<TreeNode<?>> selected = tree.decodeSelectedNodes(root, new String[] {"0"}, new TreeNode<?>[] {unselectable});
 
         assertEquals(List.of(selectable), selected);
+    }
+
+    /**
+     * #15531: an exception thrown by a node event listener must not leave the tree positioned on the event's node.
+     */
+    @Test
+    void broadcastRestoresRowKeyWhenListenerThrows() {
+        UIOutput source = new UIOutput() {
+            @Override
+            public void broadcast(FacesEvent event) {
+                throw new AbortProcessingException("abort");
+            }
+        };
+
+        WrapperEvent event = new WrapperEvent(tree, new ActionEvent(source), "0");
+
+        assertThrows(AbortProcessingException.class, () -> tree.broadcast(event));
+        assertNull(tree.getRowKey());
     }
 }

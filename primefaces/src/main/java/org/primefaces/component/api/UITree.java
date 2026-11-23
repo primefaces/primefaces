@@ -595,13 +595,17 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             source.broadcast(originalEvent);
         }
         finally {
-            source.popComponentFromEL(context);
-            if (compositeParent != null) {
-                compositeParent.popComponentFromEL(context);
+            try {
+                source.popComponentFromEL(context);
+                if (compositeParent != null) {
+                    compositeParent.popComponentFromEL(context);
+                }
+            }
+            finally {
+                // #15531 always restore the row key, even if the listener threw (e.g. AbortProcessingException)
+                setRowKey(root, oldRowKey);
             }
         }
-
-        setRowKey(root, oldRowKey);
     }
 
     @Override
