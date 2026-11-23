@@ -27,12 +27,16 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.DataTable;
 import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.model.Msg;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag("DataTable-lazy")
 @Tag("DataTable-selection")
@@ -45,7 +49,7 @@ class DataTable066Test extends AbstractDataTableTest {
     void selectAllFiltered(Page page) {
         // Arrange - "Language 7" matches 7 and 70..75
         DataTable dataTable = page.dataTable;
-        dataTable.filterAtOnce("Name", "Language 7");
+        dataTable.filter("Name", "Language 7");
 
         // Act
         dataTable.toggleSelectAllCheckBox();
@@ -63,7 +67,7 @@ class DataTable066Test extends AbstractDataTableTest {
         // Arrange
         DataTable dataTable = page.dataTable;
         dataTable.sort("Name");
-        dataTable.filterAtOnce("Name", "Language 7");
+        dataTable.filter("Name", "Language 7");
 
         // Act
         dataTable.toggleSelectAllCheckBox();
@@ -72,6 +76,12 @@ class DataTable066Test extends AbstractDataTableTest {
         // Assert
         assertSelections(page.messages, "7,70,71,72,73,74,75");
         assertNoJavascriptErrors();
+    }
+
+    private void assertSelections(Messages messages, String selections) {
+        Msg message = messages.getMessage(0);
+        assertTrue(message.getSummary().contains("Selected ProgrammingLanguage(s)"));
+        assertEquals(selections, message.getDetail());
     }
 
     public static class Page extends AbstractPrimePage {
