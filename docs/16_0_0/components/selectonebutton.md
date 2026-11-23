@@ -104,6 +104,10 @@ Widget: _PrimeFaces.widget.SelectOneButton_
 enable() | - | void | Enables the component.
 disabled() | - | void | Disables the component.
 
+## Disabled Items
+A disabled select item (`itemDisabled="true"`) cannot be selected, submitting it fails validation. See
+[Disabled Select Items](/core/misc.md?id=disabled-select-items).
+
 ## Skinning
 SelectOneButton resides in a main container which _style_ and _styleClass_ attributes apply. As
 skinning style classes are global, see the main theming section for more information. Following is
