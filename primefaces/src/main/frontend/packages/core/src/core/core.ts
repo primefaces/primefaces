@@ -143,12 +143,12 @@ const LocaleEnUs: PrimeFaces.Locale = {
         "moveToTarget": "Move to Target",
         "moveTop": "Move Top",
         "moveUp": "Move Up",
-        "movedBottom": "Moved to Bottom",
-        "movedDown": "Moved Down",
-        "movedTop": "Moved to Top",
-        "movedToSource": "Moved to Source",
-        "movedToTarget": "Moved to Target",
-        "movedUp": "Moved Up",
+        "movedBottom": "Moved to Bottom: {count}",
+        "movedDown": "Moved Down: {count}",
+        "movedTop": "Moved to Top: {count}",
+        "movedToSource": "Moved to Source: {count}",
+        "movedToTarget": "Moved to Target: {count}",
+        "movedUp": "Moved Up: {count}",
         "navigation": "Navigation",
         "next": "Next",
         "nextPageLabel": "Next Page",
@@ -2145,12 +2145,7 @@ export class Core {
     getAriaLabel(key: keyof PrimeFaces.LocaleAria, defaultValue?: string, options?: Record<string, string>): string {
         var ariaLocaleSettings = this.getLocaleSettings()['aria'] || {};
         var label = ariaLocaleSettings[key] || this.locales['en_US']?.['aria']?.[key] || defaultValue || "???" + key + "???";
-        if (options) {
-            for (const valKey in options) {
-                label = label.replace(`{${valKey}}`, options[valKey] ?? "");
-            }
-        }
-        return label.trim();
+        return replacePlaceholders(label, options);
     }
 
     /**
@@ -2321,6 +2316,19 @@ export class Core {
             this.debounceTimer = undefined;
         }, delay);
     }
+}
+
+/**
+ * Replaces the `{placeholderKey}` placeholders of a label with the given values and trims the result.
+ * @param label The label with placeholders.
+ * @param options An object containing placeholder replacements in the format `{placeholderKey: replacementValue}`.
+ * @returns The label with its placeholders replaced.
+ */
+export function replacePlaceholders(label: string, options?: Record<string, string>): string {
+    for (const key in options) {
+        label = label.replace(`{${key}}`, options[key] ?? "");
+    }
+    return label.trim();
 }
 
 export const core: Core = new Core();

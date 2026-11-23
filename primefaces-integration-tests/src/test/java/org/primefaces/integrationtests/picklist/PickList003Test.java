@@ -168,7 +168,7 @@ class PickList003Test extends AbstractPrimePageTest {
         // focused item has its indicator and the live region is filled
         WebElement ariaRegion = pickList.getAriaRegion();
         PrimeSelenium.waitGui().until(d -> pickList.isFocused("Test 1") && !ariaRegion.getAttribute("textContent").isEmpty());
-        assertEquals("Moved to Target", ariaRegion.getAttribute("textContent"));
+        assertEquals("Moved to Target: 3", ariaRegion.getAttribute("textContent"));
         assertNoJavascriptErrors();
     }
 

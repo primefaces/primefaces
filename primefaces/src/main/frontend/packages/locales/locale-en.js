@@ -88,12 +88,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatal",
       "messages.INFO": "Information",
       "messages.WARN": "Warning",
-      movedBottom: "Moved to Bottom",
-      movedDown: "Moved Down",
-      movedTop: "Moved to Top",
-      movedToSource: "Moved to Source",
-      movedToTarget: "Moved to Target",
-      movedUp: "Moved Up",
+      movedBottom: "Moved to Bottom: {count}",
+      movedDown: "Moved Down: {count}",
+      movedTop: "Moved to Top: {count}",
+      movedToSource: "Moved to Source: {count}",
+      movedToTarget: "Moved to Target: {count}",
+      movedUp: "Moved Up: {count}",
     },
     messages: {
       //optional for Client Side Validation

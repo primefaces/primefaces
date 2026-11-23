@@ -511,27 +511,102 @@ class PickList001Test extends AbstractPrimePageTest {
         WebElement region = page.standardPickList.getAriaRegion();
 
         // Act
+        // pick() transfers each item on its own, so the last transfer moved 1 item
         page.standardPickList.pick("Lewis", "Max");
-        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Target"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Target: 1"));
 
         // Assert
-        assertEquals("Moved to Target", region.getAttribute("textContent"));
+        assertEquals("Moved to Target: 1", region.getAttribute("textContent"));
 
         // Act
         page.standardPickList.moveTargetItemsUp("Max");
-        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved Up"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved Up: 1"));
         // move up announces before its animation, wait until the item is actually moved
         PrimeSelenium.waitGui().until(d -> page.standardPickList.getTargetListLabels().equals(Arrays.asList("Max", "Lewis")));
 
         // Assert
-        assertEquals("Moved Up", region.getAttribute("textContent"));
+        assertEquals("Moved Up: 1", region.getAttribute("textContent"));
 
         // Act
         page.standardPickList.remove("Lewis");
-        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Source"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Source: 1"));
 
         // Assert
-        assertEquals("Moved to Source", region.getAttribute("textContent"));
+        assertEquals("Moved to Source: 1", region.getAttribute("textContent"));
+        assertConfiguration(page.standardPickList.getClientConfiguration());
+    }
+
+    @Test
+    @Order(29)
+    @DisplayName("PickList: #15515 transferring several items at once announces the number of moved items")
+    void ariaRegionAnnouncesMovedItemsCount(final Page page) {
+        WebElement region = page.standardPickList.getAriaRegion();
+        int count = page.standardPickList.getSourceListLabels().size();
+
+        // Act
+        page.standardPickList.pickAll();
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Target: " + count));
+
+        // Assert
+        assertEquals("Moved to Target: " + count, region.getAttribute("textContent"));
+
+        // Act
+        page.standardPickList.removeAll();
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Source: " + count));
+
+        // Assert
+        assertEquals("Moved to Source: " + count, region.getAttribute("textContent"));
+        assertConfiguration(page.standardPickList.getClientConfiguration());
+    }
+
+    @Test
+    @Order(30)
+    @DisplayName("PickList: #15515 moving several selected items up announces the number of moved items")
+    void ariaRegionAnnouncesMovedUpCount(final Page page) {
+        WebElement region = page.checkPickList.getAriaRegion();
+
+        // Act - the checkboxes select both items, then move up is clicked once
+        page.checkPickList.moveSourceItemsUp("Charles", "Lando");
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved Up: 2"));
+        PrimeSelenium.waitGui().until(d -> page.checkPickList.getSourceListLabels().equals(Arrays.asList("Lewis", "Charles", "Lando", "Max")));
+
+        // Assert
+        assertEquals("Moved Up: 2", region.getAttribute("textContent"));
+        assertConfiguration(page.checkPickList.getClientConfiguration());
+    }
+
+    @Test
+    @Order(31)
+    @DisplayName("PickList: #15515 moving several selected items down announces the number of moved items")
+    void ariaRegionAnnouncesMovedDownCount(final Page page) {
+        WebElement region = page.checkPickList.getAriaRegion();
+
+        // Act - the checkboxes select both items, then move down is clicked once
+        page.checkPickList.moveSourceItemsDown("Lewis", "Max");
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved Down: 2"));
+        PrimeSelenium.waitGui().until(d -> page.checkPickList.getSourceListLabels().equals(Arrays.asList("Charles", "Lewis", "Max", "Lando")));
+
+        // Assert
+        assertEquals("Moved Down: 2", region.getAttribute("textContent"));
+        assertConfiguration(page.checkPickList.getClientConfiguration());
+    }
+
+    @Test
+    @Order(32)
+    @DisplayName("PickList: #15515 moveUp() with a selected item already at the top moves nothing and announces nothing")
+    void moveUpWithItemAtTopMovesNothing(final Page page) {
+        WebElement region = page.standardPickList.getAriaRegion();
+
+        // Act - the move up button is disabled in this state, so call the client API directly
+        PrimeSelenium.executeScript("var pl = " + page.standardPickList.getClientComponentScript() + ";"
+                + "var items = pl.sourceList.children();"
+                + "pl.selectItem(items.eq(0), true);"
+                + "pl.selectItem(items.eq(2), true);"
+                + "pl.moveUp(pl.sourceList);");
+
+        // Assert
+        assertEquals(Arrays.asList("Lewis", "Max", "Charles", "Lando"), page.standardPickList.getSourceListLabels());
+        assertFalse(region.getAttribute("textContent").startsWith("Moved"));
         assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 

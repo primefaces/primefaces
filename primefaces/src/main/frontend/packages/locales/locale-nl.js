@@ -82,12 +82,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fataal",
       "messages.INFO": "Informatie",
       "messages.WARN": "Waarschuwing",
-      movedBottom: "Naar beneden verplaatst",
-      movedDown: "Omlaag verplaatst",
-      movedTop: "Naar boven verplaatst",
-      movedToSource: "Naar bron verplaatst",
-      movedToTarget: "Naar doel verplaatst",
-      movedUp: "Omhoog verplaatst",
+      movedBottom: "Naar beneden verplaatst: {count}",
+      movedDown: "Omlaag verplaatst: {count}",
+      movedTop: "Naar boven verplaatst: {count}",
+      movedToSource: "Naar bron verplaatst: {count}",
+      movedToTarget: "Naar doel verplaatst: {count}",
+      movedUp: "Omhoog verplaatst: {count}",
     },
     messages: {
       //optional for Client Side Validation

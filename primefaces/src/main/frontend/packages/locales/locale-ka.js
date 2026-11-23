@@ -74,12 +74,12 @@ if (window.PrimeFaces) {
             'messages.FATAL': 'საბედისწერო',
             'messages.INFO': 'ინფორმაცია',
             'messages.WARN': 'გაფრთხილება',
-            movedBottom: 'გადატანილია ბოლოში',
-            movedDown: 'გადატანილია ქვემოთ',
-            movedTop: 'გადატანილია თავში',
-            movedToSource: 'გადატანილია წყაროში',
-            movedToTarget: 'გადატანილია სამიზნეში',
-            movedUp: 'გადატანილია ზემოთ',
+            movedBottom: 'გადატანილია ბოლოში: {count}',
+            movedDown: 'გადატანილია ქვემოთ: {count}',
+            movedTop: 'გადატანილია თავში: {count}',
+            movedToSource: 'გადატანილია წყაროში: {count}',
+            movedToTarget: 'გადატანილია სამიზნეში: {count}',
+            movedUp: 'გადატანილია ზემოთ: {count}',
         },
         messages: { //optional for Client Side Validation
             'jakarta.faces.component.UIInput.REQUIRED': '{0}: შეცდომა: ველის შევსება აუცილებელია.'
