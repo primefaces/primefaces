@@ -5282,18 +5282,40 @@ export class DataTable<Cfg extends DataTableCfg = DataTableCfg> extends PrimeFac
             appendTo: document.body,
             start: (event, ui: PrimeFaces.interactions.SortableUi) => {
                 PrimeFaces.nextZindex(ui.helper!);
+
+                // #7444 the placeholder cells are created without classes, hidden columns must stay hidden
+                // (otherwise the stacked reflow placeholder gets a blank line for each of them)
+                var itemCells = ui.item.children();
+                ui.placeholder.children().each((i, placeholderCell) => {
+                    $(placeholderCell).toggleClass('p-hidden', itemCells.eq(i).hasClass('p-hidden'));
+                });
             },
             helper: (event, ui) => {
                 var cells = ui.children(),
-                helper = $('<div class="p-datatable p-component"><table><tbody class="p-datatable-data"></tbody></table></div>'),
+                helper = $('<div><table><tbody class="p-datatable-data"></tbody></table></div>'),
                 helperRow = ui.clone(),
                 helperCells = helperRow.children();
 
+                // #7444 the helper is appended to the body, outside of the table, so it needs the look of the table to be
+                // rendered the same way as the dragged row: its PrimeFaces classes (reflow, size, gridlines, striped, rtl), but
+                // not the ones for the layout of the table container (nor the styleClass, which may size the container),
+                // and its inline style without the size and margins of the container; plus the width of the row, because
+                // the reflow styles override the widths of the cells
+                const helperClasses = (this.jq.attr('class') || '').split(/\s+/)
+                    .filter(styleClass => /^p-(component|datatable(-(reflow|rtl|striped|gridlines|sm|lg))?)$/.test(styleClass));
+                helper.addClass(helperClasses.length ? helperClasses.join(' ') : 'p-datatable p-component')
+                    .attr('style', this.jq.attr('style') || '')
+                    .css({
+                        height: '', minHeight: '', maxHeight: '', blockSize: '', minBlockSize: '', maxBlockSize: '',
+                        minWidth: '', maxWidth: '', inlineSize: '', minInlineSize: '', maxInlineSize: '',
+                        margin: '', marginBlock: '', marginInline: '', padding: '', paddingBlock: '', paddingInline: '', border: '',
+                        overflow: '', cursor: '',
+                        // set while the helper is not attached yet, so it must not depend on the box model of the page
+                        boxSizing: 'border-box', width: ui.outerWidth() + 'px'
+                    });
+
                 for(var i = 0; i < helperCells.length; i++) {
-                    var helperCell = helperCells.eq(i);
-                    helperCell.width(cells.eq(i).width()!);
-                    // #5584 reflow must remove column title span
-                    helperCell.children().remove('.p-column-title');
+                    helperCells.eq(i).width(cells.eq(i).width()!);
                 }
 
                 helperRow.appendTo(helper.find('tbody'));

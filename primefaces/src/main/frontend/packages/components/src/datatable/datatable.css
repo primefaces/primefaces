@@ -1021,6 +1021,15 @@
                     display: block;
                     width: 100%;
                 }
+
+                /* #7444 the row reordering placeholder (draggableRows) must take the stacked shape of the dragged row,
+                   without the cells of hidden columns */
+                &.p-datatable-rowordering > td:not(.p-hidden) {
+                    box-sizing: border-box;
+                    display: block;
+                    width: 100%;
+                    border: 0 none;
+                }
             }
         }
 
