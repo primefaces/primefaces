@@ -373,7 +373,8 @@ class DataTable061Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(filterTo.isDisplayed());
         assertEquals("Filter ID To", filterTo.getDomAttribute("aria-label"));
-        assertEquals("ID", filterTo.getDomAttribute("placeholder"));
+        assertEquals("To", filterTo.getDomAttribute("placeholder"));
+        assertEquals("ID", id.getColumnFilter().getDomAttribute("placeholder"));
         // beside the first input, on the same line
         assertEquals(id.getColumnFilter().getLocation().getY(), filterTo.getLocation().getY());
         assertEquals(8, dataTable.getRows().size());
@@ -679,6 +680,32 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(24)
+    @DisplayName("DataTable: GitHub #7427 between with a filterValue binding to a single value, which gets null")
+    void betweenFilterValueBinding(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatableBinding;
+        dataTable.filter("Salary", "2300");
+        assertEquals("2300", page.salaryFilter.getText());
+
+        // Act
+        dataTable.filterMatchMode("Salary", "between");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Salary")), "2800");
+
+        // Assert - filtered, the Integer binding cannot take the List
+        assertEquals(List.of("2", "6", "11", "533"), ids(dataTable));
+        assertEquals("", page.salaryFilter.getText());
+
+        // Act
+        dataTable.filterMatchMode("Salary", "gte");
+
+        // Assert
+        assertEquals(List.of("1", "2", "4", "6", "11", "533"), ids(dataTable));
+        assertEquals("2300", page.salaryFilter.getText());
+        assertNoJavascriptErrors();
+    }
+
     private static WebElement clonedHeader(DataTable dataTable) {
         return dataTable.findElement(By.cssSelector(".p-datatable-tablewrapper > table > thead"));
     }
@@ -728,6 +755,12 @@ class DataTable061Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:datatableSticky")
         DataTable datatableSticky;
+
+        @FindBy(id = "form:datatableBinding")
+        DataTable datatableBinding;
+
+        @FindBy(id = "form:salaryFilter")
+        WebElement salaryFilter;
 
         @FindBy(id = "form:buttonUpdate")
         CommandButton buttonUpdate;

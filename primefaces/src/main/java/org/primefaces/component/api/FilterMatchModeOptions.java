@@ -169,7 +169,7 @@ final class FilterMatchModeOptions {
      */
     static Object convertFilterValue(FacesContext context, UIColumn column, MatchMode matchMode, String value, String valueTo) {
         try {
-            if (matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN) {
+            if (matchMode.isRange()) {
                 if (LangUtils.isBlank(value) || LangUtils.isBlank(valueTo)) {
                     return null;
                 }

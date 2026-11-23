@@ -411,7 +411,9 @@ column (`p:column`, `p:columns`) or on `p:dataTable` as default for all columns,
 With **between** / **notBetween**, a second input for the end of the range is shown while one of them is selected. Both
 ends are included. Each value is converted with the column's `converter`, the filter value is a `List` of the two (as
 `FilterMeta#getFilterValue()` passes it to a `LazyDataModel`). If one of them is empty or does not convert, the filter is
-inactive, open-ended ranges are not supported.
+inactive, open-ended ranges are not supported. The values are not swapped: with a start after the end, `between` matches no
+row. A `filterValue` binding of such a column gets the `List` only if its type takes it (e.g. `Object` or `List`), and a
+single value only if its type is not a collection, otherwise `null`.
 
 The initial match mode is `filterMatchMode` if it is set, otherwise the first option. A `filterMatchMode`, or the match mode
 of a `FilterMeta` passed with `filterBy`, which is not one of the options fails with a `FacesException`. `clearFilters()`

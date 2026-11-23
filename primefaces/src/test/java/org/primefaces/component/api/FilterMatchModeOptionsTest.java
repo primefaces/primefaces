@@ -30,8 +30,10 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.GreaterThanEqualsFilterConstraint;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.el.MethodExpression;
 import jakarta.faces.FacesException;
@@ -140,6 +142,8 @@ class FilterMatchModeOptionsTest {
         assertTrue(FilterMatchModeOptions.NUMERIC.containsAll(List.of(MatchMode.BETWEEN, MatchMode.NOT_BETWEEN)));
         assertTrue(FilterMatchModeOptions.DATE.containsAll(List.of(MatchMode.BETWEEN, MatchMode.NOT_BETWEEN)));
         assertFalse(FilterMatchModeOptions.TEXT.contains(MatchMode.BETWEEN));
+        assertEquals(List.of(MatchMode.BETWEEN, MatchMode.NOT_BETWEEN),
+                Arrays.stream(MatchMode.values()).filter(MatchMode::isRange).collect(Collectors.toList()));
     }
 
     @Test

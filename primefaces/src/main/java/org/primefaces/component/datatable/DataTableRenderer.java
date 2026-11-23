@@ -926,11 +926,11 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         // match mode picker with between: the two values of the List in two inputs
         FilterMeta filterMeta = component.getFilterByAsMap().get(column.getColumnKey());
         List<MatchMode> options = filterMeta == null ? Collections.emptyList() : filterMeta.getMatchModeOptions();
-        boolean range = options.contains(MatchMode.BETWEEN) || options.contains(MatchMode.NOT_BETWEEN);
+        boolean range = options.stream().anyMatch(MatchMode::isRange);
         Object filterValueTo = null;
         if (!options.isEmpty() && filterValue instanceof List<?> values) {
             MatchMode matchMode = filterMeta.getMatchMode();
-            if ((matchMode == MatchMode.BETWEEN || matchMode == MatchMode.NOT_BETWEEN) && values.size() == 2) {
+            if (matchMode.isRange() && values.size() == 2) {
                 filterValue = formatFilterValue(context, column, values.get(0));
                 filterValueTo = formatFilterValue(context, column, values.get(1));
             }
@@ -945,7 +945,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         encodeFilterInput(column, writer, disableTabbing, filterId, filterStyleClass, filterValue);
 
         if (range) {
-            boolean hidden = filterMeta.getMatchMode() != MatchMode.BETWEEN && filterMeta.getMatchMode() != MatchMode.NOT_BETWEEN;
+            boolean hidden = !filterMeta.getMatchMode().isRange();
             if (filterValueTo == null && !component.isReset() && !hidden) {
                 filterValueTo = context.getExternalContext().getRequestParameterMap().get(filterId + "_to");
             }
@@ -972,7 +972,10 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         writer.writeAttribute("class", styleClass, null);
         writer.writeAttribute("value", filterValue == null ? Constants.EMPTY_STRING : filterValue, null);
         writer.writeAttribute("autocomplete", "off", null);
-        writer.writeAttribute("title", MessageFactory.getMessage(context, "primefaces.datatable.FILTER_VALUE_TO"), null);
+        // "To" as title and placeholder, the column's filterPlaceholder stays on the first input
+        String to = MessageFactory.getMessage(context, "primefaces.datatable.FILTER_VALUE_TO");
+        writer.writeAttribute("title", to, null);
+        writer.writeAttribute("placeholder", to, null);
         if (disableTabbing) {
             writer.writeAttribute("tabindex", "-1", null);
         }
@@ -981,9 +984,6 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
         if (column.getFilterMaxLength() != Integer.MAX_VALUE) {
             writer.writeAttribute("maxlength", column.getFilterMaxLength(), null);
-        }
-        if (LangUtils.isNotBlank(column.getFilterPlaceholder())) {
-            writer.writeAttribute("placeholder", column.getFilterPlaceholder(), null);
         }
         writer.endElement("input");
     }

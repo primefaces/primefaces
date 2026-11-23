@@ -348,13 +348,33 @@ public class DataTable extends DataTableBaseImpl {
             if (column.isDynamic()) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyStatelessModel();
-                columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+                columnFilterValueVE.setValue(elContext, filterValueForBinding(elContext, columnFilterValueVE, filter.getFilterValue()));
                 dynamicColumn.cleanStatelessModel();
             }
             else {
-                columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+                columnFilterValueVE.setValue(elContext, filterValueForBinding(elContext, columnFilterValueVE, filter.getFilterValue()));
             }
         }
+    }
+
+    /**
+     * The filter value to write to the {@code filterValue} binding of a column: {@code null} if a {@code List} (between /
+     * notBetween) does not fit a binding to a single value or a single value does not fit a binding to a collection, as a
+     * match mode picker may offer both kinds of match modes for the same column (#7427).
+     */
+    static Object filterValueForBinding(ELContext elContext, ValueExpression filterValueVE, Object filterValue) {
+        if (filterValue == null) {
+            return null;
+        }
+        Class<?> type = filterValueVE.getType(elContext);
+        if (type == null || type == Object.class) {
+            return filterValue;
+        }
+        boolean collection = Collection.class.isAssignableFrom(type);
+        if (filterValue instanceof Collection) {
+            return collection && type.isInstance(filterValue) ? filterValue : null;
+        }
+        return collection && !filterValue.getClass().isArray() ? null : filterValue;
     }
 
     @Override

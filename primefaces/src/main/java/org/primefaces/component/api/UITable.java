@@ -249,7 +249,7 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                                 filterMeta.setConstraint(FilterConstraints.of(m));
                             });
 
-                    // the multi-value match modes get a List, between has a second input
+                    // between / notBetween get a List of the values of both inputs
                     filterValue = FilterMatchModeOptions.convertFilterValue(context, column, filterMeta.getMatchMode(), (String) filterValue,
                             params.get(columnClientId + separator + "filter_to"));
                 }
