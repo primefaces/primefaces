@@ -266,10 +266,6 @@ public interface ColumnAware {
             if (column == null) {
                 column = findColumnInGroup(columnKey, getColumnGroup("scrollableHeader"));
             }
-            if (column == null) {
-                // the plain header group gets split between the frozen and scrollable part, see GitHub #9854
-                column = findColumnInGroup(columnKey, getColumnGroup("header"));
-            }
 
             if (column != null) {
                 return column;
