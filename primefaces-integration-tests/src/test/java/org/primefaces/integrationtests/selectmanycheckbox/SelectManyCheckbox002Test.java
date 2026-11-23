@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.selectmanycheckbox;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectManyCheckbox;
@@ -79,6 +80,26 @@ class SelectManyCheckbox002Test extends AbstractSelectManyCheckboxTest {
 
     private WebElement box(SelectManyCheckbox selectManyCheckbox, int index) {
         return selectManyCheckbox.getCheckboxes().get(index).findElement(By.className("ui-chkbox-box"));
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("SelectManyCheckbox: GitHub #13954 a tampered disabled option fails validation")
+    void tamperedDisabledOption(Page page) {
+        // Arrange
+        SelectManyCheckbox selectManyCheckbox = page.selectManyCheckbox;
+
+        // Act - submit the disabled "Charles" via the "Lewis" checkbox
+        WebElement lewis = getWebDriver().findElement(By.cssSelector("input[value='Lewis']"));
+        PrimeSelenium.setHiddenInput(lewis, "Charles");
+        selectManyCheckbox.select(0, 1);
+        page.button.click();
+
+        // Assert - validation failed, the action has not been invoked
+        assertEquals(1, page.messages.getAllMessages().size());
+        String summary = page.messages.getMessage(0).getSummary();
+        assertTrue(summary.contains("Drivers") && summary.contains("Value is not valid"), summary);
+        assertNoJavascriptErrors();
     }
 
     private void assertConfiguration(JSONObject cfg) {

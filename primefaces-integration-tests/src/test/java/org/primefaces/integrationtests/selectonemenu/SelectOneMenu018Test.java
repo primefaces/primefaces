@@ -41,6 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SelectOneMenu018Test extends AbstractPrimePageTest {
 
+    static final String INVALID = "Value is not valid";
+
     @Test
     @Order(1)
     @DisplayName("SelectOneMenu: GitHub #13954 submitting without changes keeps the preselected disabled value")
@@ -72,20 +74,21 @@ class SelectOneMenu018Test extends AbstractPrimePageTest {
 
     @Test
     @Order(3)
-    @DisplayName("SelectOneMenu: GitHub #13954 a tampered disabled item is not accepted when there is no previous value")
+    @DisplayName("SelectOneMenu: GitHub #13954 a tampered disabled item fails validation when there is no previous value")
     void tamperedDisabledWithoutPreviousValue(Page page) {
         // Act
         tamper("form:country_input", "CW");
         page.submit.click();
 
         // Assert
+        assertInvalid(page, "Country");
         assertEquals("", page.countryValue.getText());
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(4)
-    @DisplayName("SelectOneMenu: GitHub #13954 a tampered disabled item is treated as no selection when there is a previous value")
+    @DisplayName("SelectOneMenu: GitHub #13954 a tampered disabled item fails validation and keeps the previous value")
     void tamperedDisabledWithPreviousValue(Page page) {
         // Arrange
         page.country.select("BE");
@@ -96,28 +99,51 @@ class SelectOneMenu018Test extends AbstractPrimePageTest {
         tamper("form:country_input", "AW");
         page.submit.click();
 
-        // Assert - like h:selectOneMenu, the disabled value is replaced with an empty value
-        assertEquals("", page.countryValue.getText());
+        // Assert
+        assertInvalid(page, "Country");
+        assertEquals("BE", page.countryValue.getText());
         assertNoJavascriptErrors();
     }
 
     @Test
     @Order(5)
-    @DisplayName("SelectOneMenu: GitHub #13954 a tampered other disabled item does not replace the preselected disabled value")
+    @DisplayName("SelectOneMenu: GitHub #13954 a tampered other disabled item fails validation with a preselected disabled value")
     void tamperedOtherDisabledWithPreselectedDisabledValue(Page page) {
         // Act
         tamper("form:preset_input", "AW");
         page.submit.click();
 
         // Assert
+        assertInvalid(page, "Preset");
         assertEquals("CW", page.presetValue.getText());
         assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(6)
+    @DisplayName("SelectOneMenu: GitHub #13954 an unknown value fails validation with a preselected disabled value")
+    void unknownValueWithPreselectedDisabledValue(Page page) {
+        // Act - an unknown value was silently replaced with the preselected disabled value before
+        PrimeSelenium.executeScript("var s = document.getElementById('form:preset_input');"
+                + "var o = document.createElement('option'); o.value = 'XX'; s.appendChild(o); s.value = 'XX';");
+        page.submit.click();
+
+        // Assert
+        assertInvalid(page, "Preset");
+        assertEquals("CW", page.presetValue.getText());
+        assertNoJavascriptErrors();
+    }
+
+    private static void assertInvalid(Page page, String label) {
+        assertEquals(1, page.messages.getAllMessages().size());
+        String summary = page.messages.getMessage(0).getSummary();
+        assertTrue(summary.contains(label) && summary.contains(INVALID), summary);
     }
 
     /**
      * Simulates a crafted request: re-enables a disabled option of the hidden select and selects it.
      */
-    private void tamper(String selectId, String value) {
+    static void tamper(String selectId, String value) {
         PrimeSelenium.executeScript("var s = document.getElementById('" + selectId + "');"
                 + "var o = s.querySelector('option[value=\"" + value + "\"]');"
                 + "o.disabled = false; s.value = '" + value + "';");

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <!-- disabled placeholder: the case behind the revert of #13956 -->
+        <h:form id="placeholder">
+            <p:messages id="msgs" />
+
+            <p:selectOneMenu id="optional" value="#{selectOneMenu019.optional}" label="Optional">
+                <f:selectItem itemLabel="Please select" itemValue="#{null}" noSelectionOption="true" itemDisabled="true" />
+                <f:selectItems value="#{selectOneMenu019.numbers}" var="n" itemLabel="#{n}" itemValue="#{n}" itemDisabled="#{n eq 3}" />
+            </p:selectOneMenu>
+
+            <p:selectOneMenu id="required" value="#{selectOneMenu019.required}" label="Required" required="true">
+                <f:selectItem itemLabel="Please select" itemValue="#{null}" noSelectionOption="true" itemDisabled="true" />
+                <f:selectItems value="#{selectOneMenu019.numbers}" var="n" itemLabel="#{n}" itemValue="#{n}" itemDisabled="#{n eq 3}" />
+            </p:selectOneMenu>
+
+            <p:commandButton id="submit" value="Submit" process="@form" update="@form" />
+            <p:commandButton id="submitPartial" value="Submit partial" process="@form" update="@form" partialSubmit="true" />
+
+            <h:outputText id="optionalValue" value="#{selectOneMenu019.optional}" />
+            <h:outputText id="requiredValue" value="#{selectOneMenu019.required}" />
+        </h:form>
+
+        <!-- preselected disabled values with non-String models -->
+        <h:form id="preset">
+            <p:messages id="msgs" />
+
+            <p:selectOneMenu id="intPreset" value="#{selectOneMenu019.intPreset}" label="Integer">
+                <f:selectItems value="#{selectOneMenu019.numbers}" var="n" itemLabel="#{n}" itemValue="#{n}" itemDisabled="#{n eq 3}" />
+            </p:selectOneMenu>
+
+            <p:selectOneMenu id="enumPreset" value="#{selectOneMenu019.enumPreset}" label="Enum">
+                <f:selectItems value="#{selectOneMenu019.sizes}" var="s" itemLabel="#{s}" itemValue="#{s}" itemDisabled="#{s eq 'LARGE'}" />
+            </p:selectOneMenu>
+
+            <p:commandButton id="submit" value="Submit" process="@form" update="@form" />
+
+            <h:outputText id="intPresetValue" value="#{selectOneMenu019.intPreset}" />
+            <h:outputText id="enumPresetValue" value="#{selectOneMenu019.enumPreset}" />
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
