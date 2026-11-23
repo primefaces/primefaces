@@ -300,9 +300,10 @@ public class SelectionFeature implements DataTableFeature {
 
         if (table.isLazy()) {
             // For lazy tables, load all data at once using the lazy data model
+            // Same sort/filter maps as DataTable#loadLazyScrollData: only active ones, keyed by field
             LazyDataModel<?> lazyModel = table.getLazyDataModel();
             int rowCount = lazyModel.getRowCount();
-            List<?> allData = lazyModel.load(0, rowCount, table.getSortByAsMap(), table.getFilterByAsMap());
+            List<?> allData = lazyModel.load(0, rowCount, table.getActiveSortMeta(), table.getActiveFilterMeta());
 
             if (allData == null) {
                 return;
