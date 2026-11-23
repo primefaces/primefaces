@@ -560,12 +560,16 @@ public abstract class UIDataPatch extends UIData {
             source.pushComponentToEL(context, null);
             source.broadcast(rowEvent);
         } finally {
-            source.popComponentFromEL(context);
-            if (compositeParent != null) {
-                compositeParent.popComponentFromEL(context);
+            try {
+                source.popComponentFromEL(context);
+                if (compositeParent != null) {
+                    compositeParent.popComponentFromEL(context);
+                }
+            } finally {
+                // #15531 always restore the row index, even if the listener threw (e.g. AbortProcessingException)
+                setRowIndex(oldRowIndex);
             }
         }
-        setRowIndex(oldRowIndex);
 
     }
 
