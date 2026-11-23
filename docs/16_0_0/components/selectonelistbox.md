@@ -31,10 +31,6 @@ reject a value. To add a filter to previous example;
 </p:selectOneListbox>
 ```
 
-## Disabled Items
-A disabled select item (`itemDisabled="true"`) cannot be selected, submitting it fails validation. See
-[Disabled Select Items](/core/misc.md?id=disabled-select-items).
-
 ## Skinning
 SelectOneListbox resides in a main container which _style_ and _styleClass_ attributes apply. As
 skinning style classes are global, see the main theming section for more information. Following is
