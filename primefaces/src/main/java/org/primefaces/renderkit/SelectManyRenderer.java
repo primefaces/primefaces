@@ -50,12 +50,11 @@ public abstract class SelectManyRenderer<T extends UISelectMany & PrimeSelect> e
         List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component),
                 disabledSubmittedValues, submittedValues);
 
-        if (disabledSubmittedValues.isEmpty()) {
-            component.setSubmittedValue(validSubmittedValues.toArray(new String[validSubmittedValues.size()]));
-        }
-        else {
+        // always use the validated values, so after a validation error the checked state is rendered as the user saw
+        // it: checked disabled items restored, a submitted disabled item not checked
+        component.setSubmittedValue(validSubmittedValues.toArray(new String[0]));
+        if (!disabledSubmittedValues.isEmpty()) {
             // #13954: a disabled item has been submitted (client side manipulation or disabled after rendering)
-            component.setSubmittedValue(submittedValues);
             invalidateDisabledSelectItem(context, component, UISelectMany.INVALID_MESSAGE_ID);
         }
 
