@@ -93,14 +93,6 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     }
 
     /**
-     * Recursive method used when editable="true" to detect whether the submitted value
-     * matches a value in one of the SelectItems. GitHub #2862 and #6507
-     * @param context FacesContext
-     * @param selectItems the List of SelectItems
-     * @param editorInput the editor input value to search for
-     * @return either the value found or NULL if no item found
-     */
-    /**
      * Finds the select item matching the entered text of an editable SelectOneMenu, either by its label (ignoring case)
      * or by its value as string.
      */
@@ -129,6 +121,14 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         return null;
     }
 
+    /**
+     * Recursive method used when editable="true" to detect whether the submitted value
+     * matches a value in one of the SelectItems. GitHub #2862 and #6507
+     * @param context FacesContext
+     * @param selectItems the List of SelectItems
+     * @param editorInput the editor input value to search for
+     * @return either the value found or NULL if no item found
+     */
     protected Object findEditableValue(FacesContext context, List<SelectItem> selectItems, String editorInput) {
         Object foundValue = null;
         for (int i = 0; i < selectItems.size(); i++) {
