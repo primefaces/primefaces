@@ -96,6 +96,10 @@ itemUnselect | org.primefaces.event.UnselectEvent | When a item is removed.
 <p:ajax event="valueChange" listener="#{bean.handlevalueChange}" update="msgs" />
 ```
 
+## Disabled Items
+A disabled select item (`itemDisabled="true"`) cannot be selected, submitting it fails validation. See
+[Disabled Select Items](/core/misc.md?id=disabled-select-items).
+
 ## Skinning
 SelectOneListbox resides in a main container which _style_ and _styleClass_ attributes apply. As
 skinning style classes are global, see the main theming section for more information. Following is
