@@ -150,6 +150,10 @@ selectValue(value) | value: itemValue | void | Selects given value.
 getSelectedValue() | - | Object | Returns value of selected item.
 getSelectedLabel() | - | String | Returns label of selected item.
 
+## Disabled Items
+A disabled select item (`itemDisabled="true"`) cannot be selected, submitting it fails validation. See
+[Disabled Select Items](/core/disabledselectitems.md).
+
 ## Skinning
 SelectOneMenu resides in a container element that _style_ and _styleClass_ attributes apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of
