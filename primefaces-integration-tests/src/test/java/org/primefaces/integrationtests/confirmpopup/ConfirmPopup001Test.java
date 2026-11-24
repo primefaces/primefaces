@@ -210,7 +210,7 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         assertFalse(popup.isVisible());
         assertTrue(page.messages.isEmpty());
         assertTrue((Boolean) PrimeSelenium.executeScript("return PrimeFaces.confirmPopupSource == null;"));
-        assertConfiguration(popup.getClientConfiguration());
+        assertConfiguration(popup.getWidgetConfiguration());
     }
 
     @Test
@@ -228,10 +228,10 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         // Assert
         assertTrue(popup.isVisible());
         assertEquals("Are you sure you want to proceed?", popup.getMessage().getText());
-        popup.confirm();
+        PrimeSelenium.guardAjax(popup.getYesButton()).click();
         assertFalse(popup.isVisible());
         assertMessage(page, "You have accepted");
-        assertConfiguration(popup.getClientConfiguration());
+        assertConfiguration(popup.getWidgetConfiguration());
     }
 
     private void assertMessage(Page page, String message) {
