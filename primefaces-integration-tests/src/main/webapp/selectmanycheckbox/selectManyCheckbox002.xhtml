@@ -23,6 +23,13 @@
                 <f:selectItem itemLabel="Lando" itemValue="Lando"/>
             </p:selectManyCheckbox>
 
+            <p:selectManyCheckbox id="preset" value="#{selectManyCheckbox002.presetDrivers}" layout="pageDirection" label="Preset">
+                <f:selectItem itemLabel="Lewis" itemValue="Lewis"/>
+                <f:selectItem itemLabel="Max" itemValue="Max" itemDisabled="true"/>
+                <f:selectItem itemLabel="Charles" itemValue="Charles" itemDisabled="true"/>
+                <f:selectItem itemLabel="Lando" itemValue="Lando"/>
+            </p:selectManyCheckbox>
+
             <p:commandButton id="button" update="@form" value="Submit" action="#{selectManyCheckbox002.submit}"/>
         </h:form>
 
