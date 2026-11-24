@@ -372,14 +372,15 @@ export class ConfirmPopup<Cfg extends ConfirmPopupCfg = ConfirmPopupCfg> extends
     showMessage(msg: Partial<PrimeType.hook.confirm.ExtendedConfirmMessage>): void {
         PrimeFaces.confirmPopupSource = typeof msg.source === 'string' ? $(PrimeFaces.escapeClientId(msg.source)) : PrimeFaces.utils.toJQuery(msg.source);
 
-        const beforeShow = () => {
-            if (msg.beforeShow) {
-                const beforeShowResult = PrimeFaces.csp.evalResult(msg.beforeShow);
-                if (beforeShowResult === false) {
-                    return;
-                }
+        // Execute any code specified to run before showing the message, returning false cancels showing
+        if (msg.beforeShow) {
+            const beforeShowResult = PrimeFaces.csp.evalResult(msg.beforeShow);
+            if (beforeShowResult === false) {
+                return;
             }
+        }
 
+        const beforeShow = () => {
             const iconClass = msg.icon || this.icon.data('p-icon');
             if (iconClass) {
                 this.icon.removeClass().addClass('ui-confirm-popup-icon ' + iconClass);
