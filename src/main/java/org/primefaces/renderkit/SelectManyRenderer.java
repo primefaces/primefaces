@@ -23,6 +23,7 @@
  */
 package org.primefaces.renderkit;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +45,17 @@ public abstract class SelectManyRenderer extends SelectRenderer {
         Map<String, String[]> params = context.getExternalContext().getRequestParameterValuesMap();
 
         String[] submittedValues = params.containsKey(submitParam) ? params.get(submitParam) : new String[0];
-        List<String> validSubmittedValues = validateSubmittedValues(context, selectMany, (Object[]) getValues(selectMany), submittedValues);
-        selectMany.setSubmittedValue(validSubmittedValues.toArray(new String[validSubmittedValues.size()]));
+        List<String> disabledSubmittedValues = new ArrayList<>(1);
+        List<String> validSubmittedValues = validateSubmittedValues(context, selectMany, (Object[]) getValues(selectMany),
+                disabledSubmittedValues, submittedValues);
+
+        // always use the validated values, so after a validation error the checked state is rendered as the user saw
+        // it: checked disabled items restored, a submitted disabled item not checked
+        selectMany.setSubmittedValue(validSubmittedValues.toArray(new String[0]));
+        if (!disabledSubmittedValues.isEmpty()) {
+            // #13954: a disabled item has been submitted (client side manipulation or disabled after rendering)
+            invalidateDisabledSelectItem(context, selectMany, UISelectMany.INVALID_MESSAGE_ID);
+        }
 
         decodeBehaviors(context, selectMany);
     }
