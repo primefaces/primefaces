@@ -64,6 +64,7 @@ import jakarta.el.ELContext;
 import jakarta.el.MethodExpression;
 import jakarta.el.ValueExpression;
 import jakarta.faces.FacesException;
+import jakarta.faces.application.ProjectStage;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.UINamingContainer;
 import jakarta.faces.context.FacesContext;
@@ -1054,6 +1055,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         String theadClientId = (theadId == null) ? table.getClientId(context) + "_head" : theadId;
         String colGroupType = (columnGroupType == null) ? "header" : columnGroupType;
         ColumnGroup group = table.getColumnGroup(colGroupType);
+        warnIgnoredColumnGroup(context, table, colGroupType, "frozenHeader", "scrollableHeader", "header");
 
         writer.startElement("thead", null);
         writer.writeAttribute("id", theadClientId, null);
@@ -1483,6 +1485,24 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         }
     }
 
+    /**
+     * #9854: with frozen columns only the frozen and scrollable column groups are used, a plain header/footer group is
+     * ignored. Warns once per render (on the frozen part) in development stage when the table relies on such a group.
+     */
+    private void warnIgnoredColumnGroup(FacesContext context, DataTable table, String colGroupType, String frozenType,
+            String scrollableType, String plainType) {
+        if (frozenType.equals(colGroupType)
+                && LOGGER.isLoggable(Level.WARNING)
+                && context.isProjectStage(ProjectStage.Development)
+                && table.getColumnGroup(plainType) != null
+                && table.getColumnGroup(frozenType) == null
+                && table.getColumnGroup(scrollableType) == null) {
+            LOGGER.log(Level.WARNING, "DataTable with frozenColumns ignores the column group of type \"{0}\", "
+                    + "use the types \"{1}\" and \"{2}\" instead. ClientId: {3}",
+                    new Object[]{plainType, frozenType, scrollableType, table.getClientId(context)});
+        }
+    }
+
     protected void encodeTFoot(FacesContext context, DataTable table) throws IOException {
         encodeTFoot(context, table, 0, table.getColumns().size(), null, null);
     }
@@ -1495,6 +1515,7 @@ public class DataTableRenderer extends DataRenderer<DataTable> {
         String tfootClientId = (tfootId == null) ? table.getClientId(context) + "_foot" : tfootId;
         String colGroupType = (columnGroupType == null) ? "footer" : columnGroupType;
         ColumnGroup group = table.getColumnGroup(colGroupType);
+        warnIgnoredColumnGroup(context, table, colGroupType, "frozenFooter", "scrollableFooter", "footer");
         boolean hasFooterColumn = table.hasFooterColumn();
         boolean shouldRenderFooter = (hasFooterColumn || group != null);
 

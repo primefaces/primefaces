@@ -625,6 +625,7 @@ public class CarBean {
 }
 ```
 For frozen columns, use `frozenHeader` , `frozenFooter` , `scrollableHeader` and `scrollableFooter` types.
+Column groups of type `header` and `footer` are not used with frozen columns.
 
 
 ## Row Grouping
