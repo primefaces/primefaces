@@ -34,6 +34,10 @@
                 <p:confirm type="popup" header="Question" message="Are you sure you want to proceed?"/>
             </p:commandButton>
 
+            <p:commandButton id="cancelled" value="Cancelled" action="#{confirmPopup001.question}" update="message" styleClass="p-mr-2">
+                <p:confirm type="popup" header="Cancelled" message="This should never be shown" beforeShow="false"/>
+            </p:commandButton>
+
             <p:confirmPopup id="confirmpopup" global="true" showEffect="fade" hideEffect="fade" icon="pi pi-question-circle">
                 <p:commandButton value="Yes" type="button" styleClass="p-confirm-popup-yes" icon="pi pi-check"/>
                 <p:commandButton value="No" type="button" styleClass="p-confirm-popup-no p-button-flat" icon="pi pi-times"/>
