@@ -92,6 +92,10 @@ Widget: _PrimeFaces.widget.SelectManyMenu_
 selectAll() | - | void | Selects all the options.
 unselectAll() | - | void | Unselects all the options.
 
+## Disabled Items
+A disabled select item (`itemDisabled="true"`) cannot be selected, submitting it fails validation. See
+[Disabled Select Items](/core/misc.md?id=disabled-select-items).
+
 ## Skinning
 SelectManyMenu resides in a container that _style_ and _styleClass_ attributes apply. As skinning style
 classes are global, see the main theming section for more information. Following is the list of
