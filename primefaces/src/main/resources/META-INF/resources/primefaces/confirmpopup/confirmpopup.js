@@ -346,15 +346,16 @@ PrimeFaces.widget.ConfirmPopup = PrimeFaces.widget.DynamicOverlayWidget.extend({
     showMessage: function(msg) {
         PrimeFaces.confirmPopupSource = (typeof (msg.source) === 'string') ? $(PrimeFaces.escapeClientId(msg.source)) : $(msg.source);
 
+        // Execute any code specified to run before showing the message, returning false cancels showing
+        if (msg.beforeShow) {
+            var beforeShowResult = PrimeFaces.csp.evalResult(msg.beforeShow);
+            if (beforeShowResult === false) {
+                return;
+            }
+        }
+
         var $this = this;
         var beforeShow = function() {
-            if (msg.beforeShow) {
-                const beforeShowResult = PrimeFaces.csp.evalResult(msg.beforeShow);
-                if (beforeShowResult === false) {
-                    return;
-                }
-            }
-
             var iconClass = msg.icon || $this.icon.data('p-icon');
             if (iconClass) {
                 $this.icon.removeClass().addClass('ui-confirm-popup-icon ' + iconClass);
