@@ -66,9 +66,22 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             // #2862 check if it matches a label and if so use the value
             if (!LangUtils.isValueBlank(editorInput)) {
                 List<SelectItem> selectItems = getSelectItems(context, menu);
-                Object foundValue = findEditableValue(context, selectItems, editorInput);
-                if (foundValue != null) {
-                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), foundValue));
+                Converter converter = menu.getConverter();
+                SelectItem foundItem = findEditableSelectItem(context, menu, converter, selectItems, editorInput, true);
+                if (foundItem != null) {
+                    menu.setSubmittedValue(getOptionAsString(context, menu, converter, foundItem.getValue()));
+                }
+                else {
+                    foundItem = findEditableSelectItem(context, menu, converter, selectItems, editorInput, false);
+                }
+
+                // #13954: a disabled item may not be entered, unless it is the current value
+                if (foundItem != null && foundItem.isDisabled()) {
+                    String itemValue = getOptionAsString(context, menu, converter, foundItem.getValue());
+                    if (LangUtils.isNotEmpty(itemValue)
+                            && !Objects.equals(itemValue, getOptionAsString(context, menu, converter, menu.getValue()))) {
+                        invalidateDisabledSelectItem(context, menu, UISelectOne.INVALID_MESSAGE_ID);
+                    }
                 }
             }
 
@@ -87,6 +100,35 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
      * @param editorInput the editor input value to search for
      * @return either the value found or NULL if no item found
      */
+    /**
+     * Finds the select item matching the entered text of an editable SelectOneMenu, either by its label (ignoring case)
+     * or by its value as string.
+     */
+    private SelectItem findEditableSelectItem(FacesContext context, SelectOneMenu menu, Converter converter,
+            List<SelectItem> selectItems, String editorInput, boolean byLabel) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem item = selectItems.get(i);
+            if (item instanceof SelectItemGroup) {
+                SelectItem[] groupItems = ((SelectItemGroup) item).getSelectItems();
+                if (groupItems != null) {
+                    SelectItem found = findEditableSelectItem(context, menu, converter, Arrays.asList(groupItems), editorInput, byLabel);
+                    if (found != null) {
+                        return found;
+                    }
+                }
+            }
+            else if (byLabel) {
+                if (item.getLabel() != null && item.getLabel().equalsIgnoreCase(editorInput)) {
+                    return item;
+                }
+            }
+            else if (editorInput.equals(getOptionAsString(context, menu, converter, item.getValue()))) {
+                return item;
+            }
+        }
+        return null;
+    }
+
     protected Object findEditableValue(FacesContext context, List<SelectItem> selectItems, String editorInput) {
         Object foundValue = null;
         for (int i = 0; i < selectItems.size(); i++) {
