@@ -28,7 +28,7 @@ import java.util.*;
 import javax.el.ELException;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
-import javax.faces.FacesException;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.*;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -37,7 +37,9 @@ import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
 
 import org.primefaces.component.api.WrapperSelectItem;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.LangUtils;
+import org.primefaces.util.MessageFactory;
 
 public abstract class SelectRenderer extends InputRenderer {
 
@@ -357,8 +359,8 @@ public abstract class SelectRenderer extends InputRenderer {
     }
 
     /**
-     * Restores checked, disabled select items (#3296) and checks if at least one disabled select item has been submitted -
-     * this may occur with client side manipulation (#3264)
+     * Restores checked, disabled select items (#3296) and leaves out submitted disabled select items which were not
+     * checked before - this may occur with client side manipulation (#3264, #13954)
      *
      * @param context The FacesContext
      * @param component The component
@@ -366,26 +368,63 @@ public abstract class SelectRenderer extends InputRenderer {
      * @param submittedValues The submitted value(s)
      *
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
-     * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected List<String> validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
-            throws FacesException {
-        return doValidateSubmittedValues(
-                context,
-                component,
-                oldValues,
-                getSelectItems(context, component),
-                submittedValues);
+    protected List<String> validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues) {
+        return validateSubmittedValues(context, component, oldValues, null, submittedValues);
     }
 
-    private List<String> doValidateSubmittedValues(
-            FacesContext context,
-            UIInput component,
-            Object[] oldValues,
-            List<SelectItem> selectItems,
-            String... submittedValues) {
+    /**
+     * Restores checked, disabled select items (#3296) and collects submitted disabled select items which were not
+     * checked before - this may occur with client side manipulation (#3264) or when the item has been disabled
+     * after rendering (#13954).
+     * A disabled select item with an empty value (a placeholder) is never treated as a submitted disabled item.
+     *
+     * @param context The FacesContext
+     * @param component The component
+     * @param oldValues The old value(s)
+     * @param disabledSubmittedValues Optional list to collect the submitted disabled select item values which were not checked before
+     * @param submittedValues The submitted value(s)
+     *
+     * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
+     */
+    protected List<String> validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues,
+            List<String> disabledSubmittedValues, String... submittedValues) {
+
+        // resolve the converter once instead of per select-item
+        Converter converter = component.getConverter();
+
+        // oldValues are model values (e.g. Integer, enum, entity), convert them once to compare them with the
+        // string values of the select items
+        Set<String> oldValuesSet;
+        if (oldValues == null || oldValues.length == 0) {
+            oldValuesSet = Collections.emptySet();
+        }
+        else {
+            oldValuesSet = new HashSet<>(oldValues.length);
+            for (Object oldValue : oldValues) {
+                oldValuesSet.add(getOptionAsString(context, component, converter, oldValue));
+            }
+        }
+
+        Set<String> submittedValuesSet = (submittedValues == null || submittedValues.length == 0)
+                ? Collections.emptySet()
+                : new HashSet<>(Arrays.asList(submittedValues));
 
         List<String> validSubmittedValues = new ArrayList<>();
+        doValidateSubmittedValues(context, component, converter, oldValuesSet, submittedValuesSet,
+                getSelectItems(context, component), validSubmittedValues, disabledSubmittedValues);
+        return validSubmittedValues;
+    }
+
+    private void doValidateSubmittedValues(
+            FacesContext context,
+            UIInput component,
+            Converter converter,
+            Set<String> oldValues,
+            Set<String> submittedValues,
+            List<SelectItem> selectItems,
+            List<String> validSubmittedValues,
+            List<String> disabledSubmittedValues) {
 
         // loop attached SelectItems - other values are not allowed
         for (int i = 0; i < selectItems.size(); i++) {
@@ -394,36 +433,46 @@ public abstract class SelectRenderer extends InputRenderer {
                 // if it's a SelectItemGroup also include its children in the checked values
                 SelectItem[] groupItemsArray = ((SelectItemGroup) selectItem).getSelectItems();
                 if (groupItemsArray != null && groupItemsArray.length > 0) {
-                    validSubmittedValues.addAll(
-                            doValidateSubmittedValues(context,
-                                    component,
-                                    oldValues,
-                                    Arrays.asList(groupItemsArray),
-                                    submittedValues));
+                    doValidateSubmittedValues(context, component, converter, oldValues, submittedValues,
+                            Arrays.asList(groupItemsArray), validSubmittedValues, disabledSubmittedValues);
                 }
             }
             else {
-                String selectItemVal = getOptionAsString(context, component, component.getConverter(), selectItem.getValue());
+                String selectItemVal = getOptionAsString(context, component, converter, selectItem.getValue());
 
                 if (selectItem.isDisabled()) {
-                    if (LangUtils.contains(submittedValues, selectItemVal) && !LangUtils.contains(oldValues, selectItemVal)) {
-                        // disabled select item has been selected
-                        // throw new FacesException("Disabled select item has been submitted. ClientId: " + component.getClientId(context));
-                        // ignore it silently for now
-                    }
-                    else if (LangUtils.contains(oldValues, selectItemVal)) {
+                    if (oldValues.contains(selectItemVal)) {
+                        // a checked, disabled item is not submitted by the browser, restore it (#3296)
                         validSubmittedValues.add(selectItemVal);
+                    }
+                    else if (submittedValues.contains(selectItemVal) && disabledSubmittedValues != null
+                            && LangUtils.isNotEmpty(selectItemVal)) {
+                        // a disabled item which was not checked before has been submitted: client side manipulation
+                        // (#3264) or the item has been disabled after rendering (#13954). The caller marks the
+                        // component as invalid. An empty value is a placeholder and not collected here.
+                        disabledSubmittedValues.add(selectItemVal);
                     }
                 }
                 else {
-                    if (LangUtils.contains(submittedValues, selectItemVal)) {
+                    if (submittedValues.contains(selectItemVal)) {
                         validSubmittedValues.add(selectItemVal);
                     }
                 }
             }
         }
+    }
 
-        return validSubmittedValues;
+    /**
+     * Marks the component as invalid because a disabled select item has been submitted (#13954).
+     *
+     * @param context The FacesContext
+     * @param component The component
+     * @param messageId The message id, e.g. {@link javax.faces.component.UISelectOne#INVALID_MESSAGE_ID}
+     */
+    protected void invalidateDisabledSelectItem(FacesContext context, UIInput component, String messageId) {
+        component.setValid(false);
+        context.addMessage(component.getClientId(context), MessageFactory.getFacesMessage(messageId,
+                FacesMessage.SEVERITY_ERROR, ComponentUtils.getLabel(context, component)));
     }
 
     /**
