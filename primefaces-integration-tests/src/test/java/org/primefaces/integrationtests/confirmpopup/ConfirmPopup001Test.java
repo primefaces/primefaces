@@ -194,6 +194,45 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
         confirmYes(page);
     }
 
+    @Test
+    @Order(7)
+    @DisplayName("ConfirmPopup: beforeShow returning false prevents the popup from showing")
+    void beforeShowCancels(Page page) {
+        // Arrange
+        ConfirmPopup popup = page.popup;
+        assertFalse(popup.isVisible());
+
+        // Act
+        page.cancelled.click();
+
+        // Assert
+        assertFalse(popup.isVisible());
+        assertTrue(page.messages.isEmpty());
+        assertTrue((Boolean) PrimeSelenium.executeScript("return PrimeFaces.confirmPopupSource == null;"));
+        assertConfiguration(popup.getClientConfiguration());
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("ConfirmPopup: beforeShow returning false does not retarget an already open popup")
+    void beforeShowCancelsKeepsOpenPopup(Page page) {
+        // Arrange
+        ConfirmPopup popup = page.popup;
+        page.confirm.click();
+        assertTrue(popup.isVisible());
+
+        // Act
+        PrimeSelenium.executeScript("PrimeFaces.confirm({source:'form:cancelled',type:'popup',message:'This should never be shown',beforeShow:'false'});");
+
+        // Assert
+        assertTrue(popup.isVisible());
+        assertEquals("Are you sure you want to proceed?", popup.getMessage().getText());
+        popup.confirm();
+        assertFalse(popup.isVisible());
+        assertMessage(page, "You have accepted");
+        assertConfiguration(popup.getClientConfiguration());
+    }
+
     private void assertMessage(Page page, String message) {
         Messages messages = page.messages;
         PrimeSelenium.waitGui().until(PrimeExpectedConditions.visibleInViewport(messages));
@@ -225,6 +264,9 @@ class ConfirmPopup001Test extends AbstractPrimePageTest {
 
         @FindBy(id = "form:question")
         CommandButton question;
+
+        @FindBy(id = "form:cancelled")
+        CommandButton cancelled;
 
         @Override
         public String getLocation() {
