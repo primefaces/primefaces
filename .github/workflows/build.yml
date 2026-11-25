@@ -48,7 +48,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 21, 23]
+        # at most 4 integration test jobs on maintenance branches (Maven Central rate limit):
+        # javax on the oldest Java here, jakarta on the newest Java below
+        java: [11]
         facesimpl: [ 'mojarra-2.3', 'myfaces-2.3']
     steps:
       - uses: actions/checkout@v4
@@ -78,7 +80,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: [11, 21]
+        java: [21]
         facesimpl: [ 'mojarra-4.0', 'myfaces-4.0' ]
     steps:
       - uses: actions/checkout@v4
