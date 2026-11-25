@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces">
+
+    <h:head>
+        <title>coreAjax004</title>
+    </h:head>
+
+    <h:body>
+        <h:outputScript>
+            // remembers if the script of PrimeFaces.current().executeScript(...) ran before the page is left
+            window.addEventListener('beforeunload', function() {
+                sessionStorage.setItem('coreAjax004', String(window.coreAjax004ScriptExecuted === true));
+            });
+        </h:outputScript>
+
+        <h:form id="form">
+            <p:commandButton id="button" value="executeScript and redirect"
+                action="#{coreAjax004.redirect}" />
+        </h:form>
+    </h:body>
+</html>
