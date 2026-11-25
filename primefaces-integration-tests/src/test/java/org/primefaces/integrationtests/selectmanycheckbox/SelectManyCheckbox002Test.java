@@ -1,0 +1,135 @@
+/*
+ * The MIT License
+ *
+ * Copyright (c) 2009-2025 PrimeTek
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package org.primefaces.integrationtests.selectmanycheckbox;
+
+import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.AbstractPrimePageTest;
+import org.primefaces.selenium.PrimeSelenium;
+import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.Messages;
+import org.primefaces.selenium.component.SelectManyCheckbox;
+import org.primefaces.selenium.component.model.SelectItem;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class SelectManyCheckbox002Test extends AbstractPrimePageTest {
+
+    @Test
+    @Order(1)
+    @DisplayName("SelectManyCheckbox: enabled options can still be selected and submitted")
+    void selectEnabledOptions(Page page) {
+        // Arrange
+        SelectManyCheckbox selectManyCheckbox = page.selectManyCheckbox;
+
+        // Act - select the enabled options
+        selectManyCheckbox.select(0, 1, 3);
+        page.button.click();
+
+        // Assert
+        assertSelected(selectManyCheckbox, Arrays.asList("Lewis", "Max", "Lando"));
+        assertTrue(page.messages.getMessage(0).getDetail().contains("Lewis,Max,Lando"));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("SelectManyCheckbox: GitHub #13954 a tampered disabled option fails validation")
+    void tamperedDisabledOption(Page page) {
+        // Arrange
+        SelectManyCheckbox selectManyCheckbox = page.selectManyCheckbox;
+
+        // Act - submit the disabled "Charles" via the "Lewis" checkbox
+        WebElement lewis = getWebDriver().findElement(By.cssSelector("input[value='Lewis']"));
+        PrimeSelenium.setHiddenInput(lewis, "Charles");
+        selectManyCheckbox.select(0, 1);
+        page.button.click();
+
+        // Assert - validation failed, the action has not been invoked
+        assertEquals(1, page.messages.getAllMessages().size());
+        String summary = page.messages.getMessage(0).getSummary();
+        assertTrue(summary.contains("Drivers") && summary.contains("Value is not valid"), summary);
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("SelectManyCheckbox: GitHub #13954 after a tampered disabled option the checked state shows the current value")
+    void tamperedDisabledOptionKeepsCheckedDisabledOption(Page page) {
+        // Arrange - "Max" (disabled) is preselected
+        SelectManyCheckbox preset = page.preset;
+        assertSelected(preset, Arrays.asList("Max"));
+
+        // Act - submit the disabled "Charles" via the "Lando" checkbox, plus "Lewis"
+        // (toggle instead of select: select() starts with deselectAll(), which would click the disabled "Max")
+        WebElement lando = getWebDriver().findElement(By.cssSelector("input[name='form:preset'][value='Lando']"));
+        PrimeSelenium.setHiddenInput(lando, "Charles");
+        preset.toggle(0, 3);
+        page.button.click();
+
+        // Assert - validation failed, "Max" is still checked, the tampered "Charles" is not
+        String summary = page.messages.getMessage(0).getSummary();
+        assertTrue(summary.contains("Preset") && summary.contains("Value is not valid"), summary);
+        assertSelected(preset, Arrays.asList("Lewis", "Max"));
+        assertNoJavascriptErrors();
+    }
+
+    private static void assertSelected(SelectManyCheckbox selectManyCheckbox, List<String> expectedSelection) {
+        List<String> selectedLabels = selectManyCheckbox.getItems().stream()
+                .filter(SelectItem::isSelected)
+                .map(SelectItem::getLabel)
+                .collect(Collectors.toList());
+        assertEquals(expectedSelection, selectedLabels);
+    }
+
+    public static class Page extends AbstractPrimePage {
+        @FindBy(id = "form:msgs")
+        Messages messages;
+
+        @FindBy(id = "form:selectmanycheckbox")
+        SelectManyCheckbox selectManyCheckbox;
+
+        @FindBy(id = "form:preset")
+        SelectManyCheckbox preset;
+
+        @FindBy(id = "form:button")
+        CommandButton button;
+
+        @Override
+        public String getLocation() {
+            return "selectmanycheckbox/selectManyCheckbox002.xhtml";
+        }
+    }
+}
