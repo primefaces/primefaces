@@ -1391,6 +1391,8 @@ export class AjaxResponse {
             if (pfArgs) {
                 pfArgs.redirect = true;
             }
+            // the scripts of PrimeFaces.current().executeScript(...) must run before the page is left, see #13289
+            this.executeScripts(xhr, status, xml);
             ajax.ResponseProcessor.doRedirect(currentNode);
             break;
         }
@@ -1447,6 +1449,8 @@ export class AjaxResponse {
             }
         } finally {
             delete (window.PrimeFaces as any).scriptContext;
+            // each script is executed only once, e.g. not again on complete when it already ran before a redirect
+            delete xhr.pfScripts;
         }
     }
 

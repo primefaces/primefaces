@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:h="jakarta.faces.html"
+      xmlns:p="primefaces">
+
+    <h:head>
+        <title>coreAjax004</title>
+    </h:head>
+
+    <h:body>
+        <h:outputScript>
+            // remembers if the script of PrimeFaces.current().executeScript(...) ran before or after the page started to unload
+            var coreAjax004Unloading = false;
+            window.addEventListener('beforeunload', function() {
+                coreAjax004Unloading = true;
+            });
+            function coreAjax004Script() {
+                sessionStorage.setItem(coreAjax004Unloading ? 'coreAjax004AfterUnload' : 'coreAjax004BeforeUnload', 'true');
+            }
+        </h:outputScript>
+
+        <h:form id="form">
+            <p:commandButton id="button" value="executeScript and redirect"
+                action="#{coreAjax004.redirect}" />
+        </h:form>
+    </h:body>
+</html>
