@@ -114,6 +114,15 @@ mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
 - Options: `headless`, `csp` (Content Security Policy), `client-state-saving`
 - Screenshots on failure are written to `/tmp/pf_it/` (override with `SCREENSHOT_DIRECTORY`)
 
+**Showcase** (manual testing):
+- Start: `mvn -B -f primefaces-showcase/pom.xml clean jetty:run -Pnon-ee,mojarra-4.0`, URL `http://localhost:8080/showcase/`
+  (16.X still uses the context path `/showcase`, only master was changed to `/`).
+- Port 8080 is shared with the master showcase and the integration tests' `jetty:run` (`/integrationtests/`); only one
+  of them can run. Check `curl -s -o /dev/null -w "%{http_code}" http://localhost:8080/showcase/index.xhtml`
+  (200/302 = up) before starting it, never stop a running one.
+- Changes in `primefaces/` need `mvn -B -o install -Pquick -f primefaces/pom.xml` first and a showcase restart
+  (no automatic redeployment).
+
 ## Linting & Code Style
 
 ```bash
