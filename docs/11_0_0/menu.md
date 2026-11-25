@@ -30,6 +30,7 @@
   - [Content Security Policy](/core/contentsecuritypolicy.md)
   - [Cookies](/core/cookies.md)
   - [Dialog Framework](/core/dialogframework.md)
+  - [Disabled Select Items](/core/disabledselectitems.md)
   - [Dynamic Content Streaming / Rendering](/core/dynamiccontent.md)
   - [EL Functions](/core/elFunctions.md)
   - [Error Handling](/core/errorhandling.md)
