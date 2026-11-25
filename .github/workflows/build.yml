@@ -61,11 +61,6 @@ jobs:
             facesimpl: 'mojarra-4.0'
           - java: 17
             facesimpl: 'myfaces-4.0'
-          # Java 21 with Faces 4.1
-          - java: 21
-            facesimpl: 'mojarra-4.1'
-          - java: 21
-            facesimpl: 'myfaces-4.1'
           # Java 25 with both Faces 4.0 and 4.1
           - java: 25
             facesimpl: 'mojarra-4.0'
