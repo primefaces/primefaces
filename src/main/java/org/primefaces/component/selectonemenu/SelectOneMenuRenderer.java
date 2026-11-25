@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.el.ValueExpression;
 import javax.faces.component.UIComponent;
@@ -45,6 +46,7 @@ import org.primefaces.expression.SearchExpressionUtils;
 import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
+import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
@@ -64,12 +66,24 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             menu.setSubmittedValue(editorInput);
 
             // #2862 check if it matches a label and if so use the value
-            List<SelectItem> selectItems = getSelectItems(context, menu);
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem item = selectItems.get(i);
-                if (item.getLabel().equalsIgnoreCase(editorInput)) {
-                    menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
-                    break;
+            if (!LangUtils.isValueBlank(editorInput)) {
+                List<SelectItem> selectItems = getSelectItems(context, menu);
+                Converter converter = menu.getConverter();
+                SelectItem foundItem = findEditableSelectItem(context, menu, converter, selectItems, editorInput, true);
+                if (foundItem != null) {
+                    menu.setSubmittedValue(getOptionAsString(context, menu, converter, foundItem.getValue()));
+                }
+                else {
+                    foundItem = findEditableSelectItem(context, menu, converter, selectItems, editorInput, false);
+                }
+
+                // #13954: a disabled item may not be entered, unless it is the current value
+                if (foundItem != null && foundItem.isDisabled()) {
+                    String itemValue = getOptionAsString(context, menu, converter, foundItem.getValue());
+                    if (LangUtils.isNotEmpty(itemValue)
+                            && !Objects.equals(itemValue, getOptionAsString(context, menu, converter, menu.getValue()))) {
+                        invalidateDisabledSelectItem(context, menu, UISelectOne.INVALID_MESSAGE_ID);
+                    }
                 }
             }
 
@@ -78,6 +92,35 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         else {
             super.decode(context, component);
         }
+    }
+
+    /**
+     * Finds the select item matching the entered text of an editable SelectOneMenu, either by its label (ignoring case)
+     * or by its value as string.
+     */
+    private SelectItem findEditableSelectItem(FacesContext context, SelectOneMenu menu, Converter converter,
+            List<SelectItem> selectItems, String editorInput, boolean byLabel) {
+        for (int i = 0; i < selectItems.size(); i++) {
+            SelectItem item = selectItems.get(i);
+            if (item instanceof SelectItemGroup) {
+                SelectItem[] groupItems = ((SelectItemGroup) item).getSelectItems();
+                if (groupItems != null) {
+                    SelectItem found = findEditableSelectItem(context, menu, converter, Arrays.asList(groupItems), editorInput, byLabel);
+                    if (found != null) {
+                        return found;
+                    }
+                }
+            }
+            else if (byLabel) {
+                if (item.getLabel() != null && item.getLabel().equalsIgnoreCase(editorInput)) {
+                    return item;
+                }
+            }
+            else if (editorInput.equals(getOptionAsString(context, menu, converter, item.getValue()))) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @Override
