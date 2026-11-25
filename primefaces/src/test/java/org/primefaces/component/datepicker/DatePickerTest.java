@@ -127,6 +127,7 @@ class DatePickerTest {
         when(datePicker.validateTimeOnlyValue(eq(context), any())).thenCallRealMethod();
         when(datePicker.validateValueInternal(eq(context), any())).thenCallRealMethod();
         when(datePicker.isDateView()).thenCallRealMethod();
+        when(datePicker.isInTimeWindow(any())).thenCallRealMethod();
 
         externalContext = mock(ExternalContext.class);
         elContext = mock(ELContext.class);
@@ -1051,6 +1052,73 @@ class DatePickerTest {
         DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 12, 8, 00));
         assertFalse(datePicker.isValid());
         assertEquals(DatePicker.ValidationResult.INVALID_OUT_OF_RANGE, validationResult);
+    }
+
+    @Test
+    void validateValueInternal_timeWindow_LocalDateTime() {
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMinTime()).thenReturn(LocalTime.of(9, 0));
+        when(datePicker.getMaxTime()).thenReturn("17:00");
+        assertEquals(DatePicker.ValidationResult.OK, datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 12, 9, 0)));
+        assertEquals(DatePicker.ValidationResult.OK, datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 13, 17, 0)));
+        assertTrue(datePicker.isValid());
+    }
+
+    @Test
+    void validateValueInternal_timeWindow_LocalDateTime_beforeMinTime() {
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        // unlike mindate, minTime applies to every day
+        when(datePicker.getMindate()).thenReturn(LocalDateTime.of(2019, 11, 12, 9, 0));
+        when(datePicker.getMinTime()).thenReturn(LocalTime.of(9, 0));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 13, 8, 59));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_DISABLED_DATE, validationResult);
+    }
+
+    @Test
+    void validateValueInternal_timeWindow_String_afterMaxTime() {
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMaxTime()).thenReturn("17:00");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDateTime.of(2019, 11, 12, 17, 1));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_DISABLED_DATE, validationResult);
+    }
+
+    @Test
+    void validateValueInternal_timeWindow_LocalDate() {
+        when(datePicker.getMinTime()).thenReturn(LocalTime.of(9, 0));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalDate.of(2019, 11, 12));
+        assertTrue(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.OK, validationResult);
+    }
+
+    @Test
+    void validateValueInternal_timeWindow_range_afterMaxTime() {
+        when(datePicker.isShowTime()).thenReturn(Boolean.TRUE);
+        when(datePicker.getSelectionMode()).thenReturn("range");
+        when(datePicker.getMaxTime()).thenReturn(LocalTime.of(17, 0));
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context,
+                Arrays.asList(LocalDateTime.of(2019, 11, 12, 9, 0), LocalDateTime.of(2019, 11, 14, 18, 0)));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_DISABLED_DATE, validationResult);
+    }
+
+    @Test
+    void validateValueInternal_timeWindow_LocalTime_beforeMinTime() {
+        when(datePicker.isTimeOnly()).thenReturn(Boolean.TRUE);
+        when(datePicker.getMinTime()).thenReturn("09:00");
+        when(datePicker.getMaxTime()).thenReturn("17:00");
+        DatePicker.ValidationResult validationResult = datePicker.validateValueInternal(context, LocalTime.of(8, 0));
+        assertFalse(datePicker.isValid());
+        assertEquals(DatePicker.ValidationResult.INVALID_DISABLED_DATE, validationResult);
+    }
+
+    @Test
+    void validateMinMax_timeWindow_minTimeAfterMaxTime() {
+        doCallRealMethod().when(datePicker).validateMinMax(context);
+        when(datePicker.getMinTime()).thenReturn("22:00");
+        when(datePicker.getMaxTime()).thenReturn(LocalTime.of(6, 0));
+        assertThrows(FacesException.class, () -> datePicker.validateMinMax(context));
     }
 
     @Test

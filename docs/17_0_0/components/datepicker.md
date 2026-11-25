@@ -166,6 +166,14 @@ The TimePicker pattern can be modified with the properties _hourFormat_ and _sho
 <p:datePicker value="#{dateBean.time}" timeOnly="true" hourFormat="12" showSeconds="true" />
 ```
 
+To restrict the time of every day, e.g. to opening hours, use _minTime_ and _maxTime_ (a java.time.LocalTime or a String
+like `09:00`). Unlike the time part of _mindate_ / _maxdate_, they are not limited to the first / last day. Like them, they
+are validated on the server. A time window over midnight is not supported.
+
+```xhtml
+<p:datePicker value="#{dateBean.dateTime}" showTime="true" minTime="09:00" maxTime="17:00" />
+```
+
 ## Client Side API
 Component: _PrimeFaces.component.DatePicker_
 

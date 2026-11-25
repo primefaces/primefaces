@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true"/>
+
+            <p:datePicker id="dateTime" value="#{datePicker021.dateTime}" pattern="MM/dd/yyyy HH:mm" showOnFocus="false"
+                          minTime="#{datePicker021.minTime}" maxTime="17:00"/>
+            <p:commandButton id="dateTimeButton" value="Submit" process="@this dateTime" update="@form"/>
+            <h:outputText id="dateTimeValue" value="#{datePicker021.dateTime}"/>
+
+            <p:datePicker id="earlyDateTime" value="#{datePicker021.earlyDateTime}" pattern="MM/dd/yyyy HH:mm" showOnFocus="false"
+                          minTime="09:00" maxTime="17:00"/>
+            <p:commandButton id="earlyDateTimeButton" value="Submit" process="@this earlyDateTime" update="@form"/>
+            <h:outputText id="earlyDateTimeValue" value="#{datePicker021.earlyDateTime}"/>
+
+            <p:datePicker id="emptyDateTime" value="#{datePicker021.emptyDateTime}" pattern="MM/dd/yyyy HH:mm" showOnFocus="false"
+                          minTime="09:00" maxTime="17:00"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

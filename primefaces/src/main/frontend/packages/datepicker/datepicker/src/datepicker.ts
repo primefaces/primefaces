@@ -199,8 +199,12 @@ export interface DatePickerCfg extends PrimeFaces.component.BaseComponentCfg {
     maxDate: string | Date | null;
     /** Maximum number of selected dates in multiple selection mode. */
     maxDateCount: number | null;
+    /** Latest selectable time of every day, as `HH:mm[:ss]`. */
+    maxTime: string | null;
     /** Minimum selectable date. */
     minDate: string | Date | null;
+    /** Earliest selectable time of every day, as `HH:mm[:ss]`. */
+    minTime: string | null;
     /** Whether the month can be selected with a dropdown. */
     monthNavigator: boolean;
     /** Number of displayed months. */
@@ -362,7 +366,9 @@ const DEFAULTS: Omit<DatePickerCfg, Exclude<keyof PrimeFaces.component.BaseCompo
     maskSlotChar: '_',
     maxDate: null,
     maxDateCount: null,
+    maxTime: null,
     minDate: null,
+    minTime: null,
     monthNavigator: false,
     numberOfMonths: 1,
     onMonthChange: null,
@@ -1057,6 +1063,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         o.maxDate = this.parseMinMaxValue(o.maxDate);
 
         if (viewDateDefaultsToNow) {
+            this.clampToTimeWindow(this.viewDate);
             if (this.minDate && this.viewDate < this.minDate) {
                 this.viewDate = new Date(this.minDate.getTime());
             }
@@ -3769,6 +3776,7 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
             date.setMinutes(this.stepMinute(time.getMinutes()));
             date.setSeconds(time.getSeconds());
             date.setMilliseconds(time.getMilliseconds());
+            this.clampToTimeWindow(date);
         }
 
         if (this.minDate && this.minDate > date) {
@@ -3871,8 +3879,8 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
     }
 
     /**
-     * Checks whether a time on the day of the given date is within min / max date. When the time is stepped, a new time
-     * still outside of the range is valid if it comes nearer to it.
+     * Checks whether a time on the day of the given date is within min / max date and time. When the time is stepped, a
+     * new time still outside of the range is valid if it comes nearer to it.
      * @param hour The new hour.
      * @param minute The new minute.
      * @param second The new second.
@@ -3891,7 +3899,43 @@ export class DatePicker<Cfg extends DatePickerCfg = DatePickerCfg> extends Prime
         if (this.maxDate && this.maxDate < dateNew && !(direction === 'DECREMENT' && this.maxDate < value)) {
             return false;
         }
+
+        const timeOfDayNew = this.getTimeOfDay(dateNew);
+        const timeOfDay = this.getTimeOfDay(value);
+        const minTime = this.parseTimeOfDay(this.options.minTime);
+        const maxTime = this.parseTimeOfDay(this.options.maxTime);
+        if (minTime !== null && minTime > timeOfDayNew && !(direction === 'INCREMENT' && minTime > timeOfDay)) {
+            return false;
+        }
+        if (maxTime !== null && maxTime < timeOfDayNew && !(direction === 'DECREMENT' && maxTime < timeOfDay)) {
+            return false;
+        }
         return true;
+    }
+
+    private clampToTimeWindow(date: Date): void {
+        const timeOfDay = this.getTimeOfDay(date);
+        const minTime = this.parseTimeOfDay(this.options.minTime);
+        const maxTime = this.parseTimeOfDay(this.options.maxTime);
+        if (minTime !== null && timeOfDay < minTime) {
+            date.setHours(0, 0, 0, minTime);
+        }
+        else if (maxTime !== null && timeOfDay > maxTime) {
+            date.setHours(0, 0, 0, maxTime);
+        }
+    }
+
+    /** Milliseconds since the start of the day, the unit of the parsed `minTime` / `maxTime`. */
+    private getTimeOfDay(date: Date): number {
+        return ((date.getHours() * 60 + date.getMinutes()) * 60 + date.getSeconds()) * 1000 + date.getMilliseconds();
+    }
+
+    private parseTimeOfDay(option: string | null | undefined): number | null {
+        if (!option) {
+            return null;
+        }
+        const [hour = 0, minute = 0, second = 0] = option.split(':').map(Number);
+        return Math.round(((hour * 60 + minute) * 60 + second) * 1000);
     }
 
     /**

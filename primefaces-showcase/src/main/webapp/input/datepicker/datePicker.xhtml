@@ -144,6 +144,11 @@
 					</div>
 
 					<div class="field col-12 md:col-4">
+						<p:outputLabel for="timeWindow" value="Time (Every Day 09:00-17:00)" />
+						<p:datePicker id="timeWindow" value="#{datePickerView.date18}" showTime="true" minTime="09:00" maxTime="17:00" />
+					</div>
+
+					<div class="field col-12 md:col-4">
 						<p:outputLabel for="timeDe" value="Time (German)" />
 						<p:datePicker id="timeDe" value="#{datePickerView.dateTimeDe}" showTime="true" locale="de" pattern="dd.MM.yyyy" />
 					</div>

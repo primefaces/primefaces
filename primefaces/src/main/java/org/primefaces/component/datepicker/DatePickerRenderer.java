@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
@@ -216,6 +217,8 @@ public class DatePickerRenderer extends BaseDatePickerRenderer<DatePicker> {
             .attr("yearRange", component.getYearRange(), null)
             .attr("minDate", getMinMaxDate(context, component, component.getMindate(), false), null)
             .attr("maxDate", getMinMaxDate(context, component, component.getMaxdate(), true), null)
+            .attr("minTime", Objects.toString(DatePicker.toLocalTime(component.getMinTime()), null), null)
+            .attr("maxTime", Objects.toString(DatePicker.toLocalTime(component.getMaxTime()), null), null)
             .attr("selectionMode", selectionMode, null)
             .attr("showOnFocus", component.isShowOnFocus())
             .attr("shortYearCutoff", component.getShortYearCutoff(), null)
