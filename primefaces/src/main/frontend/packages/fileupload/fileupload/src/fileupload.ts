@@ -624,9 +624,6 @@ export class FileUpload<Cfg extends FileUploadCfg = FileUploadCfg> extends Prime
                     if ($this.cfg.oncomplete) {
                         $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs ?? {}, data);
                     }
-
-                    // scripts added via PrimeFaces.current().executeScript(...)
-                    PrimeFaces.ajax.Response.executeScripts(data.jqXHR, data.textStatus, data.jqXHR.responseXML);
                 }
             },
 

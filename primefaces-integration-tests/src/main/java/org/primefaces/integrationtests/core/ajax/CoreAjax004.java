@@ -32,8 +32,12 @@ import jakarta.inject.Named;
 @RequestScoped
 public class CoreAjax004 {
 
+    public void executeScript() {
+        PrimeFaces.current().executeScript("window.coreAjax004Executed = true;");
+    }
+
     public String redirect() {
-        PrimeFaces.current().executeScript("window.coreAjax004ScriptExecuted = true;");
+        PrimeFaces.current().executeScript("coreAjax004Script();");
 
         return "coreAjax004?faces-redirect=true&redirected=true";
     }

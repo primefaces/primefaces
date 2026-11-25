@@ -493,9 +493,6 @@ export class AjaxRequest {
                     cfg.oncomplete.call(this, xhr, status, pfArgs, data);
                 }
 
-                // finally, call the programmatic scripts
-                ajax.Response.executeScripts(xhr, status, data);
-
                 if (global) {
                     $(document).trigger('pfAjaxComplete', [xhr, this, pfArgs]);
                 }

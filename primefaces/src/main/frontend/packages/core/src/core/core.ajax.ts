@@ -338,7 +338,7 @@ declare global {
             pfArgs?: P;
             /**
              * An array with scripts added by PrimeFaces.current().executeScript(...).
-             * These will be invoked the same way as the oncomplete attribute of an ajax source.
+             * These will be invoked with the same arguments as the oncomplete attribute of an ajax source.
              */
             pfScripts?: string[];
             /**

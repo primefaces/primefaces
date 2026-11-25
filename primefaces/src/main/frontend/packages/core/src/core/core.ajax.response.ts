@@ -95,6 +95,9 @@ export class AjaxResponse {
             }
         }
 
+        // the scripts of PrimeFaces.current().executeScript(...), after all changes and before the page is left
+        this.executeScripts(xhr, status, xml);
+
         // handle redirect as last step, see #13289
         const redirectNodes = Array.from(partialResponseNode.childNodes).filter(node => node.nodeName === "redirect");
         for (const currentNode of redirectNodes) {
@@ -102,8 +105,6 @@ export class AjaxResponse {
             if (pfArgs) {
                 pfArgs.redirect = true;
             }
-            // the scripts of PrimeFaces.current().executeScript(...) must run before the page is left, see #13289
-            this.executeScripts(xhr, status, xml);
             ajax.ResponseProcessor.doRedirect(currentNode);
             break;
         }
@@ -127,42 +128,25 @@ export class AjaxResponse {
 
     /**
      * Executes the scripts added via `PrimeFaces.current().executeScript(...)`, which were collected in
-     * {@link PrimeFaces.ajax.pfXHR.pfScripts} while handling the response. They are invoked the same way as the
-     * `oncomplete` attribute of an AJAX source. Components sending their own AJAX request instead of using
-     * {@link AjaxRequest.send} (e.g. FileUpload) must call this after their `oncomplete` callback.
+     * {@link PrimeFaces.ajax.pfXHR.pfScripts} while handling the response. They get the same arguments as the
+     * `oncomplete` attribute of an AJAX source. {@link AjaxResponse.handle} calls this after all changes of the
+     * response and before a redirect, so they run before `oncomplete`; there is no need to call it elsewhere.
      * @param xhr The XHR request to which a response was received.
      * @param status Text status of the request.
      * @param data The data returned by the request.
      */
-    executeScripts(xhr: string | PrimeFaces.ajax.pfXHR | null | undefined, status?: string, data?: unknown): void {
-        if (!xhr || typeof xhr === "string" || !xhr.pfScripts?.length) {
-            return;
-        }
+    executeScripts(xhr: PrimeFaces.ajax.pfXHR, status?: string, data?: unknown): void {
+        const scripts = xhr.pfScripts ?? [];
+        // each script is executed only once, also when this is called again for the same response
+        delete xhr.pfScripts;
 
-        const { pfArgs = {}, pfScripts, pfSettings = {} } = xhr;
-        try {
-            (window.PrimeFaces as any).scriptContext = {
-                xhr: xhr,
-                status: status,
-                args: pfArgs,
-                data: data
-            };
-
-            for (const script of pfScripts) {
-                csp.eval(`(function(xhr, status, args, data) {
-                    ${script}
-                })(
-                    window.PrimeFaces.scriptContext.xhr,
-                    window.PrimeFaces.scriptContext.status,
-                    window.PrimeFaces.scriptContext.args,
-                    window.PrimeFaces.scriptContext.data
-                );`, pfSettings.nonce, window);
-            }
-        } finally {
-            delete (window.PrimeFaces as any).scriptContext;
-            // each script is executed only once, e.g. not again on complete when it already ran before a redirect
-            delete xhr.pfScripts;
+        // CSP: the scripts can only be evaluated as global code, so a global hands over their arguments
+        const pf = window.PrimeFaces as any;
+        pf.scriptArgs = [xhr, status, xhr.pfArgs ?? {}, data];
+        for (const script of scripts) {
+            csp.eval(`(function(xhr, status, args, data) {${script}\n}).apply(window, PrimeFaces.scriptArgs);`, xhr.pfSettings?.nonce);
         }
+        delete pf.scriptArgs;
     }
 
     /**

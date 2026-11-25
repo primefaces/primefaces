@@ -388,9 +388,6 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg = SimpleFileUpload
                     $this.cfg.oncomplete.call(this, xhr, status, pfArgs, data);
                 }
 
-                // scripts added via PrimeFaces.current().executeScript(...)
-                PrimeFaces.ajax.Response.executeScripts(xhr, status, data);
-
                 PrimeFaces.debug('Response completed.');
                 $this.clear();
 

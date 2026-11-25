@@ -8,15 +8,23 @@
 
     <h:body>
         <h:outputScript>
-            // remembers if the script of PrimeFaces.current().executeScript(...) ran before the page is left
+            // remembers if the script of PrimeFaces.current().executeScript(...) ran before or after the page started to unload
+            var coreAjax004Unloading = false;
             window.addEventListener('beforeunload', function() {
-                sessionStorage.setItem('coreAjax004', String(window.coreAjax004ScriptExecuted === true));
+                coreAjax004Unloading = true;
             });
+            function coreAjax004Script() {
+                sessionStorage.setItem(coreAjax004Unloading ? 'coreAjax004AfterUnload' : 'coreAjax004BeforeUnload', 'true');
+            }
         </h:outputScript>
 
         <h:form id="form">
             <p:commandButton id="button" value="executeScript and redirect"
                 action="#{coreAjax004.redirect}" />
+            <p:commandButton id="order" value="executeScript and oncomplete"
+                action="#{coreAjax004.executeScript}"
+                oncomplete="$('#order').text(window.coreAjax004Executed ? 'executeScript, oncomplete' : 'oncomplete, executeScript');" />
+            <span id="order"></span>
         </h:form>
     </h:body>
 </html>

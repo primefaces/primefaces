@@ -30,27 +30,45 @@ import org.primefaces.selenium.component.CommandButton;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class CoreAjax004Test extends AbstractPrimePageTest {
 
     @Test
     @DisplayName("Core-AJAX: executeScript runs before the redirect - https://github.com/primefaces/primefaces/issues/13289")
     void executeScriptBeforeRedirect(Page page) {
-        PrimeSelenium.executeScript("sessionStorage.removeItem('coreAjax004');");
+        PrimeSelenium.executeScript("sessionStorage.removeItem('coreAjax004BeforeUnload'); sessionStorage.removeItem('coreAjax004AfterUnload');");
 
         page.button.clickUnguarded();
         PrimeSelenium.waitGui().until(ExpectedConditions.urlContains("redirected=true"));
 
-        assertEquals("true", PrimeSelenium.executeScript("return sessionStorage.getItem('coreAjax004');"));
+        assertEquals("true", PrimeSelenium.executeScript("return sessionStorage.getItem('coreAjax004BeforeUnload');"));
+        // and not a second time after the redirect started
+        assertNull(PrimeSelenium.executeScript("return sessionStorage.getItem('coreAjax004AfterUnload');"));
+    }
+
+    @Test
+    @DisplayName("Core-AJAX: executeScript runs before oncomplete")
+    void executeScriptBeforeOncomplete(Page page) {
+        page.order.click();
+
+        assertEquals("executeScript, oncomplete", page.orderOutput.getText());
     }
 
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form:button")
         CommandButton button;
+
+        @FindBy(id = "form:order")
+        CommandButton order;
+
+        @FindBy(id = "order")
+        WebElement orderOutput;
 
         @Override
         public String getLocation() {
