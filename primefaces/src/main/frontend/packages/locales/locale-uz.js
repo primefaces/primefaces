@@ -88,6 +88,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Halokatli",
       "messages.INFO": "Ma'lumot",
       "messages.WARN": "Ogohlantirish",
+      movedBottom: "Pastga ko'chirildi: {count}",
+      movedDown: "Pastga tushirildi: {count}",
+      movedTop: "Yuqoriga ko'chirildi: {count}",
+      movedToSource: "Manbaga ko'chirildi: {count}",
+      movedToTarget: "Maqsadga ko'chirildi: {count}",
+      movedUp: "Yuqoriga ko'tarildi: {count}",
     },
     messages: {
       //optional for Client Side Validation

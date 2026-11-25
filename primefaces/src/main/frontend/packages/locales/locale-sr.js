@@ -88,6 +88,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatalno",
       "messages.INFO": "Informacija",
       "messages.WARN": "Upozorenje",
+      movedBottom: "Pomaknuto na dno: {count}",
+      movedDown: "Pomaknuto dole: {count}",
+      movedTop: "Pomaknuto na vrh: {count}",
+      movedToSource: "Pomaknuto na izvor: {count}",
+      movedToTarget: "Pomaknuto na cilj: {count}",
+      movedUp: "Pomaknuto gore: {count}",
     },
     messages: {
       //optional for Client Side Validation
@@ -304,6 +310,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Фатално",
       "messages.INFO": "Информација",
       "messages.WARN": "Упозорење",
+      movedBottom: "Помакнуто на дно: {count}",
+      movedDown: "Помакнуто доле: {count}",
+      movedTop: "Помакнуто на врх: {count}",
+      movedToSource: "Помакнуто на извор: {count}",
+      movedToTarget: "Помакнуто на циљ: {count}",
+      movedUp: "Помакнуто горе: {count}",
     },
   });
 }

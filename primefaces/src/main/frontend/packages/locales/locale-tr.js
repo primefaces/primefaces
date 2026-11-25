@@ -86,6 +86,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Kritik Hata",
       "messages.INFO": "Bilgi",
       "messages.WARN": "Uyarı",
+      movedBottom: "En aşağıya taşındı: {count}",
+      movedDown: "Aşağıya taşındı: {count}",
+      movedTop: "En üste taşındı: {count}",
+      movedToSource: "Kaynağa taşındı: {count}",
+      movedToTarget: "Hedefe taşındı: {count}",
+      movedUp: "Üste taşındı: {count}",
     },
     messages: {
       //optional for Client Side Validation

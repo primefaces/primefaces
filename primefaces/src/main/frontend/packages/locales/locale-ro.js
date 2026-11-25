@@ -84,6 +84,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatal",
       "messages.INFO": "Infromație",
       "messages.WARN": "Atenție",
+      movedBottom: "Mutat la sfârșit: {count}",
+      movedDown: "Mutat în jos: {count}",
+      movedTop: "Mutat la început: {count}",
+      movedToSource: "Mutat la sursă: {count}",
+      movedToTarget: "Mutat la țintă: {count}",
+      movedUp: "Mutat în sus: {count}",
     },
     messages: {
       "jakarta.faces.component.UIInput.REQUIRED": "{0}: Eroare de validare: Valoarea este obligatorie.",

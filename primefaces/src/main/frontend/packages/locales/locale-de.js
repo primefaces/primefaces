@@ -87,6 +87,12 @@ if (window.PrimeFaces) {
     "texteditor.FORMULA": "Formel",
     "texteditor.CLEAN": "Formatierung entfernen",
     "texteditor.URL": "URL",
+      movedBottom: "Zum Ende bewegt: {count}",
+      movedDown: "Nach unten bewegt: {count}",
+      movedTop: "Zum Anfang bewegt: {count}",
+      movedToSource: "Zur Quelle bewegt: {count}",
+      movedToTarget: "Zum Ziel bewegt: {count}",
+      movedUp: "Nach oben bewegt: {count}",
     },
     messages: {
       //optional for Client Side Validation

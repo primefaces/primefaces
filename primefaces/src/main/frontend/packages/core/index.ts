@@ -1750,6 +1750,12 @@ declare global {
             "moveToTarget"?: string;
             "moveTop"?: string;
             "moveUp"?: string;
+            "movedBottom"?: string;
+            "movedDown"?: string;
+            "movedTop"?: string;
+            "movedToSource"?: string;
+            "movedToTarget"?: string;
+            "movedUp"?: string;
             "navigation"?: string;
             "next"?: string;
             "nextPageLabel"?: string;

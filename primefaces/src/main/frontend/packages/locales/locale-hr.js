@@ -88,6 +88,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatalna pogreška",
       "messages.INFO": "Informacija",
       "messages.WARN": "Upozorenje",
+      movedBottom: "Pomaknuto na dno: {count}",
+      movedDown: "Pomaknuto dolje: {count}",
+      movedTop: "Pomaknuto na vrh: {count}",
+      movedToSource: "Pomaknuto na izvor: {count}",
+      movedToTarget: "Pomaknuto na cilj: {count}",
+      movedUp: "Pomaknuto gore: {count}",
     },
     messages: {
       //optional for Client Side Validation

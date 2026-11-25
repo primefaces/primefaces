@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="jakarta.faces.html" xmlns:f="jakarta.faces.core" xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head/>
+
+    <h:body>
+
+        <!-- GitHub #15525: a PickList in a dialog that is updated before it is shown -->
+        <h:form id="form">
+            <p:commandButton id="open" process="@this" update=":form:dialog" value="Open Dialog" oncomplete="PF('dialog').show();"/>
+
+            <p:pickList id="pagePickList" value="#{pickList003.pageModel}" var="item" itemValue="#{item}" itemLabel="#{item}" responsive="true">
+                <f:attribute name="widgetPreConstruct" value="cfg.labels.aria.moveToTarget = 'Custom move to target';"/>
+            </p:pickList>
+
+            <p:pickList id="checkboxPickList" value="#{pickList003.checkboxModel}" var="item" itemValue="#{item}" itemLabel="#{item}"
+                        effect="fade" showCheckbox="true" transferOnCheckboxClick="true"/>
+
+            <p:pickList id="noEffectPickList" value="#{pickList003.noEffectModel}" var="item" itemValue="#{item}" itemLabel="#{item}"
+                        effect="none" showCheckbox="true"/>
+
+            <p:pickList id="scrollPickList" value="#{pickList003.scrollModel}" var="item" itemValue="#{item}" itemLabel="#{item}"/>
+
+            <p:dialog id="dialog" widgetVar="dialog" modal="true" resizable="false" fitViewport="true" closeOnEscape="true" blockScroll="true"
+                      header="Dialog">
+                <p:pickList id="dialogPickList" value="#{pickList003.dialogModel}" var="item" itemValue="#{item}" itemLabel="#{item}"
+                            responsive="true" style="width:800px">
+                    <f:attribute name="widgetPreConstruct" value="cfg.labels.aria.moveToTarget = 'Custom move to target';"/>
+                </p:pickList>
+            </p:dialog>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

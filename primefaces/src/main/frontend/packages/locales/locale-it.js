@@ -86,6 +86,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatale",
       "messages.INFO": "Informazione",
       "messages.WARN": "Attenzione",
+      movedBottom: "Spostato in fondo: {count}",
+      movedDown: "Spostato sotto: {count}",
+      movedTop: "Spostato in cima: {count}",
+      movedToSource: "Spostato alla sorgente: {count}",
+      movedToTarget: "Spostato alla destinazione: {count}",
+      movedUp: "Spostato sopra: {count}",
     },
     messages: {
       //optional for Client Side Validation

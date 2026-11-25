@@ -45,6 +45,7 @@
  * Map between the available filter types and the filter implementation.
  * @prop {JQuery} focusedItem The DOM element for the currently focused pick list item, if any.
  * @prop {JQuery} items The DOM elements for the pick list items in the source and target list.
+ * @prop {boolean} keepingFocus Whether the focus is being moved to a list from a button which got disabled.
  * @prop {PrimeFaces.widget.PickList.ListName} itemListName When sorting items: to which list the items belong.
  * @prop {JQuery} [sourceFilter] The DOM element for the filter input for the source list.
  * @prop {JQuery} sourceInput The DOM element for the hidden input storing the value of the source list.
@@ -98,6 +99,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             this.checkboxes = this.items.find('div.ui-chkbox > div.ui-chkbox-box');
         }
         this.focusedItem = null;
+        this.keepingFocus = false;
         this.ariaRegion = $(this.jqId + '_ariaRegion');
 
         var sourceCaption = this.sourceList.prev('.ui-picklist-caption'),
@@ -145,6 +147,23 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
 
             this.updateListRole();
         }
+    }
+
+    /**
+     * @override
+     * @inheritdoc
+     * @param {PrimeFaces.PartialWidgetCfg<TCfg>} cfg
+     */
+    refresh(cfg) {
+        // #15525 widgetPreConstruct is only called on page load, call it here as well,
+        // so labels set there (cfg.labels.aria) are not lost on an AJAX update
+        if (cfg.preConstruct) {
+            cfg.labels = cfg.labels || {};
+            cfg.labels.aria = cfg.labels.aria || {};
+            cfg.preConstruct.call(null, cfg);
+        }
+
+        super.refresh(cfg);
     }
 
     /**
@@ -364,38 +383,50 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             listSelector = 'ul.ui-picklist-source, ul.ui-picklist-target';
 
         this.jq.off('focus.pickList blur.pickList keydown.pickList', listSelector).on('focus.pickList', listSelector, null, function(e) {
-            var list = $(this),
-                activeItem = $this.focusedItem||list.children('.ui-state-highlight:visible:first');
-            if(activeItem.length) {
-                $this.focusedItem = activeItem;
+            // #15525 when the focus is moved here from a disabled button, the transfer or move is announced instead of
+            // the item, and the list keeps its scroll position (e.g. after a click on "Move to Target" with the mouse)
+            var keepingFocus = $this.keepingFocus,
+                list = $(this);
+            // #15525 an item focused before (e.g. by a checkbox click) may have been moved to the other list since
+            if ($this.focusedItem && !$this.focusedItem.parent().is(list)) {
+                $this.focusedItem = null;
             }
-            else {
-                $this.focusedItem = list.children('.ui-picklist-item:visible:first');
-            }
+            $this.focusedItem = $this.focusedItem || $this.findFocusableItem(list);
+            var focusedItem = $this.focusedItem;
 
             list.children('.ui-picklist-outline').removeClass('ui-picklist-outline');
 
             PrimeFaces.queueTask(function() {
-                if ($this.focusedItem) {
-                    PrimeFaces.scrollInView(list, $this.focusedItem);
-                    $this.focusedItem.addClass('ui-picklist-outline');
-                    $this.updateAriaRegion();
+                // #15525 not when the focused item changed meanwhile, e.g. by a transfer which moved the focus here again
+                if (focusedItem && $this.focusedItem === focusedItem) {
+                    if (!keepingFocus) {
+                        PrimeFaces.scrollInView(list, focusedItem);
+                    }
+                    focusedItem.addClass('ui-picklist-outline');
+                    if (!keepingFocus) {
+                        $this.updateAriaRegion();
+                    }
                 }
             }, 100);
         })
         .on('blur.pickList', listSelector, null, function() {
             $this.removeOutline();
+            // #15525 also when the focused item was already set to an item of the other list, e.g. by a mousedown there
+            $(this).children('.ui-picklist-outline').removeClass('ui-picklist-outline');
             $this.focusedItem = null;
             // #15476 clear the live region so the item is announced again on next focus
             $this.ariaRegion.text('');
         })
         .on('keydown.pickList', listSelector, null, function(e) {
+            var list = $(this);
 
+            // #15525 the list may have got the focus while its items were still hidden, e.g. during a transfer
+            if(!$this.focusedItem || !$this.focusedItem.parent().is(list)) {
+                $this.focusedItem = $this.findFocusableItem(list);
+            }
             if(!$this.focusedItem) {
                 return;
             }
-
-            var list = $(this);
 
             switch(e.code) {
                 case 'ArrowUp':
@@ -414,6 +445,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
+                    // #15525 keep the focus indicator on the focused item
+                    $this.focusedItem.addClass('ui-picklist-outline');
                     $this.updateAriaRegion();
                     e.preventDefault();
                 break;
@@ -434,6 +467,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                             PrimeFaces.scrollInView(list, $this.focusedItem);
                         }
                     }
+                    // #15525 keep the focus indicator on the focused item
+                    $this.focusedItem.addClass('ui-picklist-outline');
                     $this.updateAriaRegion();
                     e.preventDefault();
                 break;
@@ -442,8 +477,28 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 case 'NumpadEnter':
                 case 'Space':
                     if($this.focusedItem && $this.focusedItem.hasClass('ui-state-highlight')) {
-                        $this.focusedItem.trigger('dblclick.pickList');
-                        $this.focusedItem = null;
+                        var transferredItem = $this.focusedItem,
+                            // #15525 keep navigating with the keys from the neighbour of the moved item, looked up before
+                            // the move, as without an effect the item is moved to the other list right away
+                            followingItem = transferredItem.nextAll('.ui-picklist-item:visible:first'),
+                            neighbourItem = followingItem.length ? followingItem : transferredItem.prevAll('.ui-picklist-item:visible:first');
+                        transferredItem.trigger('dblclick.pickList');
+                        if($this.cfg.transferOnDblclick) {
+                            if(neighbourItem.length) {
+                                // the only selected item, so pressing Enter again moves it alone; not announced, the
+                                // transfer is
+                                $this.items.filter('.ui-state-highlight').not(transferredItem).not(neighbourItem).each(function() {
+                                    $this.unselectItem($(this));
+                                });
+                                $this.selectItem(neighbourItem);
+                                $this.focusedItem = neighbourItem.addClass('ui-picklist-outline');
+                                PrimeFaces.scrollInView(list, neighbourItem);
+                            }
+                            else {
+                                $this.focusedItem = null;
+                                $this.focusList([list.is($this.sourceList) ? $this.targetList : $this.sourceList], true);
+                            }
+                        }
                     }
                     e.preventDefault();
                 break;
@@ -460,6 +515,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                                 $this.selectItem(item);
                                 $this.focusedItem = item;
                                 PrimeFaces.scrollInView(list, $this.focusedItem);
+                                $this.focusedItem.addClass('ui-picklist-outline');
                                 $this.updateAriaRegion();
                                 e.preventDefault();
                                 return false;
@@ -468,6 +524,21 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                     }
             };
         });
+    }
+
+    /**
+     * Finds the item of the given list to start the keyboard navigation at: the first selected or the first shown item.
+     * @private
+     * @param {JQuery} list The source or target list.
+     * @return {JQuery | null} The item, or `null` if the list has no shown items, e.g. while the items moved to it are
+     * still hidden.
+     */
+    findFocusableItem(list) {
+        var item = list.children('.ui-picklist-item.ui-state-highlight:visible:first');
+        if(!item.length) {
+            item = list.children('.ui-picklist-item:visible:first');
+        }
+        return item.length ? item : null;
     }
 
     /**
@@ -763,11 +834,11 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             items = list.children('li.ui-picklist-item'),
             animated = animate || this.isAnimated();
 
-        list.removeAttr('role');
+        var shownItems = 0;
 
         if(filterValue === '') {
             items.filter(':hidden').show();
-            list.attr('role', 'menu');
+            shownItems = items.length;
         }
         else {
             for(var i = 0; i < items.length; i++) {
@@ -776,19 +847,12 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 matches = this.filterMatcher(itemLabel, filterValue);
 
                 if(matches) {
-                    var hasRole = list[0].hasAttribute('role');
+                    shownItems++;
                     if(animated) {
-                        item.fadeIn('fast', function() {
-                            if(!hasRole) {
-                                list.attr('role', 'menu');
-                            }
-                        });
+                        item.fadeIn('fast');
                     }
                     else {
                         item.show();
-                        if(!hasRole) {
-                            list.attr('role', 'menu');
-                        }
                     }
                 }
                 else if(animated) {
@@ -800,6 +864,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
             }
         }
 
+        // #15525 a menu without items is announced as an empty menu, the fading items are not done yet
+        shownItems > 0 ? list.attr('role', 'menu') : list.removeAttr('role');
     }
 
     /**
@@ -892,7 +958,12 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         itemsCount = items.length,
         movedCount = 0;
 
-        if(itemsCount) {
+        // #15515 like OrderList, move nothing if a selected item is already at the top:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':first-child')) {
+            // #15492 announce the move to screen readers
+            this.announce(this.getMovedLabel('movedUp', itemsCount));
+
             items.each(function() {
                 var item = $(this);
 
@@ -936,7 +1007,12 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         itemsCount = items.length,
         movedCount = 0;
 
-        if(itemsCount) {
+        // #15515 like OrderList, move nothing if a selected item is already at the top:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':first-child')) {
+            // #15492 announce the move to screen readers
+            this.announce(this.getMovedLabel('movedTop', itemsCount));
+
             items.each(function() {
                 var item = $(this);
 
@@ -978,7 +1054,12 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         itemsCount = items.length,
         movedCount = 0;
 
-        if(itemsCount) {
+        // #15515 like OrderList, move nothing if a selected item is already at the bottom:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':last-child')) {
+            // #15492 announce the move to screen readers
+            this.announce(this.getMovedLabel('movedDown', itemsCount));
+
             $(items.get().reverse()).each(function() {
                 var item = $(this);
 
@@ -1020,7 +1101,12 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         itemsCount = items.length,
         movedCount = 0;
 
-        if(itemsCount) {
+        // #15515 like OrderList, move nothing if a selected item is already at the bottom:
+        // otherwise the announced count is wrong and the animated move never saves the new order
+        if(itemsCount && !items.is(':last-child')) {
+            // #15492 announce the move to screen readers
+            this.announce(this.getMovedLabel('movedBottom', itemsCount));
+
             items.each(function() {
                 var item = $(this);
 
@@ -1082,7 +1168,8 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
 
         if(this.isAnimated()) {
             items.hide(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
-                var item = $(this);
+                // #15525 moved before it gets unselected, so the buttons and the focus are updated with the moved item
+                var item = $(this).appendTo(to);
                 $this.unselectItem(item);
 
                 if ($this.cfg.transferOnCheckboxClick) {
@@ -1094,7 +1181,7 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                     }
                 }
 
-                item.appendTo(to).show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
+                item.show($this.cfg.effect, {}, $this.cfg.effectSpeed, function() {
                     transferCount++;
 
                     //fire transfer when all items are transferred
@@ -1104,15 +1191,14 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                     }
                 });
 
-                $this.updateListRole();
-
                 if (callback) {
                     callback.call($this);
                 }
             });
         }
         else {
-            items.hide();
+            // #15525 moved before they get unselected, so the buttons and the focus are updated with the moved items
+            items.hide().appendTo(to);
 
             if(this.cfg.showCheckbox) {
                 items.each(function() {
@@ -1130,11 +1216,10 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
                 });
             }
 
-            items.appendTo(to).show();
+            items.show();
 
             this.saveState();
             this.fireTransferEvent(items, from, to, type);
-            this.updateListRole();
 
             if (callback) {
                 callback.call($this);
@@ -1152,6 +1237,11 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      */
     fireTransferEvent(items, from, to, type) {
         var $this = this;
+
+        // #15492 announce the completed transfer to screen readers
+        this.announce(this.getMovedLabel(from.hasClass('ui-picklist-source') ? 'movedToTarget' : 'movedToSource', items.length));
+        // #15525 all items are shown now, also after an animated or a drag and drop transfer
+        this.updateListRole();
 
         if(this.cfg.onTransfer) {
             var obj = {};
@@ -1299,6 +1389,65 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @private
      */
     updateButtonsState() {
+        // #15525 remember the focused button, it loses the focus if it gets disabled
+        var focusedButton = this.jq.find('.ui-picklist-buttons .ui-button').filter(function() {
+            return this === document.activeElement;
+        });
+
+        this.updateButtons();
+
+        if (focusedButton.length && focusedButton.prop('disabled')) {
+            this.keepFocus(focusedButton);
+        }
+    }
+
+    /**
+     * Moves the focus from a button which got disabled (e.g. "Move All to Target" after moving all items) to a list,
+     * instead of letting it fall back to the document body, where screen readers lose their position. A list is used
+     * instead of another button, as pressing a button again (e.g. "Move All to Target" after "Move to Target") would
+     * move items unexpectedly.
+     * @private
+     * @param {JQuery} button The disabled button which had the focus.
+     */
+    keepFocus(button) {
+        // the list the button worked on first, e.g. the list the items were moved from
+        var fromTarget = button.is('.ui-picklist-button-remove, .ui-picklist-button-remove-all')
+            || button.closest('.ui-picklist-target-controls').length > 0;
+        this.focusList(fromTarget ? [this.targetList, this.sourceList] : [this.sourceList, this.targetList]);
+    }
+
+    /**
+     * Moves the focus to the first of the given lists which can take it, without announcing its focused item.
+     * @private
+     * @param {JQuery[]} lists The source and target list in the order to try them.
+     * @param {boolean} [force] `true` to focus a list which is still empty, as the items moved to it are still being
+     * animated.
+     */
+    focusList(lists, force) {
+        // an empty list is not focusable
+        var list = lists.find(function(l) {
+            return l.length && (force || l.attr('tabindex') !== '-1');
+        });
+        if (list) {
+            // start at the selected or the first item of the list
+            this.focusedItem = null;
+            // the transfer or move is announced, not the item the list focuses
+            this.keepingFocus = true;
+            try {
+                // without scrolling, e.g. after a click on "Move to Target" with the mouse
+                list[0].focus({ preventScroll: true });
+            }
+            finally {
+                this.keepingFocus = false;
+            }
+        }
+    }
+
+    /**
+     * Enables or disables the buttons of this pick list depending on the items and the selection of the lists.
+     * @private
+     */
+    updateButtons() {
         var addButton = $(this.jqId + ' .ui-picklist-button-add');
         var sourceListButtons = $(this.jqId + ' .ui-picklist-source-controls .ui-button');
         var sourceSelectedItems = this.sourceList.find('li.ui-state-highlight');
@@ -1460,8 +1609,49 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
      * @private
      */
     updateListRole() {
-        this.sourceList.children('li:visible').length > 0 ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
-        this.targetList.children('li:visible').length > 0 ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
+        this.hasShownItems(this.sourceList) ? this.sourceList.attr('role', 'menu') : this.sourceList.removeAttr('role');
+        this.hasShownItems(this.targetList) ? this.targetList.attr('role', 'menu') : this.targetList.removeAttr('role');
+    }
+
+    /**
+     * Checks whether the given list has items which are not hidden, e.g. by a filter. Unlike `:visible`, this does not
+     * depend on the pick list itself being displayed, e.g. in a hidden dialog (#15525).
+     * This relies on the inline `display` style: an item which is fading out still counts until its animation is done.
+     * So this must only be called when no show or hide effect is running, e.g. from `fireTransferEvent` after the
+     * transfer animation completed.
+     * @private
+     * @param {JQuery} list The source or target list.
+     * @return {boolean} `true` if the list has items which are not hidden.
+     */
+    hasShownItems(list) {
+        return list.children('li').filter(function() {
+            return this.style.display !== 'none';
+        }).length > 0;
+    }
+
+    /**
+     * Gets the text which is announced to screen readers after a transfer or a move.
+     * @private
+     * @param {string} label Key of the aria label, e.g. `movedToTarget`.
+     * @param {number} count Number of moved items, replaces the `{count}` placeholder of the label.
+     * @return {string} The text to announce.
+     */
+    getMovedLabel(label, count) {
+        return this.getAriaLabel(label).replace('{count}', String(count)).trim();
+    }
+
+    /**
+     * Announces the given text to screen readers via the aria live region.
+     * @private
+     * @param {string} text The text to announce.
+     */
+    announce(text) {
+        var region = this.ariaRegion;
+        // clear first, otherwise repeating the same action (e.g. move up twice) is not announced again
+        region.text('');
+        PrimeFaces.queueTask(function() {
+            region.text(text);
+        }, 100);
     }
     
     /**

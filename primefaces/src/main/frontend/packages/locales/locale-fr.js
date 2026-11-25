@@ -87,6 +87,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatal",
       "messages.INFO": "Information",
       "messages.WARN": "Avertissement",
+      movedBottom: "Déplacé tout en bas: {count}",
+      movedDown: "Déplacé vers le bas: {count}",
+      movedTop: "Déplacé tout en haut: {count}",
+      movedToSource: "Déplacé vers la source: {count}",
+      movedToTarget: "Déplacé vers la cible: {count}",
+      movedUp: "Déplacé vers le haut: {count}",
     },
     messages: {
       // components

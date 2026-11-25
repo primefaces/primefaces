@@ -87,6 +87,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Fatališka",
       "messages.INFO": "Informacija",
       "messages.WARN": "Įspėjimas",
+      movedBottom: "Perkelta į apačią: {count}",
+      movedDown: "Perkelta žemyn: {count}",
+      movedTop: "Perkelta į viršų: {count}",
+      movedToSource: "Perkelta į pradinį sąrašą: {count}",
+      movedToTarget: "Perkelta į tikslinį sąrašą: {count}",
+      movedUp: "Perkelta aukštyn: {count}",
     },
     messages: {
       //optional for Client Side Validation

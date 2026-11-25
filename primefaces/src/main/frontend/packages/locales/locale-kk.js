@@ -88,6 +88,12 @@ if (window.PrimeFaces) {
       "messages.FATAL": "Жазмыш",
       "messages.INFO": "Ақпарат",
       "messages.WARN": "Ескерту",
+      movedBottom: "Соңына жылжытылды: {count}",
+      movedDown: "Астына жылжытылды: {count}",
+      movedTop: "Басына жылжытылды: {count}",
+      movedToSource: "Дереккөзге жылжытылды: {count}",
+      movedToTarget: "Қабылдағышқа жылжытылды: {count}",
+      movedUp: "Үстіне жылжытылды: {count}",
     },
     messages: {
       //optional for Client Side Validation
