@@ -68,6 +68,18 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 if (foundItem != null) {
                     menu.setSubmittedValue(getOptionAsString(context, menu, converter, foundItem.getValue()));
                 }
+                else {
+                    foundItem = findSelectItemByValue(context, menu, converter, selectItems, editorInput);
+                }
+
+                // #13954: a disabled item may not be entered, unless it is the current value
+                if (foundItem != null && foundItem.isDisabled()) {
+                    String itemValue = getOptionAsString(context, menu, converter, foundItem.getValue());
+                    if (LangUtils.isNotEmpty(itemValue)
+                            && !Objects.equals(itemValue, getOptionAsString(context, menu, converter, menu.getValue()))) {
+                        invalidateDisabledSelectItem(context, menu, UISelectOne.INVALID_MESSAGE_ID);
+                    }
+                }
             }
 
             decodeBehaviors(context, menu);

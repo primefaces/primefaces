@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <p:selectManyCheckbox id="selectmanycheckbox" value="#{selectManyCheckbox002.selectedDrivers}" layout="pageDirection" label="Drivers">
+                <f:selectItem itemLabel="Lewis" itemValue="Lewis"/>
+                <f:selectItem itemLabel="Max" itemValue="Max"/>
+                <f:selectItem itemLabel="Charles" itemValue="Charles" itemDisabled="true"/>
+                <f:selectItem itemLabel="Lando" itemValue="Lando"/>
+            </p:selectManyCheckbox>
+
+            <p:selectManyCheckbox id="preset" value="#{selectManyCheckbox002.presetDrivers}" layout="pageDirection" label="Preset">
+                <f:selectItem itemLabel="Lewis" itemValue="Lewis"/>
+                <f:selectItem itemLabel="Max" itemValue="Max" itemDisabled="true"/>
+                <f:selectItem itemLabel="Charles" itemValue="Charles" itemDisabled="true"/>
+                <f:selectItem itemLabel="Lando" itemValue="Lando"/>
+            </p:selectManyCheckbox>
+
+            <p:commandButton id="button" update="@form" value="Submit" action="#{selectManyCheckbox002.submit}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
