@@ -1166,6 +1166,13 @@ PrimeFaces.widget.PickList = class PickList extends PrimeFaces.widget.BaseWidget
         var itemsCount = items.length;
         var transferCount = 0;
 
+        // a moved item is not the focused item of its former list anymore, e.g. after a checkbox click,
+        // otherwise it keeps the focus indicator in the other list
+        if(this.focusedItem && items.is(this.focusedItem)) {
+            this.removeOutline();
+            this.focusedItem = null;
+        }
+
         if(this.isAnimated()) {
             items.hide(this.cfg.effect, {}, this.cfg.effectSpeed, function() {
                 // #15525 moved before it gets unselected, so the buttons and the focus are updated with the moved item

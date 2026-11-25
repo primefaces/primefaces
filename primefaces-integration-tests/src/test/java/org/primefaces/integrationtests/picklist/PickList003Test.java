@@ -243,6 +243,7 @@ class PickList003Test extends AbstractPrimePageTest {
         PrimeSelenium.waitGui().until(d -> "menu".equals(pickList.getTargetList().getAttribute("role")));
         assertTrue(pickList.isChecked("Test 1"), "checkbox must be checked");
         assertFalse(pickList.isSelected("Test 1"), "moved item must not be selected");
+        assertFalse(pickList.isFocused("Test 1"), "moved item must not keep the focus indicator");
         assertEquals("menu", pickList.getSourceList().getAttribute("role"));
 
         // Act - and back
@@ -253,6 +254,7 @@ class PickList003Test extends AbstractPrimePageTest {
         PrimeSelenium.waitGui().until(d -> pickList.getTargetList().getAttribute("role") == null);
         assertFalse(pickList.isChecked("Test 1"), "checkbox must be unchecked");
         assertFalse(pickList.isSelected("Test 1"), "moved item must not be selected");
+        assertFalse(pickList.isFocused("Test 1"), "moved item must not keep the focus indicator");
         assertEquals("menu", pickList.getSourceList().getAttribute("role"));
         assertNoJavascriptErrors();
     }
