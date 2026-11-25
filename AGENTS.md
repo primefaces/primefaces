@@ -112,6 +112,13 @@ mvn clean jetty:run -Pmojarra-4.0 -f primefaces-integration-tests/pom.xml
 # Then open http://localhost:8080/ (a directory listing, e.g. http://localhost:8080/datatable/dataTable001.xhtml)
 ```
 
+Clean up after an integration test run that was stopped, timed out or crashed: ending the Maven command does not end the
+processes it started (on Windows the forked test JVM, `chromedriver` and the headless browsers keep running, many of them
+with `parallel-execution`). List the processes and end the leftovers before reporting: `chromedriver`, and `chrome` whose
+command line contains `scoped_dir`, `--headless` or `--test-type=webdriver` (never a browser without these), plus `java`
+with `surefire` in its command line. Leave the IDE's own Java processes alone. Also stop a showcase or `jetty:run` you
+started yourself once it is no longer needed.
+
 **Showcase** (manual testing):
 - Start: `mvn -B -f primefaces-showcase/pom.xml clean jetty:run -Pnon-ee,mojarra-4.0`, URL `http://localhost:8080/`
   (same port as the integration tests' `jetty:run`, so only one of them can run).
