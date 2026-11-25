@@ -24,21 +24,32 @@
 package org.primefaces.component.subtable;
 
 import org.primefaces.component.column.Column;
+import org.primefaces.component.columngroup.ColumnGroup;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.row.Row;
 import org.primefaces.mock.CollectingResponseWriter;
 import org.primefaces.mock.FacesContextMock;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import jakarta.faces.component.UIOutput;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.render.Renderer;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 class SubTableRendererTest {
+
+    private static final String HEADER_TEXT = "<b>header</b>";
+    private static final String FOOTER_TEXT = "<b>footer</b>";
 
     /**
      * The row the sub table stands on ends up in its own client id and in the client id of everything below it, and it
@@ -68,5 +79,60 @@ class SubTableRendererTest {
         assertEquals(-1, subTable.getRowIndex());
         assertEquals(subTable.getId(), subTable.getClientId(context));
         assertFalse(context.getExternalContext().getRequestMap().containsKey("stat"));
+    }
+
+    @Test
+    void textsOfAColumnGroupAreEscaped() throws Exception {
+        ResponseWriter writer = mock(ResponseWriter.class);
+        SubTable subTable = subTableWithColumnGroups();
+
+        subTable.encodeEnd(new FacesContextMock(writer));
+
+        verify(writer).writeText(HEADER_TEXT, null);
+        verify(writer).writeText(FOOTER_TEXT, null);
+        verify(writer, never()).write(HEADER_TEXT);
+        verify(writer, never()).write(FOOTER_TEXT);
+    }
+
+    @Test
+    void textsOfAColumnGroupFollowEscapeTextOfTheTable() throws Exception {
+        ResponseWriter writer = mock(ResponseWriter.class);
+        SubTable subTable = subTableWithColumnGroups();
+        DataTable table = new DataTable();
+        table.setEscapeText(false);
+        table.getChildren().add(subTable);
+
+        subTable.encodeEnd(new FacesContextMock(writer));
+
+        verify(writer).write(HEADER_TEXT);
+        verify(writer).write(FOOTER_TEXT);
+    }
+
+    private static SubTable subTableWithColumnGroups() {
+        SubTable subTable = new SubTable() {
+            @Override
+            protected Renderer<?> getRenderer(FacesContext context) {
+                return new SubTableRenderer();
+            }
+        };
+        subTable.setId("subTable");
+        subTable.setValue(Collections.emptyList());
+        subTable.getChildren().add(columnGroup("header"));
+        subTable.getChildren().add(columnGroup("footer"));
+        return subTable;
+    }
+
+    private static ColumnGroup columnGroup(String type) {
+        Column column = new Column();
+        column.setHeaderText(HEADER_TEXT);
+        column.setFooterText(FOOTER_TEXT);
+
+        Row row = new Row();
+        row.getChildren().add(column);
+
+        ColumnGroup group = new ColumnGroup();
+        group.setType(type);
+        group.getChildren().add(row);
+        return group;
     }
 }

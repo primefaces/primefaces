@@ -223,7 +223,13 @@ public class SubTableRenderer extends CoreRenderer<SubTable> {
             facet.encodeAll(context);
         }
         else if (text != null) {
-            writer.write(text);
+            // same as the header and footer texts of the columns of the table itself
+            if (component.getParent() instanceof DataTable table && !table.isEscapeText()) {
+                writer.write(text);
+            }
+            else {
+                writer.writeText(text, null);
+            }
         }
 
         writer.endElement("td");
