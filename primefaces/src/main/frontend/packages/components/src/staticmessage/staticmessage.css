@@ -15,11 +15,13 @@
 
     .p-messages-close {
         position: absolute;
+        /* 2rem at the default font size, follows the font size */
+        --_close-size: calc(var(--p-typography-font-size) * 16 / 7);
         cursor: pointer;
-        top: -.75rem;
-        inset-inline-end: -.75rem;
-        width: 2rem;
-        height: 2rem;
+        top: calc(var(--_close-size) * -0.375);
+        inset-inline-end: calc(var(--_close-size) * -0.375);
+        width: var(--_close-size);
+        height: var(--_close-size);
         padding: 0;
         -webkit-user-select: none;
         user-select: none;

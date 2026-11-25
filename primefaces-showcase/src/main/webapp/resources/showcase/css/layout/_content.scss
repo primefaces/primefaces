@@ -59,7 +59,7 @@
         }
 
         .submenu-section-title {
-            font-size: .75rem;
+            font-size: calc(var(--layout-text-rem) * .75);
             font-weight: 700;
             letter-spacing: .08em;
             color: var(--text-color-secondary);
@@ -74,7 +74,7 @@
         a {
             display: block;
             color: var(--text-color-secondary);
-            font-size: 1rem;
+            font-size: var(--layout-text-rem);
             padding: .375rem .75rem;
             border-inline-start: 2px solid transparent;
             text-decoration: none;
@@ -105,7 +105,7 @@
             }
 
             i {
-                font-size: .75rem;
+                font-size: calc(var(--layout-text-rem) * .75);
                 flex-shrink: 0;
             }
         }
@@ -132,7 +132,7 @@
 
                 p {
                   margin: 0;
-                  font-size: 1.25rem;
+                  font-size: calc(var(--layout-text-rem) * 1.125);
                 }
 
                 a:not(.p-button):not(.p-button a):not(.p-linkbutton a) {

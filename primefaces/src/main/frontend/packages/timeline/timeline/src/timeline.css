@@ -27,6 +27,7 @@ div.timeline-menu-rtl {
 
 .vis-timeline {
     font-family: var(--p-typography-font-family);
+    font-size: var(--p-typography-font-size);
     border: 1px solid var(--p-timeline-frame-border-color);
     border-radius: var(--p-timeline-frame-border-radius);
     background: var(--p-timeline-frame-background);

@@ -120,6 +120,12 @@ primefaces/src/main/frontend/
   follow the global focus ring in all presets).
 - All tokens follow the PrimeUIX naming (`--p-<component>-<section>-<token>`), reference other tokens instead of literal
   colors and live in the block of their component, in all presets.
+- Font sizes are relative to `--p-typography-font-size` (0.875rem = 7/8rem), icon sizes to `--p-icon-size` (8/7 of the
+  font size = 1rem: the Lucide outline icons look smaller than text of the same size), so both scale everything:
+  `calc(var(--p-typography-font-size) * 6 / 7)` is 0.75rem at the default (n / 7 = n * 0.125rem). The boxes around
+  text (checkbox, radiobutton, toggleswitch, avatar, badge, date cell, ...) follow the font size too. Icon-only and
+  paginator buttons are as high as a text button: `calc(var(--p-button-font-size) * var(--p-typography-line-height) + 0.9375rem)`
+  (line height of the text + the spacing of the preset; the density scales only the spacing).
 - Differences to PrimeUIX: the surfaces are slate in dark mode too (PrimeUIX: zinc), like the PrimeReact / PrimeVue
   showcases; the primary palette 50-950 is derived from `--p-primary-base` via `color-mix(in oklch)`,
   `--p-primary-contrast-color` is computed from the primary color, every semantic/component token is declared on

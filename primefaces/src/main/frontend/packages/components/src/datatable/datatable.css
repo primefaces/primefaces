@@ -770,6 +770,7 @@
     margin: 0;
     padding: var(--p-menu-list-padding);
     list-style: none;
+    font-size: var(--p-menu-item-label-font-size);
     background: var(--p-overlay-select-background);
     color: var(--p-overlay-select-color);
     border: 1px solid var(--p-overlay-select-border-color);

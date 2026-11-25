@@ -30,7 +30,7 @@
             font-weight: 700;
             user-select: none;
             padding: 1.2rem 0 0.8rem 0;
-            font-size: 0.857rem;
+            font-size: calc(var(--layout-text-rem) * 0.857);
             text-transform: uppercase;
             border-top: 1px solid var(--surface-d);
 
@@ -50,6 +50,7 @@
                 display: flex;
                 align-items: center;
                 padding: .5rem;
+                font-size: var(--layout-text-rem);
                 border-radius: 3px;
                 cursor: pointer;
 
@@ -89,7 +90,7 @@
                     list-style-type: none;
 
                     a {
-                        font-size: .875rem;
+                        font-size: calc(var(--layout-text-rem) * .875);
                         padding: .475rem .5rem .475rem 2rem;
                     }
                 }

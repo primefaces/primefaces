@@ -23,11 +23,11 @@ body {
 
     .p-datatable .p-datatable-data > tr > td {
       padding: 0.6rem 0.6rem;
-      font-size: 0.9rem;
+      font-size: calc(var(--layout-text-rem) * 0.9);
     }
 
     .p-datatable thead th .p-column-title {
-      font-size: 1.0rem;
+      font-size: var(--layout-text-rem);
     }
 
     .component-meta {

@@ -113,7 +113,7 @@
                 text-decoration: none;
                 color: var(--text-color);
                 min-width: auto;
-                font-size: 0.95rem;
+                font-size: calc(var(--layout-text-rem) * 0.95);
                 display: block;
                 text-align: center;
                 user-select: none;
@@ -185,7 +185,7 @@
                             font-weight: 600;
                             user-select: none;
                             padding: 1rem 0 0.6rem 0;
-                            font-size: 0.857rem;
+                            font-size: calc(var(--layout-text-rem) * 0.857);
                             text-transform: uppercase;
                 
                             &:first-child {

@@ -9,7 +9,8 @@
     background: var(--p-content-background);
     color: var(--p-content-color);
     font-family: var(--p-typography-font-family, inherit);
-    font-size: 13px;
+    /* the text of the panel follows the font size of the theme, like the components */
+    font-size: var(--p-typography-font-size);
     outline: none;
 }
 
@@ -72,7 +73,7 @@
 .p-themeconfigurator-title {
     flex: 1;
     margin: 0;
-    font-size: 1rem;
+    font-size: calc(var(--p-typography-font-size) * 8 / 7);
     font-weight: 600;
 }
 
@@ -129,7 +130,7 @@
 
 .p-themeconfigurator-hint {
     font-weight: 400;
-    font-size: 11px;
+    font-size: calc(var(--p-typography-font-size) * 0.85);
     color: var(--p-text-muted-color);
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
@@ -175,7 +176,7 @@
     min-width: 0;
     justify-content: center;
     padding-inline: .25rem;
-    font-size: 12px;
+    font-size: calc(var(--p-typography-font-size) * 0.92);
     text-transform: capitalize;
 }
 
@@ -190,12 +191,12 @@
     min-width: 0;
     justify-content: center;
     padding-inline: .25rem;
-    font-size: 12px;
+    font-size: calc(var(--p-typography-font-size) * 0.92);
     text-transform: capitalize;
 }
 
 .p-themeconfigurator-segments > .p-button .p-button-icon-left {
-    font-size: 12px;
+    font-size: calc(var(--p-typography-font-size) * 0.92);
 }
 
 .p-themeconfigurator-swatches {
@@ -302,7 +303,7 @@
     margin: .5rem 0;
     padding: .75rem;
     overflow: auto;
-    font: 11.5px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font: calc(var(--p-typography-font-size) * 0.88)/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     color: var(--p-content-color);
     background: var(--p-content-hover-background);
     border-radius: var(--p-content-border-radius);
@@ -338,7 +339,7 @@
 }
 
 .p-themeconfigurator-toggle .p-button-icon-left {
-    font-size: 1.25rem;
+    font-size: calc(var(--p-icon-size) * 1.25);
 }
 
 .p-themeconfigurator-open .p-themeconfigurator-toggle.p-button {

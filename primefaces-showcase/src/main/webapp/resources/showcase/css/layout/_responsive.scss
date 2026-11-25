@@ -224,7 +224,7 @@
 
                 a {
                     padding: .25rem 0;
-                    font-size: .875rem;
+                    font-size: calc(var(--layout-text-rem) * .875);
                 }
             }
 
@@ -236,7 +236,7 @@
 
                 a {
                     white-space: nowrap;
-                    font-size: .8125rem;
+                    font-size: calc(var(--layout-text-rem) * .8125);
                     padding: .25rem .75rem;
                     border: 1px solid var(--surface-d);
                     border-radius: 999px;

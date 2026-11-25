@@ -277,7 +277,7 @@
         --p-focus-ring-offset: 2px;
         --p-focus-ring-shadow: 0 0 0 4px color-mix(in srgb, var(--p-primary-color) 20%, transparent);
         --p-disabled-opacity: 0.6;
-        --p-icon-size: 0.875rem;
+        --p-icon-size: calc(var(--p-typography-font-size) * 8 / 7);
         --p-primary-base: #3f3f46;
         --p-primary-50: color-mix(in oklch, var(--p-primary-base), white 92%);
         --p-primary-100: color-mix(in oklch, var(--p-primary-base), white 84%);
@@ -298,10 +298,10 @@
         --p-form-field-font-size: var(--p-typography-font-size);
         --p-form-field-padding-x: 0.625rem;
         --p-form-field-padding-y: 0.375rem;
-        --p-form-field-sm-font-size: 0.75rem;
+        --p-form-field-sm-font-size: calc(var(--p-typography-font-size) * 6 / 7);
         --p-form-field-sm-padding-x: 0.5rem;
         --p-form-field-sm-padding-y: 0.25rem;
-        --p-form-field-lg-font-size: 1rem;
+        --p-form-field-lg-font-size: calc(var(--p-typography-font-size) * 8 / 7);
         --p-form-field-lg-padding-x: 0.75rem;
         --p-form-field-lg-padding-y: 0.5rem;
         --p-form-field-border-radius: var(--p-border-radius-md);
@@ -389,7 +389,7 @@
         --p-navigation-submenu-label-font-size: var(--p-typography-font-size);
         --p-navigation-submenu-label-background: transparent;
         --p-navigation-submenu-label-color: var(--p-text-muted-color);
-        --p-navigation-submenu-icon-size: 0.75rem;
+        --p-navigation-submenu-icon-size: calc(var(--p-icon-size) * 6 / 7);
         --p-navigation-submenu-icon-color: light-dark(var(--p-surface-400), var(--p-surface-500));
         --p-navigation-submenu-icon-focus-color: light-dark(var(--p-surface-500), var(--p-surface-400));
         --p-navigation-submenu-icon-active-color: light-dark(var(--p-surface-500), var(--p-surface-400));
@@ -591,25 +591,25 @@
 
     /* avatar */
     :root, [data-p-scope] {
-        --p-avatar-width: 1.75rem;
-        --p-avatar-height: 1.75rem;
+        --p-avatar-width: calc(var(--p-typography-font-size) * 2);
+        --p-avatar-height: calc(var(--p-typography-font-size) * 2);
         --p-avatar-font-weight: var(--p-typography-font-weight);
         --p-avatar-font-size: var(--p-typography-font-size);
         --p-avatar-background: var(--p-content-border-color);
         --p-avatar-color: var(--p-content-color);
         --p-avatar-border-radius: var(--p-content-border-radius);
-        --p-avatar-icon-size: 0.875rem;
+        --p-avatar-icon-size: var(--p-icon-size);
         --p-avatar-group-border-color: var(--p-content-background);
         --p-avatar-group-offset: -0.625rem;
-        --p-avatar-lg-width: 2.625rem;
-        --p-avatar-lg-height: 2.625rem;
-        --p-avatar-lg-font-size: 1.25rem;
-        --p-avatar-lg-icon-size: 1.25rem;
+        --p-avatar-lg-width: calc(var(--p-typography-font-size) * 3);
+        --p-avatar-lg-height: calc(var(--p-typography-font-size) * 3);
+        --p-avatar-lg-font-size: calc(var(--p-typography-font-size) * 10 / 7);
+        --p-avatar-lg-icon-size: calc(var(--p-icon-size) * 10 / 7);
         --p-avatar-lg-group-offset: -0.875rem;
-        --p-avatar-xl-width: 3.5rem;
-        --p-avatar-xl-height: 3.5rem;
-        --p-avatar-xl-font-size: 1.75rem;
-        --p-avatar-xl-icon-size: 1.75rem;
+        --p-avatar-xl-width: calc(var(--p-typography-font-size) * 4);
+        --p-avatar-xl-height: calc(var(--p-typography-font-size) * 4);
+        --p-avatar-xl-font-size: calc(var(--p-typography-font-size) * 2);
+        --p-avatar-xl-icon-size: calc(var(--p-icon-size) * 2);
         --p-avatar-xl-group-offset: -1.25rem;
         --p-avatar-dynamic-dark-color: var(--p-surface-0);
         --p-avatar-dynamic-light-color: var(--p-surface-700);
@@ -619,17 +619,17 @@
     :root, [data-p-scope] {
         --p-badge-border-radius: var(--p-border-radius-md);
         --p-badge-padding: 0 0.375rem;
-        --p-badge-font-size: 0.625rem;
+        --p-badge-font-size: calc(var(--p-typography-font-size) * 5 / 7);
         --p-badge-font-weight: 700;
-        --p-badge-min-width: 1.25rem;
-        --p-badge-height: 1.25rem;
-        --p-badge-dot-size: 0.5rem;
-        --p-badge-lg-font-size: 0.75rem;
-        --p-badge-lg-min-width: 1.5rem;
-        --p-badge-lg-height: 1.5rem;
-        --p-badge-xl-font-size: 0.875rem;
-        --p-badge-xl-min-width: 1.75rem;
-        --p-badge-xl-height: 1.75rem;
+        --p-badge-min-width: calc(var(--p-typography-font-size) * 10 / 7);
+        --p-badge-height: calc(var(--p-typography-font-size) * 10 / 7);
+        --p-badge-dot-size: calc(var(--p-typography-font-size) * 4 / 7);
+        --p-badge-lg-font-size: calc(var(--p-typography-font-size) * 6 / 7);
+        --p-badge-lg-min-width: calc(var(--p-typography-font-size) * 12 / 7);
+        --p-badge-lg-height: calc(var(--p-typography-font-size) * 12 / 7);
+        --p-badge-xl-font-size: var(--p-typography-font-size);
+        --p-badge-xl-min-width: calc(var(--p-typography-font-size) * 2);
+        --p-badge-xl-height: calc(var(--p-typography-font-size) * 2);
         --p-badge-primary-background: var(--p-primary-color);
         --p-badge-primary-color: var(--p-primary-contrast-color);
         --p-badge-secondary-background: light-dark(var(--p-surface-100), var(--p-surface-800));
@@ -647,9 +647,9 @@
         --p-badge-gap: 0.25rem;
         --p-badge-contrast-background: light-dark(var(--p-surface-950), var(--p-surface-0));
         --p-badge-contrast-color: light-dark(var(--p-surface-0), var(--p-surface-950));
-        --p-badge-sm-font-size: 0.5rem;
-        --p-badge-sm-height: 1.125rem;
-        --p-badge-sm-min-width: 1.125rem;
+        --p-badge-sm-font-size: calc(var(--p-typography-font-size) * 4 / 7);
+        --p-badge-sm-height: calc(var(--p-typography-font-size) * 9 / 7);
+        --p-badge-sm-min-width: calc(var(--p-typography-font-size) * 9 / 7);
     }
 
     /* blockui */
@@ -666,7 +666,7 @@
         --p-blockui-light-mask-background: light-dark(color-mix(in srgb, var(--p-surface-0), transparent 50%), color-mix(in srgb, var(--p-surface-950), transparent 70%));
         --p-blockui-light-mask-color: var(--p-primary-color);
         --p-blockui-loading-icon: var(--p-icon-loading);
-        --p-blockui-loading-icon-size: 2rem;
+        --p-blockui-loading-icon-size: calc(var(--p-icon-size) * 16 / 7);
         --p-blockui-loading-icon-color: var(--p-blockui-mask-color);
         --p-blockui-loading-icon-animation-duration: var(--p-ajaxstatus-loading-icon-animation-duration);
     }
@@ -706,16 +706,16 @@
         --p-button-gap: 0.5rem;
         --p-button-padding-x: var(--p-form-field-padding-x);
         --p-button-padding-y: var(--p-form-field-padding-y);
-        --p-button-icon-only-width: 2.25rem;
+        --p-button-icon-only-width: calc(var(--p-button-font-size) * var(--p-typography-line-height) + 0.9375rem);
         --p-button-font-size: var(--p-form-field-font-size);
         --p-button-sm-font-size: var(--p-form-field-sm-font-size);
         --p-button-sm-padding-x: var(--p-form-field-sm-padding-x);
         --p-button-sm-padding-y: var(--p-form-field-sm-padding-y);
-        --p-button-sm-icon-only-width: 1.75rem;
+        --p-button-sm-icon-only-width: calc(var(--p-button-sm-font-size) * var(--p-typography-line-height) + 0.625rem);
         --p-button-lg-font-size: var(--p-form-field-lg-font-size);
         --p-button-lg-padding-x: var(--p-form-field-lg-padding-x);
         --p-button-lg-padding-y: var(--p-form-field-lg-padding-y);
-        --p-button-lg-icon-only-width: 2.625rem;
+        --p-button-lg-icon-only-width: calc(var(--p-button-lg-font-size) * var(--p-typography-line-height) + 1.125rem);
         --p-button-label-font-weight: 500;
         --p-button-raised-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
         --p-button-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.22), rgb(255 255 255 / 0.12)), 0 1px 0 light-dark(rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.04)), 0 1px 3px light-dark(rgb(0 0 0 / 0.12), rgb(0 0 0 / 0.5));
@@ -898,10 +898,10 @@
         --p-card-body-padding: 1.125rem;
         --p-card-body-gap: 0.5rem;
         --p-card-caption-gap: 0.5rem;
-        --p-card-title-font-size: 1.125rem;
+        --p-card-title-font-size: calc(var(--p-typography-font-size) * 9 / 7);
         --p-card-title-font-weight: 500;
         --p-card-subtitle-color: var(--p-text-muted-color);
-        --p-card-subtitle-font-size: 1rem;
+        --p-card-subtitle-font-size: calc(var(--p-typography-font-size) * 8 / 7);
         --p-card-subtitle-font-weight: var(--p-typography-font-weight);
     }
 
@@ -976,7 +976,7 @@
         --p-cascadeselect-option-border-radius: var(--p-list-option-border-radius);
         --p-cascadeselect-option-icon-color: var(--p-list-option-icon-color);
         --p-cascadeselect-option-icon-focus-color: var(--p-list-option-icon-focus-color);
-        --p-cascadeselect-option-icon-size: 0.75rem;
+        --p-cascadeselect-option-icon-size: calc(var(--p-icon-size) * 6 / 7);
         --p-cascadeselect-group-icon: var(--p-icon-next);
         --p-cascadeselect-option-font-weight: var(--p-list-option-font-weight);
         --p-cascadeselect-option-font-size: var(--p-list-option-font-size);
@@ -992,8 +992,8 @@
     :root, [data-p-scope] {
         --p-checkbox-border-radius: var(--p-border-radius-sm);
         --p-checkbox-border-width: 1px;
-        --p-checkbox-width: 1.125rem;
-        --p-checkbox-height: 1.125rem;
+        --p-checkbox-width: calc(var(--p-typography-font-size) * 9 / 7);
+        --p-checkbox-height: calc(var(--p-typography-font-size) * 9 / 7);
         --p-checkbox-background: var(--p-form-field-background);
         --p-checkbox-checked-background: var(--p-button-primary-background);
         --p-checkbox-checked-hover-background: var(--p-button-primary-hover-background);
@@ -1013,10 +1013,10 @@
         --p-checkbox-focus-ring-color: var(--p-focus-ring-color);
         --p-checkbox-focus-ring-offset: var(--p-focus-ring-offset);
         --p-checkbox-focus-ring-shadow: var(--p-focus-ring-shadow);
-        --p-checkbox-state-layer-size: 2.5rem;
+        --p-checkbox-state-layer-size: calc(var(--p-typography-font-size) * 20 / 7);
         --p-checkbox-hover-state-layer-opacity: 0%;
         --p-checkbox-transition-duration: var(--p-form-field-transition-duration);
-        --p-checkbox-icon-size: 0.75rem;
+        --p-checkbox-icon-size: calc(var(--p-icon-size) * 6 / 7);
         --p-checkbox-icon-color: var(--p-form-field-color);
         --p-checkbox-icon-checked-color: var(--p-primary-contrast-color);
         --p-checkbox-icon-checked-hover-color: var(--p-primary-contrast-color);
@@ -1025,12 +1025,12 @@
         --p-checkbox-checked-icon: var(--p-icon-check);
         --p-checkbox-indeterminate-icon: var(--p-icon-indeterminate);
         --p-checkbox-crossed-icon: var(--p-icon-close);
-        --p-checkbox-icon-lg-size: 0.875rem;
-        --p-checkbox-icon-sm-size: 0.625rem;
-        --p-checkbox-lg-height: 1.25rem;
-        --p-checkbox-lg-width: 1.25rem;
-        --p-checkbox-sm-height: 0.875rem;
-        --p-checkbox-sm-width: 0.875rem;
+        --p-checkbox-icon-lg-size: var(--p-icon-size);
+        --p-checkbox-icon-sm-size: calc(var(--p-icon-size) * 5 / 7);
+        --p-checkbox-lg-height: calc(var(--p-typography-font-size) * 10 / 7);
+        --p-checkbox-lg-width: calc(var(--p-typography-font-size) * 10 / 7);
+        --p-checkbox-sm-height: var(--p-typography-font-size);
+        --p-checkbox-sm-width: var(--p-typography-font-size);
     }
 
     /* chip */
@@ -1045,11 +1045,11 @@
         --p-chip-color: light-dark(var(--p-surface-800), var(--p-surface-0));
         --p-chip-image-width: 1.75rem;
         --p-chip-image-height: 1.75rem;
-        --p-chip-icon-size: 0.875rem;
+        --p-chip-icon-size: var(--p-icon-size);
         --p-chip-icon-color: light-dark(var(--p-surface-800), var(--p-surface-0));
         --p-chip-label-font-weight: var(--p-typography-font-weight);
-        --p-chip-label-font-size: 0.75rem;
-        --p-chip-remove-icon-size: 0.875rem;
+        --p-chip-label-font-size: calc(var(--p-typography-font-size) * 6 / 7);
+        --p-chip-remove-icon-size: var(--p-icon-size);
         --p-chip-remove-icon: var(--p-icon-clear);
         --p-chip-remove-icon-color: light-dark(var(--p-surface-800), var(--p-surface-0));
         --p-chip-remove-icon-focus-ring-width: var(--p-focus-ring-width);
@@ -1137,7 +1137,7 @@
 
     /* confirmdialog */
     :root, [data-p-scope] {
-        --p-confirmdialog-icon-size: 1.5rem;
+        --p-confirmdialog-icon-size: calc(var(--p-icon-size) * 12 / 7);
         --p-confirmdialog-icon-color: var(--p-overlay-modal-color);
         --p-confirmdialog-content-gap: 0.875rem;
         --p-confirmdialog-message-color: var(--p-content-color);
@@ -1156,7 +1156,7 @@
         --p-confirmpopup-arrow-offset: 1.125rem;
         --p-confirmpopup-content-padding: var(--p-overlay-popover-padding);
         --p-confirmpopup-content-gap: 0.5rem;
-        --p-confirmpopup-icon-size: 1.25rem;
+        --p-confirmpopup-icon-size: calc(var(--p-icon-size) * 10 / 7);
         --p-confirmpopup-icon-color: var(--p-overlay-popover-color);
         --p-confirmpopup-message-color: var(--p-content-color);
         --p-confirmpopup-message-font-weight: var(--p-typography-font-weight);
@@ -1278,13 +1278,13 @@
         --p-datatable-resize-indicator-color: var(--p-primary-color);
         --p-datatable-sort-icon-color: var(--p-text-muted-color);
         --p-datatable-sort-icon-hover-color: var(--p-text-hover-muted-color);
-        --p-datatable-sort-icon-size: 0.75rem;
+        --p-datatable-sort-icon-size: calc(var(--p-icon-size) * 6 / 7);
         --p-datatable-row-toggle-button-hover-background: var(--p-content-hover-background);
         --p-datatable-row-toggle-button-selected-hover-background: var(--p-content-background);
         --p-datatable-row-toggle-button-color: var(--p-text-muted-color);
         --p-datatable-row-toggle-button-hover-color: var(--p-text-color);
         --p-datatable-row-toggle-button-selected-hover-color: var(--p-primary-color);
-        --p-datatable-row-toggle-button-size: 1.5rem;
+        --p-datatable-row-toggle-button-size: calc(var(--p-typography-font-size) * 12 / 7);
         --p-datatable-row-toggle-button-border-radius: 50%;
         --p-datatable-row-toggle-button-focus-ring-width: var(--p-focus-ring-width);
         --p-datatable-row-toggle-button-focus-ring-style: var(--p-focus-ring-style);
@@ -1363,7 +1363,7 @@
         --p-dataview-empty-message-padding: 0.625rem 0.875rem;
         --p-dataview-empty-message-color: var(--p-text-muted-color);
         --p-dataview-loader-padding: 0.625rem 0.875rem;
-        --p-dataview-loading-icon-size: 1.75rem;
+        --p-dataview-loading-icon-size: calc(var(--p-icon-size) * 2);
         --p-dataview-loading-icon-color: var(--p-text-muted-color);
         --p-dataview-loading-icon: var(--p-icon-loading);
         --p-dataview-loading-icon-animation-duration: var(--p-ajaxstatus-loading-icon-animation-duration);
@@ -1434,8 +1434,8 @@
         --p-datepicker-date-color: var(--p-content-color);
         --p-datepicker-date-hover-color: var(--p-content-hover-color);
         --p-datepicker-date-selected-color: var(--p-primary-contrast-color);
-        --p-datepicker-date-width: 1.75rem;
-        --p-datepicker-date-height: 1.75rem;
+        --p-datepicker-date-width: calc(var(--p-typography-font-size) * 2);
+        --p-datepicker-date-height: calc(var(--p-typography-font-size) * 2);
         --p-datepicker-date-border-radius: 50%;
         --p-datepicker-date-padding: 0.25rem;
         --p-datepicker-date-focus-ring-width: var(--p-focus-ring-width);
@@ -1486,7 +1486,7 @@
         --p-diagram-overlay-border-color: var(--p-content-border-color);
         --p-diagram-overlay-border-radius: var(--p-border-radius-sm);
         --p-diagram-overlay-padding: 0.125rem 0.375rem;
-        --p-diagram-overlay-font-size: 0.875rem;
+        --p-diagram-overlay-font-size: var(--p-typography-font-size);
     }
 
     /* dialog */
@@ -1498,7 +1498,7 @@
         --p-dialog-shadow: var(--p-overlay-modal-shadow);
         --p-dialog-header-padding: var(--p-overlay-modal-padding);
         --p-dialog-header-gap: 0.5rem;
-        --p-dialog-title-font-size: 1.125rem;
+        --p-dialog-title-font-size: calc(var(--p-typography-font-size) * 9 / 7);
         --p-dialog-title-font-weight: 600;
         --p-dialog-content-padding: 0 var(--p-overlay-modal-padding) var(--p-overlay-modal-padding) var(--p-overlay-modal-padding);
         --p-dialog-footer-padding: 0 var(--p-overlay-modal-padding) var(--p-overlay-modal-padding) var(--p-overlay-modal-padding);
@@ -1659,13 +1659,13 @@
         --p-fileupload-file-name-font-size: var(--p-typography-font-size);
         --p-fileupload-file-size-color: var(--p-text-muted-color);
         --p-fileupload-file-size-font-weight: var(--p-typography-font-weight);
-        --p-fileupload-file-size-font-size: 0.75rem;
+        --p-fileupload-file-size-font-size: calc(var(--p-typography-font-size) * 6 / 7);
         --p-fileupload-progressbar-height: 0.25rem;
         --p-fileupload-basic-gap: 0.5rem;
         --p-fileupload-drag-overlay-background: color-mix(in srgb, var(--p-message-success-background), transparent 20%);
         --p-fileupload-drag-overlay-border-color: var(--p-message-success-color);
         --p-fileupload-drag-overlay-color: var(--p-message-success-color);
-        --p-fileupload-drag-overlay-icon-size: 3rem;
+        --p-fileupload-drag-overlay-icon-size: calc(var(--p-icon-size) * 24 / 7);
         --p-fileupload-progress-width: 12.5rem;
         --p-fileupload-file-thumbnail-border-radius: var(--p-border-radius-sm);
         --p-fileupload-empty-color: var(--p-text-muted-color);
@@ -1686,7 +1686,7 @@
         --p-floatlabel-position-y: var(--p-form-field-padding-y);
         --p-floatlabel-font-weight: var(--p-form-field-font-weight);
         --p-floatlabel-font-size: var(--p-form-field-font-size);
-        --p-floatlabel-active-font-size: 0.625rem;
+        --p-floatlabel-active-font-size: calc(var(--p-typography-font-size) * 5 / 7);
         --p-floatlabel-active-font-weight: 400;
         --p-floatlabel-over-active-top: -1.125rem;
         --p-floatlabel-in-active-top: var(--p-form-field-padding-y);
@@ -1707,7 +1707,7 @@
         --p-galleria-nav-button-hover-background: rgba(255, 255, 255, 0.2);
         --p-galleria-nav-button-color: var(--p-surface-100);
         --p-galleria-nav-button-hover-color: var(--p-surface-0);
-        --p-galleria-nav-button-size: 2.625rem;
+        --p-galleria-nav-button-size: calc(var(--p-typography-font-size) * 3);
         --p-galleria-nav-button-gutter: 0.5rem;
         --p-galleria-nav-button-prev-border-radius: 50%;
         --p-galleria-nav-button-next-border-radius: 50%;
@@ -1716,10 +1716,10 @@
         --p-galleria-nav-button-focus-ring-color: var(--p-focus-ring-color);
         --p-galleria-nav-button-focus-ring-offset: var(--p-focus-ring-offset);
         --p-galleria-nav-button-focus-ring-shadow: var(--p-focus-ring-shadow);
-        --p-galleria-nav-icon-size: 1.25rem;
+        --p-galleria-nav-icon-size: calc(var(--p-icon-size) * 10 / 7);
         --p-galleria-thumbnails-content-background: var(--p-content-background);
         --p-galleria-thumbnails-content-padding: 0.875rem 0.25rem;
-        --p-galleria-thumbnail-nav-button-size: 1.75rem;
+        --p-galleria-thumbnail-nav-button-size: calc(var(--p-typography-font-size) * 2);
         --p-galleria-thumbnail-nav-button-border-radius: var(--p-content-border-radius);
         --p-galleria-thumbnail-nav-button-gutter: 0.5rem;
         --p-galleria-thumbnail-nav-button-hover-background: light-dark(var(--p-surface-100), var(--p-surface-700));
@@ -1730,7 +1730,7 @@
         --p-galleria-thumbnail-nav-button-focus-ring-color: var(--p-focus-ring-color);
         --p-galleria-thumbnail-nav-button-focus-ring-offset: var(--p-focus-ring-offset);
         --p-galleria-thumbnail-nav-button-focus-ring-shadow: var(--p-focus-ring-shadow);
-        --p-galleria-thumbnail-nav-button-icon-size: 0.875rem;
+        --p-galleria-thumbnail-nav-button-icon-size: var(--p-icon-size);
         --p-galleria-caption-background: rgba(0, 0, 0, 0.5);
         --p-galleria-caption-color: var(--p-surface-100);
         --p-galleria-caption-padding: 0.875rem;
@@ -1751,7 +1751,7 @@
         --p-galleria-inset-indicator-button-background: rgba(255, 255, 255, 0.4);
         --p-galleria-inset-indicator-button-hover-background: rgba(255, 255, 255, 0.6);
         --p-galleria-inset-indicator-button-active-background: rgba(255, 255, 255, 0.9);
-        --p-galleria-close-button-size: 2.625rem;
+        --p-galleria-close-button-size: calc(var(--p-typography-font-size) * 3);
         --p-galleria-close-icon: var(--p-icon-close);
         --p-galleria-close-button-gutter: 0.5rem;
         --p-galleria-close-button-background: rgba(255, 255, 255, 0.1);
@@ -1764,7 +1764,7 @@
         --p-galleria-close-button-focus-ring-color: var(--p-focus-ring-color);
         --p-galleria-close-button-focus-ring-offset: var(--p-focus-ring-offset);
         --p-galleria-close-button-focus-ring-shadow: var(--p-focus-ring-shadow);
-        --p-galleria-close-button-icon-size: 1.25rem;
+        --p-galleria-close-button-icon-size: calc(var(--p-icon-size) * 10 / 7);
         --p-galleria-mask-background: color-mix(in srgb, var(--p-surface-950), transparent 10%);
         --p-galleria-mask-color: var(--p-surface-0);
         --p-galleria-thumbnail-item-gutter: 0.25rem;
@@ -2032,7 +2032,7 @@
     :root, [data-p-scope] {
         --p-lifecycle-gap: 0.25rem;
         --p-lifecycle-name-color: var(--p-text-muted-color);
-        --p-lifecycle-name-font-size: 0.75rem;
+        --p-lifecycle-name-font-size: calc(var(--p-typography-font-size) * 6 / 7);
         --p-lifecycle-name-padding: 0 0 0.25rem 0;
         --p-lifecycle-result-padding: 0.25rem 0.625rem;
         --p-lifecycle-result-border-radius: var(--p-border-radius-sm);
@@ -2113,7 +2113,7 @@
         --p-log-button-focus-ring-shadow: var(--p-button-secondary-focus-ring-shadow);
         --p-log-button-transition-duration: var(--p-button-transition-duration);
         --p-log-item-gap: 0.5rem;
-        --p-log-item-font-size: 0.875rem;
+        --p-log-item-font-size: var(--p-typography-font-size);
         --p-log-item-info-icon-color: var(--p-message-info-simple-color);
         --p-log-item-warn-icon-color: var(--p-message-warn-simple-color);
         --p-log-item-debug-icon-color: var(--p-text-muted-color);
@@ -2260,15 +2260,15 @@
         --p-message-content-lg-padding: 0.5rem 0.75rem;
         --p-message-text-font-size: var(--p-typography-font-size);
         --p-message-text-font-weight: 500;
-        --p-message-icon-size: 1rem;
-        --p-message-icon-lg-size: 1.125rem;
-        --p-message-close-button-width: 1.5rem;
-        --p-message-close-button-height: 1.5rem;
+        --p-message-icon-size: calc(var(--p-icon-size) * 8 / 7);
+        --p-message-icon-lg-size: calc(var(--p-icon-size) * 9 / 7);
+        --p-message-close-button-width: calc(var(--p-typography-font-size) * 12 / 7);
+        --p-message-close-button-height: calc(var(--p-typography-font-size) * 12 / 7);
         --p-message-close-button-border-radius: 50%;
         --p-message-close-button-focus-ring-width: var(--p-focus-ring-width);
         --p-message-close-button-focus-ring-style: var(--p-focus-ring-style);
         --p-message-close-button-focus-ring-offset: var(--p-focus-ring-offset);
-        --p-message-close-icon-size: 0.875rem;
+        --p-message-close-icon-size: var(--p-icon-size);
         --p-message-info-background: light-dark(color-mix(in srgb, var(--p-blue-50), transparent 5%), color-mix(in srgb, var(--p-blue-500), transparent 84%));
         --p-message-info-border-color: light-dark(var(--p-blue-200), color-mix(in srgb, var(--p-blue-700), transparent 64%));
         --p-message-info-color: light-dark(var(--p-blue-700), var(--p-blue-400));
@@ -2321,8 +2321,8 @@
         --p-message-secondary-icon: var(--p-icon-info);
         --p-message-contrast-icon: var(--p-icon-info);
         --p-message-close-icon: var(--p-icon-close);
-        --p-message-close-icon-lg-size: 1rem;
-        --p-message-close-icon-sm-size: 0.75rem;
+        --p-message-close-icon-lg-size: calc(var(--p-icon-size) * 8 / 7);
+        --p-message-close-icon-sm-size: calc(var(--p-icon-size) * 6 / 7);
         --p-message-content-sm-padding: 0.25rem 0.5rem;
         --p-message-contrast-background: light-dark(var(--p-surface-900), var(--p-surface-0));
         --p-message-contrast-border-color: light-dark(var(--p-surface-950), var(--p-surface-100));
@@ -2335,7 +2335,7 @@
         --p-message-contrast-shadow: 0px 4px 8px 0px color-mix(in srgb, var(--p-surface-950), transparent 96%);
         --p-message-contrast-simple-color: light-dark(var(--p-surface-950), var(--p-surface-0));
         --p-message-error-outlined-color: light-dark(var(--p-red-700), var(--p-red-400));
-        --p-message-icon-sm-size: 0.875rem;
+        --p-message-icon-sm-size: var(--p-icon-size);
         --p-message-info-outlined-border-color: light-dark(var(--p-blue-600), var(--p-blue-500));
         --p-message-info-outlined-color: light-dark(var(--p-blue-700), var(--p-blue-400));
         --p-message-outlined-border-width: 1px;
@@ -2353,8 +2353,8 @@
         --p-message-success-outlined-border-color: light-dark(var(--p-green-600), var(--p-green-500));
         --p-message-success-outlined-color: light-dark(var(--p-green-700), var(--p-green-400));
         --p-message-success-simple-color: light-dark(var(--p-green-700), var(--p-green-400));
-        --p-message-text-lg-font-size: 1rem;
-        --p-message-text-sm-font-size: 0.75rem;
+        --p-message-text-lg-font-size: calc(var(--p-typography-font-size) * 8 / 7);
+        --p-message-text-sm-font-size: calc(var(--p-typography-font-size) * 6 / 7);
         --p-message-warn-outlined-border-color: light-dark(var(--p-yellow-600), var(--p-yellow-500));
         --p-message-warn-outlined-color: light-dark(var(--p-yellow-800), var(--p-yellow-400));
     }
@@ -2561,16 +2561,16 @@
         --p-organizationchart-node-toggle-button-border-color: var(--p-content-border-color);
         --p-organizationchart-node-toggle-button-color: var(--p-text-muted-color);
         --p-organizationchart-node-toggle-button-hover-color: var(--p-text-color);
-        --p-organizationchart-node-toggle-button-size: 1.25rem;
+        --p-organizationchart-node-toggle-button-size: calc(var(--p-typography-font-size) * 10 / 7);
         --p-organizationchart-node-toggle-button-border-radius: 50%;
-        --p-organizationchart-node-toggle-button-icon-size: 0.75rem;
+        --p-organizationchart-node-toggle-button-icon-size: calc(var(--p-icon-size) * 6 / 7);
         --p-organizationchart-connector-color: var(--p-content-border-color);
     }
 
     /* outputpanel */
     :root, [data-p-scope] {
         --p-outputpanel-loading-padding: 1rem;
-        --p-outputpanel-loading-icon-size: 2rem;
+        --p-outputpanel-loading-icon-size: calc(var(--p-icon-size) * 16 / 7);
         --p-outputpanel-loading-icon-color: var(--p-text-muted-color);
         --p-outputpanel-loading-icon: var(--p-icon-loading);
         --p-outputpanel-loading-icon-animation-duration: var(--p-ajaxstatus-loading-icon-animation-duration);
@@ -2612,8 +2612,8 @@
         --p-paginator-nav-button-color: var(--p-text-muted-color);
         --p-paginator-nav-button-hover-color: var(--p-text-hover-muted-color);
         --p-paginator-nav-button-selected-color: var(--p-highlight-color);
-        --p-paginator-nav-button-width: 2.25rem;
-        --p-paginator-nav-button-height: 2.25rem;
+        --p-paginator-nav-button-width: calc(var(--p-paginator-nav-button-font-size) * var(--p-typography-line-height) + 0.9375rem);
+        --p-paginator-nav-button-height: calc(var(--p-paginator-nav-button-font-size) * var(--p-typography-line-height) + 0.9375rem);
         --p-paginator-nav-button-border-radius: 50%;
         --p-paginator-nav-button-font-weight: var(--p-typography-font-weight);
         --p-paginator-nav-button-font-size: var(--p-typography-font-size);
@@ -2762,10 +2762,10 @@
     :root, [data-p-scope] {
         --p-progressbar-background: linear-gradient(180deg, light-dark(#c9c9ce, #0a0a0b), light-dark(#e9e9ec, #121113) 70%);
         --p-progressbar-border-radius: var(--p-content-border-radius);
-        --p-progressbar-height: 1.125rem;
+        --p-progressbar-height: calc(var(--p-typography-font-size) * 9 / 7);
         --p-progressbar-value-background: linear-gradient(180deg, light-dark(#5a5a62, #ffffff), light-dark(#2a2a2e, #e4e3e6) 50%, light-dark(#121214, #c9c7cc));
         --p-progressbar-label-color: var(--p-primary-contrast-color);
-        --p-progressbar-label-font-size: 0.625rem;
+        --p-progressbar-label-font-size: calc(var(--p-typography-font-size) * 5 / 7);
         --p-progressbar-label-font-weight: 600;
         --p-progressbar-success-value-background: var(--p-badge-success-background);
         --p-progressbar-success-label-color: var(--p-badge-success-color);
@@ -2780,8 +2780,8 @@
     /* radiobutton */
     :root, [data-p-scope] {
         --p-radiobutton-border-width: 1px;
-        --p-radiobutton-width: 1.125rem;
-        --p-radiobutton-height: 1.125rem;
+        --p-radiobutton-width: calc(var(--p-typography-font-size) * 9 / 7);
+        --p-radiobutton-height: calc(var(--p-typography-font-size) * 9 / 7);
         --p-radiobutton-background: var(--p-form-field-background);
         --p-radiobutton-checked-background: var(--p-button-primary-background);
         --p-radiobutton-checked-hover-background: var(--p-button-primary-hover-background);
@@ -2801,20 +2801,20 @@
         --p-radiobutton-focus-ring-color: var(--p-focus-ring-color);
         --p-radiobutton-focus-ring-offset: var(--p-focus-ring-offset);
         --p-radiobutton-focus-ring-shadow: var(--p-focus-ring-shadow);
-        --p-radiobutton-state-layer-size: 2.5rem;
+        --p-radiobutton-state-layer-size: calc(var(--p-typography-font-size) * 20 / 7);
         --p-radiobutton-hover-state-layer-opacity: 0%;
         --p-radiobutton-transition-duration: var(--p-form-field-transition-duration);
-        --p-radiobutton-icon-size: 0.625rem;
+        --p-radiobutton-icon-size: calc(var(--p-typography-font-size) * 5 / 7);
         --p-radiobutton-icon-checked-color: var(--p-primary-contrast-color);
         --p-radiobutton-icon-checked-hover-color: var(--p-primary-contrast-color);
         --p-radiobutton-icon-disabled-color: var(--p-form-field-disabled-color);
         --p-radiobutton-label-gap: 0.5rem;
-        --p-radiobutton-icon-lg-size: 0.75rem;
-        --p-radiobutton-icon-sm-size: 0.5rem;
-        --p-radiobutton-lg-height: 1.25rem;
-        --p-radiobutton-lg-width: 1.25rem;
-        --p-radiobutton-sm-height: 0.875rem;
-        --p-radiobutton-sm-width: 0.875rem;
+        --p-radiobutton-icon-lg-size: calc(var(--p-typography-font-size) * 6 / 7);
+        --p-radiobutton-icon-sm-size: calc(var(--p-typography-font-size) * 4 / 7);
+        --p-radiobutton-lg-height: calc(var(--p-typography-font-size) * 10 / 7);
+        --p-radiobutton-lg-width: calc(var(--p-typography-font-size) * 10 / 7);
+        --p-radiobutton-sm-height: var(--p-typography-font-size);
+        --p-radiobutton-sm-width: var(--p-typography-font-size);
     }
 
     /* rating */
@@ -2826,7 +2826,7 @@
         --p-rating-focus-ring-color: var(--p-focus-ring-color);
         --p-rating-focus-ring-offset: var(--p-focus-ring-offset);
         --p-rating-focus-ring-shadow: var(--p-focus-ring-shadow);
-        --p-rating-icon-size: 1rem;
+        --p-rating-icon-size: calc(var(--p-icon-size) * 5 / 4);
         --p-rating-icon-color: var(--p-text-muted-color);
         --p-rating-icon-hover-color: var(--p-primary-color);
         --p-rating-icon-active-color: var(--p-primary-color);
@@ -2863,7 +2863,7 @@
         --p-schedule-border-color: var(--p-datatable-body-cell-border-color);
         --p-schedule-toolbar-gap: 0.5rem;
         --p-schedule-toolbar-margin: 0 0 1rem 0;
-        --p-schedule-title-font-size: 1.25rem;
+        --p-schedule-title-font-size: calc(var(--p-typography-font-size) * 10 / 7);
         --p-schedule-title-font-weight: 600;
         --p-schedule-header-cell-background: var(--p-datatable-header-cell-background);
         --p-schedule-header-cell-color: var(--p-datatable-header-cell-color);
@@ -3090,8 +3090,8 @@
         --p-slider-track-border-radius: var(--p-content-border-radius);
         --p-slider-track-size: 3px;
         --p-slider-range-background: var(--p-primary-color);
-        --p-slider-handle-width: 18px;
-        --p-slider-handle-height: 18px;
+        --p-slider-handle-width: calc(var(--p-typography-font-size) * 9 / 7);
+        --p-slider-handle-height: calc(var(--p-typography-font-size) * 9 / 7);
         --p-slider-handle-border-radius: 50%;
         --p-slider-handle-background: transparent;
         --p-slider-handle-hover-background: transparent;
@@ -3188,8 +3188,8 @@
         --p-steps-item-number-active-border-color: var(--p-primary-color);
         --p-steps-item-number-color: var(--p-text-muted-color);
         --p-steps-item-number-active-color: var(--p-primary-contrast-color);
-        --p-steps-item-number-size: 2rem;
-        --p-steps-item-number-font-size: 1.143rem;
+        --p-steps-item-number-size: calc(var(--p-typography-font-size) * 16 / 7);
+        --p-steps-item-number-font-size: calc(var(--p-typography-font-size) * 1.306);
         --p-steps-item-number-font-weight: 500;
         --p-steps-item-number-border-radius: 50%;
         --p-steps-item-number-shadow: 0px 0.5px 0px 0px rgba(0, 0, 0, 0.06), 0px 1px 1px 0px rgba(0, 0, 0, 0.12);
@@ -3287,13 +3287,13 @@
 
     /* tag */
     :root, [data-p-scope] {
-        --p-tag-font-size: 0.75rem;
+        --p-tag-font-size: calc(var(--p-typography-font-size) * 6 / 7);
         --p-tag-font-weight: 700;
         --p-tag-padding: 0.125rem 0.375rem;
         --p-tag-gap: 0.25rem;
         --p-tag-border-radius: var(--p-content-border-radius);
         --p-tag-rounded-border-radius: var(--p-border-radius-xl);
-        --p-tag-icon-size: 0.625rem;
+        --p-tag-icon-size: calc(var(--p-icon-size) * 5 / 7);
         --p-tag-primary-background: light-dark(var(--p-primary-100), color-mix(in srgb, var(--p-primary-500), transparent 84%));
         --p-tag-primary-color: light-dark(var(--p-primary-700), var(--p-primary-300));
         --p-tag-secondary-background: light-dark(var(--p-surface-100), var(--p-surface-800));
@@ -3445,7 +3445,7 @@
         --p-timeline-grid-minor-color: color-mix(in srgb, var(--p-content-border-color), transparent 50%);
         --p-timeline-grid-major-color: var(--p-content-border-color);
         --p-timeline-axis-color: var(--p-text-muted-color);
-        --p-timeline-axis-font-size: 0.875rem;
+        --p-timeline-axis-font-size: var(--p-typography-font-size);
         --p-timeline-group-color: var(--p-text-color);
         --p-timeline-group-border-color: var(--p-content-border-color);
         --p-timeline-group-nested-background: var(--p-content-hover-background);
@@ -3480,21 +3480,21 @@
         --p-toast-border-width: 1px;
         --p-toast-transition-duration: 0.3s;
         --p-toast-blur: 10px;
-        --p-toast-icon-size: 1rem;
+        --p-toast-icon-size: calc(var(--p-icon-size) * 8 / 7);
         --p-toast-content-padding: var(--p-overlay-popover-padding);
         --p-toast-content-gap: 0.5rem;
         --p-toast-text-gap: 0.25rem;
         --p-toast-summary-font-weight: 500;
         --p-toast-summary-font-size: var(--p-typography-font-size);
         --p-toast-detail-font-weight: 500;
-        --p-toast-detail-font-size: 0.75rem;
-        --p-toast-close-button-width: 1.5rem;
-        --p-toast-close-button-height: 1.5rem;
+        --p-toast-detail-font-size: calc(var(--p-typography-font-size) * 6 / 7);
+        --p-toast-close-button-width: calc(var(--p-typography-font-size) * 12 / 7);
+        --p-toast-close-button-height: calc(var(--p-typography-font-size) * 12 / 7);
         --p-toast-close-button-border-radius: 50%;
         --p-toast-close-button-focus-ring-width: var(--p-focus-ring-width);
         --p-toast-close-button-focus-ring-style: var(--p-focus-ring-style);
         --p-toast-close-button-focus-ring-offset: var(--p-focus-ring-offset);
-        --p-toast-close-icon-size: 0.875rem;
+        --p-toast-close-icon-size: var(--p-icon-size);
         --p-toast-info-background: light-dark(color-mix(in srgb, var(--p-blue-50), transparent 5%), color-mix(in srgb, var(--p-blue-500) 10%, color-mix(in srgb, var(--p-surface-900) 78%, transparent)));
         --p-toast-info-glow: light-dark(transparent, color-mix(in srgb, var(--p-blue-500), transparent 70%));
         --p-toast-info-border-color: light-dark(var(--p-blue-200), color-mix(in srgb, var(--p-blue-400), transparent 70%));
@@ -3603,10 +3603,10 @@
 
     /* toggleswitch */
     :root, [data-p-scope] {
-        --p-toggleswitch-width: 2.25rem;
-        --p-toggleswitch-height: 1.375rem;
+        --p-toggleswitch-width: calc(var(--p-typography-font-size) * 18 / 7);
+        --p-toggleswitch-height: calc(var(--p-typography-font-size) * 11 / 7);
         --p-toggleswitch-border-radius: 30px;
-        --p-toggleswitch-gap: 0.25rem;
+        --p-toggleswitch-gap: calc(var(--p-typography-font-size) * 2 / 7);
         --p-toggleswitch-shadow: inset 0 1px 2px light-dark(rgb(0 0 0 / 0.25), rgb(0 0 0 / 0.8));
         --p-toggleswitch-focus-ring-width: var(--p-focus-ring-width);
         --p-toggleswitch-focus-ring-style: var(--p-focus-ring-style);
@@ -3630,7 +3630,7 @@
         --p-toggleswitch-checked-hover-background: linear-gradient(180deg, light-dark(#66666e, #46444a), light-dark(#1c1c1f, #262528)) padding-box, linear-gradient(180deg, light-dark(#71717a, #c9c7cc), light-dark(#000000, #3a383d)) border-box;
         --p-toggleswitch-handle-border-radius: 50%;
         --p-toggleswitch-handle-shadow: inset 0 1px 0 light-dark(rgb(255 255 255 / 0.95), rgb(255 255 255 / 0.3)), inset 0 -1px 1px rgb(0 0 0 / 0.12), 0 0 0 0.5px rgb(0 0 0 / 0.35), 0 1px 2px rgb(0 0 0 / 0.3), 0 2px 6px rgb(0 0 0 / 0.12);
-        --p-toggleswitch-handle-size: 0.875rem;
+        --p-toggleswitch-handle-size: var(--p-typography-font-size);
         --p-toggleswitch-handle-background: conic-gradient(from 200deg, light-dark(#ffffff, #5a5860), light-dark(#d2d2d7, #2c2b2d) 15%, light-dark(#f7f7f8, #4a484e) 30%, light-dark(#bdbdc3, #232225) 50%, light-dark(#fbfbfc, #55535a) 66%, light-dark(#cfcfd4, #2f2e31) 84%, light-dark(#ffffff, #5a5860));
         --p-toggleswitch-handle-disabled-background: light-dark(var(--p-form-field-disabled-color), var(--p-surface-900));
         --p-toggleswitch-handle-checked-disabled-background: var(--p-toggleswitch-handle-disabled-background);
@@ -3672,7 +3672,7 @@
         --p-tooltip-padding: 0.375rem 0.625rem;
         --p-tooltip-border-radius: var(--p-overlay-popover-border-radius);
         --p-tooltip-font-weight: var(--p-typography-font-weight);
-        --p-tooltip-font-size: 0.75rem;
+        --p-tooltip-font-size: calc(var(--p-typography-font-size) * 6 / 7);
         --p-tooltip-background: var(--p-surface-700);
         --p-tooltip-color: var(--p-surface-0);
         --p-tooltip-invalid-background: var(--p-message-error-color);
@@ -3707,7 +3707,7 @@
         --p-tree-node-label-selected-font-weight: var(--p-list-option-selected-font-weight);
         --p-tree-node-label-font-size: var(--p-typography-font-size);
         --p-tree-node-toggle-button-border-radius: 50%;
-        --p-tree-node-toggle-button-size: 1.5rem;
+        --p-tree-node-toggle-button-size: calc(var(--p-typography-font-size) * 12 / 7);
         --p-tree-node-toggle-button-hover-background: var(--p-content-hover-background);
         --p-tree-node-toggle-button-selected-hover-background: var(--p-content-background);
         --p-tree-node-toggle-button-color: var(--p-text-muted-color);
@@ -3795,13 +3795,13 @@
         --p-treetable-resize-indicator-color: var(--p-primary-color);
         --p-treetable-sort-icon-color: var(--p-text-muted-color);
         --p-treetable-sort-icon-hover-color: var(--p-text-hover-muted-color);
-        --p-treetable-sort-icon-size: 0.75rem;
+        --p-treetable-sort-icon-size: calc(var(--p-icon-size) * 6 / 7);
         --p-treetable-node-toggle-button-hover-background: var(--p-content-hover-background);
         --p-treetable-node-toggle-button-selected-hover-background: var(--p-content-background);
         --p-treetable-node-toggle-button-color: var(--p-text-muted-color);
         --p-treetable-node-toggle-button-hover-color: var(--p-text-color);
         --p-treetable-node-toggle-button-selected-hover-color: var(--p-primary-color);
-        --p-treetable-node-toggle-button-size: 1.5rem;
+        --p-treetable-node-toggle-button-size: calc(var(--p-typography-font-size) * 12 / 7);
         --p-treetable-node-toggle-button-border-radius: 50%;
         --p-treetable-node-toggle-button-focus-ring-width: var(--p-focus-ring-width);
         --p-treetable-node-toggle-button-focus-ring-style: var(--p-focus-ring-style);
@@ -3869,7 +3869,7 @@
         --p-wizard-gap: 1rem;
         --p-wizard-transition-duration: var(--p-steps-transition-duration);
         --p-wizard-step-padding: 0.75rem 1rem;
-        --p-wizard-step-font-size: 1rem;
+        --p-wizard-step-font-size: calc(var(--p-typography-font-size) * 8 / 7);
         --p-wizard-step-font-weight: var(--p-steps-item-label-font-weight);
         --p-wizard-step-background: var(--p-content-background);
         --p-wizard-step-color: var(--p-steps-item-label-color);

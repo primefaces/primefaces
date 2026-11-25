@@ -4,14 +4,14 @@
 }
 
 #md-output h1 {
-  font-size: 1.8rem;
+  font-size: calc(var(--layout-text-rem) * 1.8);
   border-bottom: 2px solid var(--primary-color);
   padding-bottom: 8px;
   font-weight: 700;
 }
 
 #md-output h2 {
-  font-size: 1.2rem;
+  font-size: calc(var(--layout-text-rem) * 1.2);
   margin-top: 2rem;
   color: var(--text-color);
   border-left: 4px solid var(--primary-color);
@@ -20,7 +20,7 @@
 }
 
 #md-output h3 {
-  font-size: 1rem;
+  font-size: var(--layout-text-rem);
   color: var(--text-color);
   margin-top: 1.4rem;
   font-weight: 600;
@@ -30,7 +30,7 @@
   border-collapse: collapse;
   width: 100%;
   margin: 1rem 0;
-  font-size: 0.875rem;
+  font-size: calc(var(--layout-text-rem) * 0.875);
 }
 
 #md-output th {
@@ -59,7 +59,7 @@
   padding: 16px;
   border-radius: var(--border-radius);
   overflow-x: auto;
-  font-size: 0.85rem;
+  font-size: calc(var(--layout-text-rem) * 0.85);
 }
 
 #md-output code {

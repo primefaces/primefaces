@@ -111,7 +111,7 @@
 
 .product {
     .product-name {
-        font-size: 1rem;
+        font-size: var(--layout-text-rem);
         font-weight: 700;
     }
 
@@ -155,7 +155,7 @@
         }
 
         .product-price {
-            font-size: 1.5rem;
+            font-size: calc(var(--layout-text-rem) * 1.5);
             font-weight: 600;
             margin-bottom: 0.5rem;
             align-self: flex-end;
@@ -200,7 +200,7 @@
         }
 
         .product-price {
-            font-size: 1.5rem;
+            font-size: calc(var(--layout-text-rem) * 1.5);
             font-weight: 600;
         }
     }

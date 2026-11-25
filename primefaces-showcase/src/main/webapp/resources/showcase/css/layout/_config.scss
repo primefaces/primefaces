@@ -93,11 +93,11 @@
 
         i {
             margin-right: .5rem;
-            font-size: .75rem;
+            font-size: calc(var(--layout-text-rem) * .75);
             color: var(--text-color-secondary);
 
             &.scale-active {
-                font-size: 1.25rem;
+                font-size: calc(var(--layout-text-rem) * 1.25);
                 color: core.$linkColor;
             }
         }
@@ -159,7 +159,7 @@
         }
 
         span {
-            font-size: .875rem;
+            font-size: calc(var(--layout-text-rem) * .875);
             margin-top: .25rem;
         }
     }

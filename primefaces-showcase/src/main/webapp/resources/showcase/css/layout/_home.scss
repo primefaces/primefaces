@@ -1,3 +1,4 @@
+@use "sass:math";
 @use "core";
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -37,7 +38,7 @@
 
 .landing-section-label {
     display: inline-block;
-    font-size: .75rem;
+    font-size: calc(var(--layout-text-rem) * .75);
     font-weight: 700;
     letter-spacing: .1em;
     text-transform: uppercase;
@@ -47,7 +48,7 @@
 }
 
 .landing-section-title {
-    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-size: clamp(calc(var(--layout-text-rem) * 1.75), 4vw, calc(var(--layout-text-rem) * 2.75));
     font-weight: 400;
     color: var(--text-color);
     margin: 0 0 1rem 0;
@@ -56,7 +57,7 @@
 }
 
 .landing-section-subtitle {
-    font-size: 1.1rem;
+    font-size: calc(var(--layout-text-rem) * 1.1);
     color: var(--text-color-secondary);
     max-width: 650px;
     margin: 0 auto 3rem;
@@ -69,7 +70,7 @@
     display: inline-flex;
     align-items: center;
     font-weight: 600;
-    font-size: .95rem;
+    font-size: calc(var(--layout-text-rem) * .95);
     padding: .75rem 1.75rem;
     border-radius: 999px;
     border: 2px solid transparent;
@@ -157,7 +158,7 @@
     display: inline-flex;
     align-items: center;
     gap: .5rem;
-    font-size: .75rem;
+    font-size: calc(var(--layout-text-rem) * .75);
     font-weight: 500;
     padding: .35rem 1rem;
     border-radius: 999px;
@@ -177,7 +178,7 @@
 }
 
 .landing-hero-title {
-    font-size: clamp(2.25rem, 6vw, 4rem);
+    font-size: clamp(calc(var(--layout-text-rem) * 2.25), 6vw, calc(var(--layout-text-rem) * 4));
     font-weight: 400;
     line-height: 1.15;
     color: var(--text-color);
@@ -212,7 +213,7 @@
     left: 0;
     bottom: calc(100% + 4px);
     font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
-    font-size: .625rem;
+    font-size: calc(var(--layout-text-rem) * .625);
     font-weight: 700;
     letter-spacing: .02em;
     padding: .15rem .45rem;
@@ -223,7 +224,7 @@
 }
 
 .landing-hero-subtitle {
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-size: clamp(var(--layout-text-rem), 2.5vw, calc(var(--layout-text-rem) * 1.2));
     color: var(--text-color-secondary);
     max-width: 600px;
     line-height: 1.6;
@@ -324,14 +325,14 @@
     }
 
     h3 {
-        font-size: 1rem;
+        font-size: var(--layout-text-rem);
         font-weight: 600;
         margin: .875rem 0 .4rem;
         color: var(--text-color);
     }
 
     p {
-        font-size: .875rem;
+        font-size: calc(var(--layout-text-rem) * .875);
         color: var(--text-color-secondary);
         line-height: 1.65;
         margin: 0;
@@ -341,7 +342,7 @@
 .landing-feature-action {
     margin-top: 1rem;
     font: inherit;
-    font-size: .8rem;
+    font-size: calc(var(--layout-text-rem) * .8);
     font-weight: 600;
     padding: .35rem .9rem;
     border-radius: 999px;
@@ -366,7 +367,7 @@
     align-items: center;
     justify-content: center;
 
-    i { font-size: 1.125rem; }
+    i { font-size: calc(var(--layout-text-rem) * 1.125); }
 }
 
 .lf-icon-indigo { background: rgba(99,102,241,.12);  i { color: #6366f1; } }
@@ -429,7 +430,7 @@
     background: var(--surface-c);
     padding: .75rem 1rem 0;
     font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
-    font-size: .7rem;
+    font-size: calc(var(--layout-text-rem) * .7);
     font-weight: 700;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -456,7 +457,7 @@
 .landing-code-tab {
     flex-shrink: 0;
     white-space: nowrap;
-    font-size: .8rem;
+    font-size: calc(var(--layout-text-rem) * .8);
     font-weight: 600;
     padding: .4rem .9rem;
     border-radius: 6px 6px 0 0;
@@ -475,7 +476,7 @@
 .landing-compare {
     width: 100%;
     border-collapse: collapse;
-    font-size: .85rem;
+    font-size: calc(var(--layout-text-rem) * .85);
     margin: 0 0 .75rem;
 
     th, td {
@@ -509,7 +510,7 @@
 }
 
 .landing-quickstart-text p.landing-compare-note {
-    font-size: .75rem;
+    font-size: calc(var(--layout-text-rem) * .75);
     margin: 0 0 2rem;
 }
 
@@ -537,14 +538,14 @@
     }
 
     h3 {
-        font-size: 1.05rem;
+        font-size: calc(var(--layout-text-rem) * 1.05);
         font-weight: 600;
         margin: 0 0 .5rem;
         color: var(--text-color);
     }
 
     p {
-        font-size: .875rem;
+        font-size: calc(var(--layout-text-rem) * .875);
         color: var(--text-color-secondary);
         line-height: 1.6;
         margin: 0;
@@ -582,7 +583,7 @@
         display: flex;
         align-items: center;
         gap: .5rem;
-        font-size: 1rem;
+        font-size: var(--layout-text-rem);
         font-weight: 600;
         margin: 0 0 .75rem;
         color: var(--text-color);
@@ -599,7 +600,7 @@
     li {
         position: relative;
         padding: .6rem 0 .6rem 1.25rem;
-        font-size: .9rem;
+        font-size: calc(var(--layout-text-rem) * .9);
         line-height: 1.55;
         color: var(--text-color-secondary);
 
@@ -662,13 +663,13 @@
     .landing-install-prompt {
         color: #71717a;
         font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
-        font-size: .8125rem;
+        font-size: calc(var(--layout-text-rem) * .8125);
         user-select: none;
     }
 
     code {
         font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, monospace;
-        font-size: .8125rem;
+        font-size: calc(var(--layout-text-rem) * .8125);
         color: #d4d4d8;
         user-select: all;
     }
@@ -734,10 +735,10 @@
     transition: opacity .2s;
     color: #fff;
     font-weight: 600;
-    font-size: .9rem;
+    font-size: calc(var(--layout-text-rem) * .9);
     text-decoration: none !important;
 
-    i { font-size: .85rem; }
+    i { font-size: calc(var(--layout-text-rem) * .85); }
 }
 
 .landing-templates-cta {
@@ -787,7 +788,7 @@
 
     h3 {
         margin: .75rem 0 0;
-        font-size: 1.25rem;
+        font-size: calc(var(--layout-text-rem) * 1.25);
         color: var(--text-color);
     }
 }
@@ -803,14 +804,14 @@
         gap: .6rem;
         padding: .5rem 0;
         border-bottom: 1px solid var(--surface-d);
-        font-size: .9rem;
+        font-size: calc(var(--layout-text-rem) * .9);
         color: var(--text-color);
 
         &:last-child { border-bottom: none; }
 
         i {
             color: var(--primary-color);
-            font-size: .85rem;
+            font-size: calc(var(--layout-text-rem) * .85);
             flex-shrink: 0;
         }
     }
@@ -844,7 +845,7 @@
 
 .landing-cta-inner {
     h2 {
-        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-size: clamp(calc(var(--layout-text-rem) * 1.75), 4vw, calc(var(--layout-text-rem) * 2.5));
         font-weight: 800;
         color: inherit;
         margin: 0 0 1rem;
@@ -852,7 +853,7 @@
 
     p {
         color: color-mix(in srgb, var(--primary-color-text) 85%, transparent);
-        font-size: 1.1rem;
+        font-size: calc(var(--layout-text-rem) * 1.1);
         margin: 0 0 2rem;
         line-height: 1.6;
     }
@@ -863,6 +864,11 @@
 }
 
 /* ── Hero Component Deck ───────────────────────────────────────────────── */
+// the deck follows the font size of the theme (theme configurator): rem values at its default of .875rem
+@function deck-size($rem) {
+    @return calc(var(--p-typography-font-size) * #{math.div($rem, .875rem)});
+}
+
 .landing-hero-deck-outer {
     width: 100%;
     overflow: hidden;
@@ -897,7 +903,7 @@
 }
 
 .ldeck-title {
-    font-size: .9375rem;
+    font-size: deck-size(.9375rem);
     font-weight: 600;
     color: var(--text-color);
     margin-bottom: .875rem;
@@ -905,13 +911,13 @@
     align-items: center;
     gap: .5rem;
 
-    i { font-size: .95rem; color: var(--text-color-secondary); }
+    i { font-size: deck-size(.95rem); color: var(--text-color-secondary); }
 
     .ldeck-badge {
         margin-left: auto;
         background: var(--primary-color);
         color: var(--primary-color-text);
-        font-size: .72rem;
+        font-size: deck-size(.72rem);
         font-weight: 700;
         padding: .18rem .6rem;
         border-radius: 999px;
@@ -941,12 +947,12 @@
     align-items: center;
     gap: .625rem;
 
-    .ldeck-member-name { font-size: .9375rem; color: var(--text-color); flex: 1; }
+    .ldeck-member-name { font-size: deck-size(.9375rem); color: var(--text-color); flex: 1; }
 
-    .ldeck-role-tag { font-size: .7rem !important; padding: .15rem .5rem !important; }
+    .ldeck-role-tag { font-size: deck-size(.7rem) !important; padding: .15rem .5rem !important; }
 }
 
-.ldeck-av { font-size: .75rem !important; width: 2.25rem !important; height: 2.25rem !important; flex-shrink: 0; }
+.ldeck-av { font-size: deck-size(.75rem) !important; width: deck-size(2.25rem) !important; height: deck-size(2.25rem) !important; flex-shrink: 0; }
 .ldeck-av-indigo { background: #6366f1 !important; color: #fff !important; }
 .ldeck-av-green  { background: #22c55e !important; color: #fff !important; }
 .ldeck-av-amber  { background: #f59e0b !important; color: #fff !important; }
@@ -968,12 +974,10 @@
     &:last-child { border-bottom: none; }
 
     .p-rating { gap: .15rem; pointer-events: none; }
-
-    .p-rating-icon { font-size: .9rem !important; }
 }
 
 .ldeck-rating-label {
-    font-size: .9375rem;
+    font-size: deck-size(.9375rem);
     color: var(--text-color);
 }
 
@@ -983,7 +987,7 @@
 .ldeck-progress-row {
     display: flex;
     justify-content: space-between;
-    font-size: .875rem;
+    font-size: var(--p-typography-font-size);
     color: var(--text-color-secondary);
     margin-bottom: .375rem;
 
@@ -1022,7 +1026,7 @@
 }
 
 .ldeck-switch-label {
-    font-size: .9375rem;
+    font-size: deck-size(.9375rem);
     color: var(--text-color);
 }
 
@@ -1038,17 +1042,17 @@
 
 /* ── DataTable card: p:dataTable ─────────────────────────────── */
 .ldeck-table .ldeck-datatable {
-    font-size: .875rem;
+    font-size: var(--p-typography-font-size);
 }
 
 .ldeck-col-name  { font-weight: 600; }
-.ldeck-col-since { font-family: ui-monospace, monospace; font-size: .8rem; color: var(--text-color-secondary); }
+.ldeck-col-since { font-family: ui-monospace, monospace; font-size: deck-size(.8rem); color: var(--text-color-secondary); }
 .ldeck-col-desc  { color: var(--text-color-secondary); }
 
 .ldeck-cat-tag {
     background: var(--surface-c) !important;
     color: var(--text-color-secondary) !important;
-    font-size: .7rem !important;
+    font-size: deck-size(.7rem) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════

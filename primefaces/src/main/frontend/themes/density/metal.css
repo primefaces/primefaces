@@ -19,7 +19,7 @@
         --p-accordion-header-padding: 1rem;
         --p-accordion-content-padding: 0 1rem 1rem 1rem;
         --p-breadcrumb-padding: 0.875rem;
-        --p-button-icon-only-width: 2.25rem;
+        --p-button-icon-only-width: calc(var(--p-button-font-size) * var(--p-typography-line-height) + 0.9375rem);
         --p-card-body-padding: 1.125rem;
         --p-carousel-indicator-list-padding: 1rem;
         --p-chronoline-horizontal-event-content-padding: 0.875rem 0;
@@ -76,8 +76,8 @@
         --p-organigram-node-padding: 0.5rem;
         --p-outputpanel-loading-padding: 1rem;
         --p-paginator-padding: 0.375rem 0.875rem;
-        --p-paginator-nav-button-width: 2.25rem;
-        --p-paginator-nav-button-height: 2.25rem;
+        --p-paginator-nav-button-width: calc(var(--p-paginator-nav-button-font-size) * var(--p-typography-line-height) + 0.9375rem);
+        --p-paginator-nav-button-height: calc(var(--p-paginator-nav-button-font-size) * var(--p-typography-line-height) + 0.9375rem);
         --p-panel-header-padding: 1rem;
         --p-panel-toggleable-header-padding: 0.375rem 1rem;
         --p-panel-content-padding: 0 1rem 1rem 1rem;
@@ -128,7 +128,7 @@
         --p-accordion-header-padding: 0.75rem;
         --p-accordion-content-padding: 0 0.75rem 0.75rem 0.75rem;
         --p-breadcrumb-padding: 0.656rem;
-        --p-button-icon-only-width: 1.688rem;
+        --p-button-icon-only-width: calc(var(--p-button-font-size) * var(--p-typography-line-height) + 0.703rem);
         --p-card-body-padding: 0.844rem;
         --p-carousel-indicator-list-padding: 0.75rem;
         --p-chronoline-horizontal-event-content-padding: 0.656rem 0;
@@ -185,8 +185,8 @@
         --p-organigram-node-padding: 0.375rem;
         --p-outputpanel-loading-padding: 0.75rem;
         --p-paginator-padding: 0.281rem 0.656rem;
-        --p-paginator-nav-button-width: 1.688rem;
-        --p-paginator-nav-button-height: 1.688rem;
+        --p-paginator-nav-button-width: calc(var(--p-paginator-nav-button-font-size) * var(--p-typography-line-height) + 0.703rem);
+        --p-paginator-nav-button-height: calc(var(--p-paginator-nav-button-font-size) * var(--p-typography-line-height) + 0.703rem);
         --p-panel-header-padding: 0.75rem;
         --p-panel-toggleable-header-padding: 0.281rem 0.75rem;
         --p-panel-content-padding: 0 0.75rem 0.75rem 0.75rem;
@@ -237,7 +237,7 @@
         --p-accordion-header-padding: 1.25rem;
         --p-accordion-content-padding: 0 1.25rem 1.25rem 1.25rem;
         --p-breadcrumb-padding: 1.094rem;
-        --p-button-icon-only-width: 2.813rem;
+        --p-button-icon-only-width: calc(var(--p-button-font-size) * var(--p-typography-line-height) + 1.172rem);
         --p-card-body-padding: 1.406rem;
         --p-carousel-indicator-list-padding: 1.25rem;
         --p-chronoline-horizontal-event-content-padding: 1.094rem 0;
@@ -294,8 +294,8 @@
         --p-organigram-node-padding: 0.625rem;
         --p-outputpanel-loading-padding: 1.25rem;
         --p-paginator-padding: 0.469rem 1.094rem;
-        --p-paginator-nav-button-width: 2.813rem;
-        --p-paginator-nav-button-height: 2.813rem;
+        --p-paginator-nav-button-width: calc(var(--p-paginator-nav-button-font-size) * var(--p-typography-line-height) + 1.172rem);
+        --p-paginator-nav-button-height: calc(var(--p-paginator-nav-button-font-size) * var(--p-typography-line-height) + 1.172rem);
         --p-panel-header-padding: 1.25rem;
         --p-panel-toggleable-header-padding: 0.469rem 1.25rem;
         --p-panel-content-padding: 0 1.25rem 1.25rem 1.25rem;

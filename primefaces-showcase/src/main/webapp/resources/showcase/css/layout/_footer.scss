@@ -1,5 +1,5 @@
 .layout-footer {
-    font-size: 0.9rem;
+    font-size: calc(var(--layout-text-rem) * 0.9);
     padding: 3rem 0 2rem 0;
     background-color: var(--surface-a);
     border-top: 1px solid var(--surface-d);
@@ -55,7 +55,7 @@
 
             i {
                 color: var(--text-color-secondary);
-                font-size: 1.25rem;
+                font-size: calc(var(--layout-text-rem) * 1.25);
             }
         }
     }

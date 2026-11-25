@@ -93,19 +93,19 @@ html[data-preset="glass"] body {
 
 .theming-page .demo-section-title {
     margin: 0;
-    font-size: 1.375rem;
+    font-size: calc(var(--layout-text-rem) * 1.375);
 }
 
 /* building blocks of the sections */
 .theming-page h2 {
     margin: 0 0 1rem;
-    font-size: 1.125rem;
+    font-size: calc(var(--layout-text-rem) * 1.125);
 }
 
 /* only the demo headings: component headers can be h3 too (p:panelMenu) */
 .theming-page h3:not([class]) {
     margin: 1rem 0 .5rem;
-    font-size: .875rem;
+    font-size: calc(var(--layout-text-rem) * .875);
     font-weight: 600;
     color: var(--p-text-muted-color);
 }

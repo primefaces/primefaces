@@ -17,13 +17,19 @@ $actionColor: #FEAB4D;
         var(--layout-right-rail-width)
     );
     --layout-shell-left: clamp(0px, calc((100% - var(--layout-shell-max-width)) / 2), 9999px);
+    // 1rem at the default font size of the theme: the font sizes of the layout are multiples of it, so the text of the
+    // showcase follows the font size of the theme (theme configurator)
+    --layout-text-rem: calc(var(--p-typography-font-size) * 8 / 7);
 }
 
 html {
     font-size: 14px;
 }
 
+// the page text follows the font size of the theme, so it is as large as the text of the components and scales with
+// it (theme configurator)
 body {
+    font-size: var(--p-typography-font-size);
     margin: 0px;
     height: 100%;
     overflow-x: hidden;
@@ -77,27 +83,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1:where(:not(.p-component, .p-component-header *)) {
-    font-size: 2.5rem;
+    font-size: calc(var(--layout-text-rem) * 2.5);
 }
 
 h2:where(:not(.p-component, .p-component-header *)) {
-    font-size: 2rem;
+    font-size: calc(var(--layout-text-rem) * 2);
 }
 
 h3:where(:not(.p-component, .p-component-header *)) {
-    font-size: 1.75rem;
+    font-size: calc(var(--layout-text-rem) * 1.75);
 }
 
 h4:where(:not(.p-component, .p-component-header *)) {
-    font-size: 1.5rem;
+    font-size: calc(var(--layout-text-rem) * 1.5);
 }
 
 h5:where(:not(.p-component, .p-component-header *)) {
-    font-size: 1.25rem;
+    font-size: calc(var(--layout-text-rem) * 1.25);
 }
 
 h6:where(:not(.p-component, .p-component-header *)) {
-    font-size: 1rem;
+    font-size: var(--layout-text-rem);
 }
 
 p {
