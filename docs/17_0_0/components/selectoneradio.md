@@ -78,6 +78,10 @@ Component: _PrimeFaces.component.SelectOneRadio_
 enable() | - | void | Enables component.
 disable() | - | void | Disables component.
 
+## Disabled Items
+A disabled select item (`itemDisabled="true"`) cannot be selected, submitting it fails validation. See
+[Disabled Select Items](/core/misc.md?id=disabled-select-items).
+
 ## Skinning
 SelectOneRadio resides in a main container which _style_ and _styleClass_ attributes apply. As skinning
 style classes are global, see the main theming section for more information. Following is the list of

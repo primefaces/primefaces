@@ -16,9 +16,16 @@
                 <p:autoUpdate />
             </p:messages>
 
-            <p:selectManyCheckbox id="selectmanycheckbox" value="#{selectManyCheckbox002.selectedDrivers}" layout="pageDirection">
+            <p:selectManyCheckbox id="selectmanycheckbox" value="#{selectManyCheckbox002.selectedDrivers}" layout="pageDirection" label="Drivers">
                 <f:selectItem itemLabel="Lewis" itemValue="Lewis"/>
                 <f:selectItem itemLabel="Max" itemValue="Max"/>
+                <f:selectItem itemLabel="Charles" itemValue="Charles" itemDisabled="true"/>
+                <f:selectItem itemLabel="Lando" itemValue="Lando"/>
+            </p:selectManyCheckbox>
+
+            <p:selectManyCheckbox id="preset" value="#{selectManyCheckbox002.presetDrivers}" layout="pageDirection" label="Preset">
+                <f:selectItem itemLabel="Lewis" itemValue="Lewis"/>
+                <f:selectItem itemLabel="Max" itemValue="Max" itemDisabled="true"/>
                 <f:selectItem itemLabel="Charles" itemValue="Charles" itemDisabled="true"/>
                 <f:selectItem itemLabel="Lando" itemValue="Lando"/>
             </p:selectManyCheckbox>

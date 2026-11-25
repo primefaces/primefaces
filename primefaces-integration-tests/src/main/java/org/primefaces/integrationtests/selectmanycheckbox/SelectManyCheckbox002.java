@@ -45,11 +45,13 @@ public class SelectManyCheckbox002 implements Serializable {
 
     private List<String> drivers;
     private List<String> selectedDrivers;
+    private List<String> presetDrivers;
 
     @PostConstruct
     public void init() {
         drivers = Arrays.asList("Lewis", "Max", "Charles", "Lando");
         selectedDrivers = new ArrayList<>();
+        presetDrivers = new ArrayList<>(List.of("Max"));
     }
 
     public void submit() {

@@ -24,7 +24,10 @@
 package org.primefaces.renderkit;
 
 import org.primefaces.component.api.PrimeSelect;
+import org.primefaces.util.Constants;
+import org.primefaces.util.LangUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -47,11 +50,23 @@ public abstract class SelectOneRenderer<T extends UISelectOne & PrimeSelect> ext
         String clientId = getSubmitParam(context, component);
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        String submittedValue = params.getOrDefault(clientId, "");
-        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component), submittedValue);
-        component.setSubmittedValue(validSubmittedValues.isEmpty() || validSubmittedValues.contains(submittedValue)
-                ? submittedValue
-                : validSubmittedValues.get(0));
+        String submittedValue = params.getOrDefault(clientId, Constants.EMPTY_STRING);
+        List<String> disabledSubmittedValues = new ArrayList<>(1);
+        List<String> validSubmittedValues = validateSubmittedValues(context, component, (Object[]) getValues(component),
+                disabledSubmittedValues, submittedValue);
+
+        component.setSubmittedValue(submittedValue);
+        if (!validSubmittedValues.contains(submittedValue)) {
+            if (!disabledSubmittedValues.isEmpty()) {
+                // #13954: a disabled item has been submitted (client side manipulation or disabled after rendering)
+                invalidateDisabledSelectItem(context, component, UISelectOne.INVALID_MESSAGE_ID);
+            }
+            else if (LangUtils.isEmpty(submittedValue) && !validSubmittedValues.isEmpty()) {
+                // the browser does not submit a checked, disabled item: restore it (#3296)
+                component.setSubmittedValue(validSubmittedValues.get(0));
+            }
+            // else: empty or unknown value, handled by required and UISelectOne validation
+        }
 
         decodeBehaviors(context, component);
     }

@@ -41,6 +41,7 @@ import java.util.Objects;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.UISelectOne;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.Converter;
@@ -74,6 +75,18 @@ public class SelectOneMenuRenderer extends SelectOneRenderer<SelectOneMenu> {
                 SelectItem foundItem = findSelectItemByLabel(context, component, converter, selectItems, editorInput);
                 if (foundItem != null) {
                     component.setSubmittedValue(getOptionAsString(context, component, converter, foundItem.getValue()));
+                }
+                else {
+                    foundItem = findSelectItemByValue(context, component, converter, selectItems, editorInput);
+                }
+
+                // #13954: a disabled item may not be entered, unless it is the current value
+                if (foundItem != null && foundItem.isDisabled()) {
+                    String itemValue = getOptionAsString(context, component, converter, foundItem.getValue());
+                    if (LangUtils.isNotEmpty(itemValue)
+                            && !Objects.equals(itemValue, getOptionAsString(context, component, converter, component.getValue()))) {
+                        invalidateDisabledSelectItem(context, component, UISelectOne.INVALID_MESSAGE_ID);
+                    }
                 }
             }
 

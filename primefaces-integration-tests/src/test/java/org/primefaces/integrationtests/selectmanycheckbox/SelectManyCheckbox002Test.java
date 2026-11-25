@@ -24,6 +24,7 @@
 package org.primefaces.integrationtests.selectmanycheckbox;
 
 import org.primefaces.selenium.AbstractPrimePage;
+import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
 import org.primefaces.selenium.component.Messages;
 import org.primefaces.selenium.component.SelectManyCheckbox;
@@ -34,6 +35,8 @@ import org.json.JSONObject;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,6 +78,48 @@ class SelectManyCheckbox002Test extends AbstractSelectManyCheckboxTest {
         assertConfiguration(selectManyCheckbox.getClientConfiguration());
     }
 
+    @Test
+    @Order(3)
+    @DisplayName("SelectManyCheckbox: GitHub #13954 a tampered disabled option fails validation")
+    void tamperedDisabledOption(Page page) {
+        // Arrange
+        SelectManyCheckbox selectManyCheckbox = page.selectManyCheckbox;
+
+        // Act - submit the disabled "Charles" via the "Lewis" checkbox
+        WebElement lewis = getWebDriver().findElement(By.cssSelector("input[value='Lewis']"));
+        PrimeSelenium.setHiddenInput(lewis, "Charles");
+        selectManyCheckbox.select(0, 1);
+        page.button.click();
+
+        // Assert - validation failed, the action has not been invoked
+        assertEquals(1, page.messages.getAllMessages().size());
+        String summary = page.messages.getMessage(0).getSummary();
+        assertTrue(summary.contains("Drivers") && summary.contains("Value is not valid"), summary);
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("SelectManyCheckbox: GitHub #13954 after a tampered disabled option the checked state shows the current value")
+    void tamperedDisabledOptionKeepsCheckedDisabledOption(Page page) {
+        // Arrange - "Max" (disabled) is preselected
+        SelectManyCheckbox preset = page.preset;
+        assertSelected(preset, Arrays.asList("Max"));
+
+        // Act - submit the disabled "Charles" via the "Lando" checkbox, plus "Lewis"
+        // (toggle instead of select: select() starts with deselectAll(), which would click the disabled "Max")
+        WebElement lando = getWebDriver().findElement(By.cssSelector("input[name='form:preset'][value='Lando']"));
+        PrimeSelenium.setHiddenInput(lando, "Charles");
+        preset.toggle(0, 3);
+        page.button.click();
+
+        // Assert - validation failed, "Max" is still checked, the tampered "Charles" is not
+        String summary = page.messages.getMessage(0).getSummary();
+        assertTrue(summary.contains("Preset") && summary.contains("Value is not valid"), summary);
+        assertSelected(preset, Arrays.asList("Lewis", "Max"));
+        assertNoJavascriptErrors();
+    }
+
     private void assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("SelectManyCheckbox Config = " + cfg);
@@ -87,6 +132,9 @@ class SelectManyCheckbox002Test extends AbstractSelectManyCheckboxTest {
 
         @FindBy(id = "form:selectmanycheckbox")
         SelectManyCheckbox selectManyCheckbox;
+
+        @FindBy(id = "form:preset")
+        SelectManyCheckbox preset;
 
         @FindBy(id = "form:button")
         CommandButton button;
