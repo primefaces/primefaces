@@ -1,4 +1,3 @@
-@use "sass:math";
 @use "core";
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -864,11 +863,6 @@
 }
 
 /* ── Hero Component Deck ───────────────────────────────────────────────── */
-// the deck follows the font size of the theme (theme configurator): rem values at its default of .875rem
-@function deck-size($rem) {
-    @return calc(var(--p-typography-font-size) * #{math.div($rem, .875rem)});
-}
-
 .landing-hero-deck-outer {
     width: 100%;
     overflow: hidden;
@@ -903,7 +897,7 @@
 }
 
 .ldeck-title {
-    font-size: deck-size(.9375rem);
+    font-size: calc(var(--layout-text-rem) * .9375);
     font-weight: 600;
     color: var(--text-color);
     margin-bottom: .875rem;
@@ -911,13 +905,13 @@
     align-items: center;
     gap: .5rem;
 
-    i { font-size: deck-size(.95rem); color: var(--text-color-secondary); }
+    i { font-size: calc(var(--layout-text-rem) * .95); color: var(--text-color-secondary); }
 
     .ldeck-badge {
         margin-left: auto;
         background: var(--primary-color);
         color: var(--primary-color-text);
-        font-size: deck-size(.72rem);
+        font-size: calc(var(--layout-text-rem) * .72);
         font-weight: 700;
         padding: .18rem .6rem;
         border-radius: 999px;
@@ -947,12 +941,12 @@
     align-items: center;
     gap: .625rem;
 
-    .ldeck-member-name { font-size: deck-size(.9375rem); color: var(--text-color); flex: 1; }
+    .ldeck-member-name { font-size: calc(var(--layout-text-rem) * .9375); color: var(--text-color); flex: 1; }
 
-    .ldeck-role-tag { font-size: deck-size(.7rem) !important; padding: .15rem .5rem !important; }
+    .ldeck-role-tag { font-size: calc(var(--layout-text-rem) * .7) !important; padding: .15rem .5rem !important; }
 }
 
-.ldeck-av { font-size: deck-size(.75rem) !important; width: deck-size(2.25rem) !important; height: deck-size(2.25rem) !important; flex-shrink: 0; }
+.ldeck-av { font-size: calc(var(--layout-text-rem) * .75) !important; width: calc(var(--layout-text-rem) * 2.25) !important; height: calc(var(--layout-text-rem) * 2.25) !important; flex-shrink: 0; }
 .ldeck-av-indigo { background: #6366f1 !important; color: #fff !important; }
 .ldeck-av-green  { background: #22c55e !important; color: #fff !important; }
 .ldeck-av-amber  { background: #f59e0b !important; color: #fff !important; }
@@ -977,7 +971,7 @@
 }
 
 .ldeck-rating-label {
-    font-size: deck-size(.9375rem);
+    font-size: calc(var(--layout-text-rem) * .9375);
     color: var(--text-color);
 }
 
@@ -1026,7 +1020,7 @@
 }
 
 .ldeck-switch-label {
-    font-size: deck-size(.9375rem);
+    font-size: calc(var(--layout-text-rem) * .9375);
     color: var(--text-color);
 }
 
@@ -1046,13 +1040,13 @@
 }
 
 .ldeck-col-name  { font-weight: 600; }
-.ldeck-col-since { font-family: ui-monospace, monospace; font-size: deck-size(.8rem); color: var(--text-color-secondary); }
+.ldeck-col-since { font-family: ui-monospace, monospace; font-size: calc(var(--layout-text-rem) * .8); color: var(--text-color-secondary); }
 .ldeck-col-desc  { color: var(--text-color-secondary); }
 
 .ldeck-cat-tag {
     background: var(--surface-c) !important;
     color: var(--text-color-secondary) !important;
-    font-size: deck-size(.7rem) !important;
+    font-size: calc(var(--layout-text-rem) * .7) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
