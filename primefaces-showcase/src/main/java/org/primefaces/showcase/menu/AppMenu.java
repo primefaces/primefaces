@@ -47,7 +47,7 @@ public class AppMenu {
         generalMenuItems.add(new MenuItem("Why PrimeFaces", "/whyprimefaces", "New"));
         generalMenuItems.add(new MenuItem("Get Started", "/getstarted"));
         generalMenuItems.add(new MenuItem("TagLib", "/taglib"));
-        generalMenuItems.add(new MenuItem("Documentation", "https://primefaces.github.io/primefaces/16_0_0/#/"));
+        generalMenuItems.add(new MenuItem("Documentation", "https://primefaces.github.io/primefaces/17_0_0/#/"));
         generalMenuItems.add(new MenuItem("Support", "/support"));
         menuCategories.add(new MenuCategory("General", generalMenuItems));
         //GENERAL CATEGORY END
@@ -87,7 +87,7 @@ public class AppMenu {
         coreMenuItems.add(new MenuItem("AJAX", ajaxMenuItems));
         coreMenuItems.add(new MenuItem("Client Side Validation", clientSideValidationMenuItems));
         coreMenuItems.add(new MenuItem("Dialog Framework", dialogFrameworkMenuItems));
-        coreMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/16_0_0/#/core/contentsecuritypolicy"));
+        coreMenuItems.add(new MenuItem("Content Security", "https://primefaces.github.io/primefaces/17_0_0/#/core/contentsecuritypolicy"));
         coreMenuItems.add(new MenuItem("Accessibility", "/accessibility"));
         coreMenuItems.add(new MenuItem("PrimeFlex", "/primeflex/setup"));
         coreMenuItems.add(new MenuItem("Icons", "/icons"));

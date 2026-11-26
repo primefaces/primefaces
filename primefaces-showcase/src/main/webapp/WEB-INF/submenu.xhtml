@@ -30,7 +30,7 @@
                         el.innerHTML = DOMPurify.sanitize(marked.parse(md));
                     }
                     renderRemoteMarkdown(
-                        'https://primefaces.github.io/primefaces/16_0_0#{documentationLink}.md',
+                        'https://primefaces.github.io/primefaces/17_0_0#{documentationLink}.md',
                         'md-output'
                     );
                 </script>
@@ -57,7 +57,7 @@
             </ui:fragment>
 
             <ui:fragment rendered="#{not empty documentationLink}">
-                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/16_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
+                <a class="submenu-resource-link" href="https://primefaces.github.io/primefaces/17_0_0/##{documentationLink}" target="_blank" rel="noopener noreferrer">
                     <i class="pi pi-external-link"></i>
                     <span>Docs Website</span>
                 </a>

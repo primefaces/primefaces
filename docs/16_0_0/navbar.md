@@ -1,5 +1,6 @@
 * Select PrimeFaces-Version
 
+  * [PrimeFaces 17.0.0](https://primefaces.github.io/primefaces/17_0_0/#/?id=main)
   * [PrimeFaces 16.0.0](https://primefaces.github.io/primefaces/16_0_0/#/?id=main)  
   * [PrimeFaces 15.0.0](https://primefaces.github.io/primefaces/15_0_0/#/?id=main)
   * [PrimeFaces 14.0.0](https://primefaces.github.io/primefaces/14_0_0/#/?id=main)
