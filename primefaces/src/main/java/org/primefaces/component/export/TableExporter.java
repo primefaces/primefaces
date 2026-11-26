@@ -387,7 +387,7 @@ public abstract class TableExporter<T extends UIComponent & UITable, D, O extend
                 }
                 currentMeta.setDisplayPriority(column.getDisplayPriority());
                 // #7200 display visible columns only
-                if (!visibleColumnsOnly || currentMeta.getVisible()) {
+                if (!visibleColumnsOnly || Boolean.TRUE.equals(currentMeta.getVisible())) {
                     exportableColumnsMetadata.add(currentMeta);
                 }
             }

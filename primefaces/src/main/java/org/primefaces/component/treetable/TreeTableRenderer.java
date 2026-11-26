@@ -102,8 +102,8 @@ public class TreeTableRenderer extends DataRenderer<TreeTable> {
             component.restoreMultiViewState();
         }
 
-        // apply the filters again, as the model might have changed since they were applied during this request;
-        // expand the ancestors of the matches when the filters come with the view (filterValue, multiViewState)
+        // apply the filters again, as the model might have changed since they were applied during this request,
+        // and expand the ancestors of the matches when the filters come with the view (filterValue, multiViewState)
         TreeTableFeatures.filterFeature().filter(context, component, component.getValue(), !context.isPostback());
         if (component.isSortingCurrentlyActive()) {
             TreeTableFeatures.sortFeature().sort(context, component);

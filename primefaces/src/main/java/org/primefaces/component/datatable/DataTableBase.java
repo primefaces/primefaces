@@ -261,6 +261,7 @@ public abstract class DataTableBase extends UIPageableData implements PrimeClien
 
     @Property(description = "Default filterMatchModeOptions for all columns, see the column attribute. Columns may override it,"
             + " e.g. with \"none\".")
+    @Override
     public abstract Object getFilterMatchModeOptions();
 
     @Property(defaultValue = "regular", description = "Size of the table content, valid values are \"small\", \"regular\" and \"large\".")
@@ -294,6 +295,7 @@ public abstract class DataTableBase extends UIPageableData implements PrimeClien
     public abstract String getStickyTopAt();
 
     @Property(defaultValue = "false", description = "Render facets even if their children are not rendered.")
+    @Override
     public abstract boolean isRenderEmptyFacets();
 
     @Property(defaultValue = "true", description = "When using paginator and checkbox selection mode the select all checkbox in header"

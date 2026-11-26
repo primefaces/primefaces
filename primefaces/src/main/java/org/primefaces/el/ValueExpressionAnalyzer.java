@@ -132,8 +132,8 @@ public class ValueExpressionAnalyzer {
         InterceptingResolver resolver = new InterceptingResolver(elContext.getELResolver());
         ELContext interceptingContext = new InterceptingContext(elContext, resolver);
 
-        // #getType throws a PropertyNotFoundException when a sub-expression is null
-        // but also when the expression ends with a method call, e.g. #{bean.container.getValue()}
+        // #getType throws a PropertyNotFoundException when a sub-expression is null, but also when
+        // the expression ends with a method call like #{bean.container.getValue()}, see below
         PropertyNotFoundException typeException = null;
         try {
             expression.getType(interceptingContext);
