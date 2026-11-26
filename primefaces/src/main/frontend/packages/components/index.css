@@ -54,6 +54,7 @@
 @import url("./src/datascroller/datascroller.css") layer(primefaces.components);
 @import url("./src/datatable/datatable.css") layer(primefaces.components);
 @import url("./src/dataview/dataview.css") layer(primefaces.components);
+@import url("./src/deferred/deferred.css") layer(primefaces.components);
 @import url("./src/dialog/dialog.css") layer(primefaces.components);
 @import url("./src/divider/divider.css") layer(primefaces.components);
 @import url("./src/fieldset/fieldset.css") layer(primefaces.components);
@@ -67,7 +68,6 @@
 @import url("./src/notificationbar/notificationbar.css") layer(primefaces.components);
 @import url("./src/orderlist/orderlist.css") layer(primefaces.components);
 @import url("./src/forms/outputlabel.css") layer(primefaces.components);
-@import url("./src/outputpanel/outputpanel.css") layer(primefaces.components);
 @import url("./src/overlaypanel/overlaypanel.css") layer(primefaces.components);
 @import url("./src/panel/panel.css") layer(primefaces.components);
 @import url("./src/panelgrid/panelgrid.css") layer(primefaces.components);

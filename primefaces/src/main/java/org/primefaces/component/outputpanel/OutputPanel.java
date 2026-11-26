@@ -30,7 +30,7 @@ import jakarta.faces.component.FacesComponent;
 import jakarta.faces.context.FacesContext;
 
 @FacesComponent(value = OutputPanel.COMPONENT_TYPE, namespace = OutputPanel.COMPONENT_FAMILY)
-@FacesComponentInfo(description = "OutputPanel is a container component with deferred loading and layout options.")
+@FacesComponentInfo(description = "OutputPanel is a container component with layout options. Its deferred loading is deprecated, use p:deferred instead.")
 @ResourceDependency(library = "primefaces", name = "components.css")
 @ResourceDependency(library = "primefaces", name = "jquery/jquery.js")
 @ResourceDependency(library = "primefaces", name = "core.js")
@@ -40,7 +40,8 @@ public class OutputPanel extends OutputPanelBaseImpl {
     public static final String COMPONENT_TYPE = "org.primefaces.component.OutputPanel";
 
     public static final String CONTAINER_CLASS = "p-outputpanel p-component";
-    public static final String LOADING_CLASS = "p-outputpanel-loading p-icon p-loading-icon p-outputpanel-loading-icon";
+    // the loading indicator is styled by p:deferred
+    public static final String LOADING_CLASS = "p-deferred-loading p-icon p-loading-icon p-deferred-loading-icon";
 
     public boolean isContentLoadRequest(FacesContext context) {
         String clientId = getClientId(context);

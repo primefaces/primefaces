@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <!-- the exception of the load listener is handled here, the response does not update the deferred -->
+        <p:ajaxExceptionHandler type="java.lang.IllegalStateException" onexception="$('#exceptionMessage').text(message);"/>
+
+        <span id="exceptionMessage"></span>
+
+        <h:form id="form">
+            <p:deferred id="failing" ref="failingDeferred" mode="manual">
+                <f:facet name="loading">
+                    <h:outputText id="placeholder" value="Placeholder"/>
+                </f:facet>
+                <p:ajax event="load" listener="#{deferred003.onLoad}"/>
+                <h:outputText id="text" value="#{deferred003.text}"/>
+            </p:deferred>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

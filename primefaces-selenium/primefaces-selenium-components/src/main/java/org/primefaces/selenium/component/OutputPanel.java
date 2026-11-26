@@ -41,7 +41,7 @@ public abstract class OutputPanel extends AbstractComponent {
      * @return true while the loading indicator is shown
      */
     public boolean isLoading() {
-        return !findElements(By.className("p-outputpanel-loading")).isEmpty();
+        return !findElements(By.className("p-deferred-loading")).isEmpty();
     }
 
     /**

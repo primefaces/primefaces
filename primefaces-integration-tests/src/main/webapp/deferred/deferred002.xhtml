@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <!-- default loading indicator -->
+            <p:deferred id="indicator" mode="manual">
+                <h:outputText id="indicatorText" value="Indicator content"/>
+            </p:deferred>
+
+            <!-- trigger inside the loading facet -->
+            <p:deferred id="trigger" ref="triggerDeferred" mode="manual">
+                <f:facet name="loading">
+                    <p:commandButton id="triggerButton" type="button" value="Load" onclick="PF('triggerDeferred').load()"/>
+                </f:facet>
+                <p:ajax event="load" listener="#{deferred002.onTriggerLoad}"/>
+                <h:outputText id="triggerText" value="Trigger content"/>
+            </p:deferred>
+            <h:outputText id="triggerLoadCount" value="#{deferred002.triggerLoadCount}"/>
+
+            <!-- loaded attribute -->
+            <p:deferred id="loaded" loaded="true">
+                <p:ajax event="load" listener="#{deferred002.onLoadedLoad}"/>
+                <h:outputText id="loadedText" value="Loaded content"/>
+            </p:deferred>
+            <h:outputText id="loadedLoadCount" value="#{deferred002.loadedLoadCount}"/>
+
+            <!-- inline layout -->
+            <p:deferred id="inline" layout="inline" mode="manual" styleClass="custom" style="color: red">
+                <f:facet name="loading">
+                    <h:outputText value="Inline placeholder"/>
+                </f:facet>
+                <h:outputText id="inlineText" value="Inline content"/>
+            </p:deferred>
+
+            <!-- nested -->
+            <p:deferred id="outer" mode="manual">
+                <h:outputText id="outerText" value="Outer content"/>
+                <p:deferred id="inner">
+                    <h:outputText id="innerText" value="Inner content"/>
+                </p:deferred>
+            </p:deferred>
+
+            <p:commandButton id="ajax" value="Ajax" process="@form" update="@form"/>
+            <p:commandButton id="postback" value="Postback" ajax="false"/>
+
+            <div style="height: 3000px">Spacer</div>
+
+            <!-- skeleton as placeholder -->
+            <p:deferred id="skeleton" mode="visible">
+                <f:facet name="loading">
+                    <p:skeleton id="skeletonPlaceholder" height="4rem"/>
+                </f:facet>
+                <h:outputText id="skeletonText" value="Skeleton content"/>
+            </p:deferred>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

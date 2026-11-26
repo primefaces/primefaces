@@ -54,19 +54,20 @@ public abstract class OutputPanelBase extends UIPanel implements PrimeClientComp
         return COMPONENT_FAMILY;
     }
 
-    @Facet(description = "Facet to render when the panel is loading.")
+    @Facet(description = "Deprecated, use p:deferred instead. Facet to render when the panel is loading.")
     public abstract UIComponent getLoadingFacet();
 
-    @Property(defaultValue = "false", description = "When true, panel content is loaded lazily.")
+    @Property(defaultValue = "false", description = "Deprecated, use p:deferred instead. When true, panel content is loaded lazily.")
     public abstract boolean isDeferred();
 
-    @Property(defaultValue = "load", description = "Mode of deferred loading, valid values are \"load\" and \"visible\".")
+    @Property(defaultValue = "load", description = "Deprecated, use p:deferred instead."
+            + " Mode of deferred loading, valid values are \"load\" and \"visible\".")
     public abstract String getDeferredMode();
 
     @Property(defaultValue = "block", description = "Layout of the panel, valid values are \"block\" and \"inline\".")
     public abstract String getLayout();
 
-    @Property(description = "Whether the panel content is loaded.")
+    @Property(description = "Deprecated, use p:deferred instead. Whether the panel content is loaded.")
     public abstract Boolean getLoaded();
 
 }

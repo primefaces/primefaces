@@ -527,7 +527,7 @@ Goal: PrimeFaces looks and behaves as current as other UI frameworks (PrimeReact
 other frameworks have and PrimeFaces lacks; each brings its tokens (PrimeUIX 3.0.1 is the reference) and a showcase demo.
 
 - Loading states. Today: autoComplete (search spinner), ajax buttons and links (loading icon), dataScroller (load
-  more), outputPanel (deferred), progressBar (indeterminate), skeleton, blockUI (spinner, light mask), ajaxStatus (top
+  more), deferred / outputPanel (deferred), progressBar (indeterminate), skeleton, blockUI (spinner, light mask), ajaxStatus (top
   progress bar). Missing (core):
   - dataTable / treeTable / dataView: loading overlay (mask + spinner) while paging, sorting,
     filtering or lazy loading, optional skeleton rows instead of the spinner

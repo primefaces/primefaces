@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:deferred id="load">
+                <p:ajax event="load" listener="#{deferred001.onLoad}"/>
+                <h:outputText id="loadText" value="#{deferred001.text}"/>
+            </p:deferred>
+
+            <p:deferred id="manual" mode="manual">
+                <f:facet name="loading">
+                    <h:outputText id="placeholder" value="Placeholder"/>
+                </f:facet>
+                <p:ajax event="load" listener="#{deferred001.onManualLoad}"/>
+                <p:selectBooleanCheckbox id="checkbox" value="#{deferred001.checked}"/>
+            </p:deferred>
+
+            <h:outputText id="checked" value="#{deferred001.checked}"/>
+            <h:outputText id="manualLoadCount" value="#{deferred001.manualLoadCount}"/>
+            <p:commandButton id="submit" value="Submit" process="@form" update="@form"/>
+            <p:commandButton id="processChild" value="Process child" process="checkbox" update="@form"/>
+
+            <div style="height: 3000px">Spacer</div>
+
+            <p:deferred id="visible" mode="visible">
+                <h:outputText id="visibleText" value="Visible content"/>
+            </p:deferred>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

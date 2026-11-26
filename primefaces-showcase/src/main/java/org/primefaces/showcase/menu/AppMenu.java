@@ -327,6 +327,7 @@ public class AppMenu {
         panelMenuItems.add(new MenuItem("Accordion", "/panel/accordionPanel"));
         panelMenuItems.add(new MenuItem("Card", "/panel/card"));
         panelMenuItems.add(new MenuItem("Dashboard", "/panel/dashboard"));
+        panelMenuItems.add(new MenuItem("Deferred", "/panel/deferred", "New"));
         panelMenuItems.add(new MenuItem("Divider", "/panel/divider"));
         panelMenuItems.add(new MenuItem("Fieldset", "/panel/fieldset"));
         panelMenuItems.add(new MenuItem("NotificationBar", "/panel/notificationBar"));

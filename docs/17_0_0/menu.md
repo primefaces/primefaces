@@ -104,6 +104,7 @@
   - [DataTable](/components/datatable.md)
   - [DataView](/components/dataview.md)
   - [DefaultCommand](/components/defaultcommand.md)
+  - [Deferred](/components/deferred.md)
   - [Diagram](/components/diagram.md)
   - [Dialog](/components/dialog.md)
   - [Divider](/components/divider.md)

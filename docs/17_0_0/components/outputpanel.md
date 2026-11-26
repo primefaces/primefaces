@@ -40,6 +40,16 @@ Solution is to use the outputPanel as a placeHolder.
 this case parent form will be updated partially implicitly making an outputPanel use obselete.
 
 ## Deferred Loading
+**Deprecated**: the attributes `deferred`, `deferredMode` and `loaded` and the `loading` facet are deprecated, use
+[Deferred](/components/deferred.md) instead. Replace `<p:outputPanel deferred="true" deferredMode="...">` with
+`<p:deferred mode="...">`; the `loading` facet, the `load` event and `loaded` stay the same. Mind the differences:
+
+- Content that is not loaded yet stays deferred when it is rendered or updated via AJAX.
+- Loaded content is rendered directly on a non-AJAX postback of the same view.
+- The children are not processed until the content is loaded.
+- `loaded="false"` does not defer content again once it was rendered.
+- A failed load request keeps the placeholder.
+
 When this feature option is enabled, content of panel is not loaded along with the page but loaded
 after the page on demand. Initially panel displays a loading animation after page load to indicate
 more content is coming up and displays content with ajax update. Using _deferredMode_ option, it is
@@ -85,5 +95,5 @@ OutputPanel has two layout modes;
 
 ## Skinning
 _style_ and _styleClass_ attributes are used to style the outputPanel, by default _.p-outputpanel_ css class
-is added to element and _.p-outputpanel-loading_ when content is loading in deferred loading case.
+is added to element. The loading indicator of the deferred loading has the class _.p-deferred-loading_.
 

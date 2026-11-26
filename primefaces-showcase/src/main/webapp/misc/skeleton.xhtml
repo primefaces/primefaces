@@ -12,8 +12,8 @@
     <ui:define name="description">
         Skeleton is a placeholder to display instead of the actual content. The page shows rectangles, squares and
         circles in several sizes and with a custom <b>borderRadius</b>, and combines them to placeholders for a card, a
-        list and a DataTable. In the last example skeletons fill the <b>loading</b> facet of a deferred
-        <b>p:outputPanel</b> until its content is loaded.
+        list and a DataTable. In the last example skeletons fill the <b>loading</b> facet of a
+        <b>p:deferred</b> until its content is loaded.
     </ui:define>
 
     <ui:param name="documentationLink" value="/components/skeleton"/>
@@ -153,15 +153,15 @@
         </div>
 
         <div class="card" style="min-height: 150px">
-            <p:outputPanel deferred="true" deferredMode="visible">
-                <p:ajax event="load" listener="#{outputPanelView.loadData}"/>
+            <p:deferred mode="visible">
+                <p:ajax event="load" listener="#{deferredView.loadSkeleton}"/>
                 <f:facet name="loading">
                     <p:skeleton width="200px" height="21px" class="mb-4"/>
                     <p:skeleton width="100%" height="42px"/>
                 </f:facet>
-                <h5>#{outputPanelView.data.title}</h5>
-                <p>#{outputPanelView.data.body}</p>
-            </p:outputPanel>
+                <h5>#{deferredView.skeleton.title}</h5>
+                <p>#{deferredView.skeleton.body}</p>
+            </p:deferred>
         </div>
     </ui:define>
 

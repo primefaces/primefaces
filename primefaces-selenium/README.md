@@ -107,6 +107,7 @@ Currently, only the following components are implemented (partially):
 - DataTable
 - DataView
 - DatePicker
+- Deferred
 - Diagram
 - Dialog
 - Dock

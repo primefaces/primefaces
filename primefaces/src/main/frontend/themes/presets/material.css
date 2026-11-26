@@ -1482,6 +1482,15 @@
         --p-datepicker-dropdown-icon: var(--p-icon-calendar);
     }
 
+    /* deferred */
+    :root, [data-p-scope] {
+        --p-deferred-loading-padding: 1rem;
+        --p-deferred-loading-icon-size: calc(var(--p-icon-size) * 16 / 7);
+        --p-deferred-loading-icon-color: var(--p-text-muted-color);
+        --p-deferred-loading-icon: var(--p-icon-loading);
+        --p-deferred-loading-icon-animation-duration: var(--p-ajaxstatus-loading-icon-animation-duration);
+    }
+
     /* diagram */
     :root, [data-p-scope] {
         --p-diagram-background: transparent;
@@ -2578,15 +2587,6 @@
         --p-organizationchart-node-toggle-button-border-radius: 50%;
         --p-organizationchart-node-toggle-button-icon-size: calc(var(--p-icon-size) * 6 / 7);
         --p-organizationchart-connector-color: var(--p-content-border-color);
-    }
-
-    /* outputpanel */
-    :root, [data-p-scope] {
-        --p-outputpanel-loading-padding: 1rem;
-        --p-outputpanel-loading-icon-size: calc(var(--p-icon-size) * 16 / 7);
-        --p-outputpanel-loading-icon-color: var(--p-text-muted-color);
-        --p-outputpanel-loading-icon: var(--p-icon-loading);
-        --p-outputpanel-loading-icon-animation-duration: var(--p-ajaxstatus-loading-icon-animation-duration);
     }
 
     /* overlaybadge */

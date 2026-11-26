@@ -1,0 +1,31 @@
+/*
+ * Deferred: p:deferred (layout block | inline, mode load | visible | manual)
+ *
+ * Until the content is loaded the container holds the loading facet or the default loading indicator
+ * <i class="p-deferred-loading p-icon p-loading-icon p-deferred-loading-icon">, centered here (PrimeFaces tokens).
+ * The rotation is the p-spin animation (ajaxstatus/ajaxstatus.css). The deprecated deferred mode of p:outputPanel
+ * renders the same indicator.
+ */
+
+div.p-deferred:has(> .p-deferred-loading),
+div.p-outputpanel:has(> .p-deferred-loading) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--p-deferred-loading-padding);
+}
+
+/* mode="manual" without loading facet: nothing is shown until the load request runs */
+.p-deferred-manual:not([aria-busy="true"]):has(> .p-deferred-loading) {
+    display: none;
+}
+
+.p-deferred-loading {
+    font-size: var(--p-deferred-loading-icon-size);
+    color: var(--p-deferred-loading-icon-color);
+    animation: p-spin var(--p-deferred-loading-icon-animation-duration) linear infinite;
+}
+
+.p-deferred-loading-icon {
+    --_icon: var(--p-deferred-loading-icon);
+}

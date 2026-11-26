@@ -92,6 +92,7 @@ import { Chips } from "./src/chips/chips.js";
 import { ScrollTop } from "./src/scrolltop/scrolltop.js";
 import { Sidebar } from "./src/sidebar/sidebar.js";
 import { DataView } from "./src/dataview/dataview.js";
+import { Deferred } from "./src/deferred/deferred.js";
 import { ToggleSwitch } from "./src/toggleswitch/toggleswitch.js";
 
 // Add components and dialog to the PrimeFaces global object
@@ -147,6 +148,9 @@ function exposeToGlobalScope() {
 
     // src/dataview
     PrimeFaces.component.DataView = DataView;
+
+    // src/deferred
+    PrimeFaces.component.Deferred = Deferred;
 
     // src/dialog
     PrimeFaces.dialog = dialog;
@@ -337,6 +341,7 @@ declare global {
             DataTable: typeof DataTable;
             FrozenDataTable: typeof FrozenDataTable;
             DataView: typeof DataView;
+            Deferred: typeof Deferred;
             ConfirmDialog: typeof ConfirmDialog;
             Dialog: typeof _Dialog;
             DynamicDialog: typeof DynamicDialog;

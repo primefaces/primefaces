@@ -39,6 +39,7 @@ Look into [migration guide](https://primefaces.github.io/primefaces/17_0_0/#/../
 * PickList
     * Transfer and move up/down/top/bottom actions are announced to screen readers (e.g. "Moved to Target: 2", "Moved Up: 1") including the number of moved items, the texts are the new aria labels `movedToTarget`, `movedToSource`, `movedUp`, `movedDown`, `movedTop` and `movedBottom`, see [PickList](/components/picklist.md).
 * New components
+    * [Deferred](/components/deferred.md): loads its content via AJAX after the page was rendered, when it becomes visible or on demand, and shows a placeholder until then. It replaces the deferred loading of `p:outputPanel`, which is deprecated.
     * [InputOtp](/components/inputotp.md): input for one-time passwords and PINs, one input per character.
     * [InputPhone](/components/inputphone.md): input for international phone numbers with a country selector, the value is the number in the E.164 format, validated in the browser (also with client side validation) and, with Google's libphonenumber, on the server.
     * [TriStateManyCheckbox](/components/tristatemanycheckbox.md): group of checkboxes with three states each, the value is a Map of the item values to their states (moved from PrimeFaces Extensions).

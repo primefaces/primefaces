@@ -15,7 +15,7 @@
  * --p-ajaxstatus-loading-icon token, rotated by the p-spin animation below).
  */
 
-/* the rotation of every spinner of the theme (blockUI, commandLink, dataScroller, outputPanel, inline ajax status);
+/* the rotation of every spinner of the theme (blockUI, commandLink, dataScroller, deferred, outputPanel, inline ajax status);
    prefers-reduced-motion stops it (base/document.css) */
 @keyframes p-spin {
     from {

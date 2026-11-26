@@ -1,0 +1,94 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:h="jakarta.faces.html"
+                xmlns:f="jakarta.faces.core"
+                xmlns:p="primefaces"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        Deferred
+    </ui:define>
+
+    <ui:define name="description">
+        Deferred loads its content with Ajax to speed up the page load and shows a placeholder meanwhile: a loading
+        indicator or the <b>loading</b> facet. <b>mode</b> defines when the content is loaded: after the page (default),
+        when the component becomes <b>visible</b> or <b>manual</b> via the client side API.
+    </ui:define>
+
+    <ui:param name="documentationLink" value="/components/deferred"/>
+    <ui:param name="componentLink" value="Deferred"/>
+    <ui:param name="tagName" value="deferred"/>
+
+    <ui:define name="implementation">
+        <h:form>
+            <div class="card" style="min-height: 175px">
+                <h5>Loaded after page load</h5>
+                <p:deferred>
+                    <p:ajax event="load" listener="#{deferredView.loadBasic}"/>
+
+                    <p>#{deferredView.basic}</p>
+                </p:deferred>
+            </div>
+
+            <div class="card" style="min-height: 175px">
+                <h5>Loading facet</h5>
+                <p:deferred>
+                    <f:facet name="loading">
+                        <p:skeleton width="200px" height="21px" styleClass="mb-4"/>
+                        <p:skeleton width="100%" height="42px"/>
+                    </f:facet>
+                    <p:ajax event="load" listener="#{deferredView.loadSkeleton}"/>
+
+                    <h6>#{deferredView.skeleton.title}</h6>
+                    <p>#{deferredView.skeleton.body}</p>
+                </p:deferred>
+            </div>
+
+            <div class="card">
+                <h5>Manual</h5>
+                <p:commandButton type="button" value="Load" icon="pi pi-download" onclick="PF('manualDeferred').load()"
+                                 styleClass="mb-3"/>
+
+                <p:deferred ref="manualDeferred" mode="manual">
+                    <p:ajax event="load" listener="#{deferredView.loadManual}"/>
+
+                    <p>#{deferredView.manual}</p>
+                </p:deferred>
+            </div>
+
+            <div class="card">
+                <h5>Tabs</h5>
+                <p:tabView>
+                    <p:tab title="Overview">
+                        <p>The content of the second tab is loaded when the tab is opened for the first time.</p>
+                    </p:tab>
+                    <p:tab title="Details">
+                        <p:deferred mode="visible">
+                            <f:facet name="loading">
+                                <p:skeleton width="100%" height="42px"/>
+                            </f:facet>
+                            <p:ajax event="load" listener="#{deferredView.loadTab}"/>
+
+                            <p>#{deferredView.tab}</p>
+                        </p:deferred>
+                    </p:tab>
+                </p:tabView>
+            </div>
+
+            <div style="height:1000px"></div>
+
+            <div class="card">
+                <h5>Loaded when it becomes visible on page scroll</h5>
+                <p:deferred mode="visible">
+                    <f:facet name="loading">
+                        <p:skeleton width="100%" height="63px"/>
+                    </f:facet>
+                    <p:ajax event="load" listener="#{deferredView.loadVisible}"/>
+
+                    <p>#{deferredView.visible}</p>
+                </p:deferred>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

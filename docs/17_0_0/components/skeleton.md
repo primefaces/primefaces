@@ -41,12 +41,12 @@ Animation can be turned of by setting `animation` to "none".
 ```
 
 ## Deferred loading
-Skeletons are especially useful with the deferred loading option of the `p:outputPanel`. You can use the `loading`
+Skeletons are especially useful with [Deferred](/components/deferred.md). You can use the `loading`
 facet to show UI while the data is being loaded. This is normally combined with the load ajax event with a listener
-which loads the data you want to show in your panel. For example:
+which loads the data you want to show. For example:
 
 ```xhtml
-<p:outputPanel deferred="true">
+<p:deferred>
     <p:ajax event="load" listener="#{bean.loadData}"/>
     <f:facet name="loading">
         <p:skeleton width="200px" height="21px" class="p-mb-4"/>
@@ -54,7 +54,7 @@ which loads the data you want to show in your panel. For example:
     </f:facet>
     <h5>#{bean.data.title}</h5>
     <p>#{bean.data.body}</p>
-</p:outputPanel>
+</p:deferred>
 ```
 
 ## Skinning of Skeleton
