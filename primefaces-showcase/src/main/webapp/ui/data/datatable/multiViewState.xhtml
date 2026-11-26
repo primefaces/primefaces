@@ -88,7 +88,7 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
                     </p:column>
 
-                    <f:facet name="paginatorTopLeft">
+                    <f:facet name="paginatorBottomLeft">
                         <p:commandButton value="Clear table state" action="#{dtMultiViewStateView.clearMultiViewState}"
                                          update="@form"/>
                     </f:facet>
@@ -122,7 +122,7 @@
                         <span class="customer-badge status-#{customer.status.name().toLowerCase()}">#{customer.status}</span>
                     </p:column>
 
-                    <f:facet name="paginatorTopLeft">
+                    <f:facet name="paginatorBottomLeft">
                         <p:commandButton value="Clear table state" action="#{dtMultiViewStateView.clearMultiViewState}"
                                          update="@form"/>
                     </f:facet>
