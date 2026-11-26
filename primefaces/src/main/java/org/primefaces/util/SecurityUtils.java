@@ -23,6 +23,8 @@
  */
 package org.primefaces.util;
 
+import org.primefaces.cdk.api.Function;
+
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Objects;
@@ -36,29 +38,35 @@ public final class SecurityUtils {
         // NOOP
     }
 
+    @Function(description = "Returns true if user has the given role, else false.")
     public static boolean ifGranted(String role) {
         return FacesContext.getCurrentInstance().getExternalContext().isUserInRole(role);
     }
 
+    @Function(description = "Returns true if user has all of the given roles, else false.")
     public static boolean ifAllGranted(Object value) {
         return convertRoles(value)
                 .allMatch(SecurityUtils::ifGranted);
     }
 
+    @Function(description = "Returns true if user has any of the given roles, else false.")
     public static boolean ifAnyGranted(Object value) {
         return convertRoles(value)
                 .anyMatch(SecurityUtils::ifGranted);
     }
 
+    @Function(description = "Returns true if user has none of the given roles, else false.")
     public static boolean ifNoneGranted(Object value) {
         return convertRoles(value)
                 .noneMatch(SecurityUtils::ifGranted);
     }
 
+    @Function(description = "Returns the name of the logged in user.")
     public static String remoteUser() {
         return FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
     }
 
+    @Function(description = "Returns the principal instance of the logged in user.")
     public static Principal userPrincipal() {
         return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
     }
