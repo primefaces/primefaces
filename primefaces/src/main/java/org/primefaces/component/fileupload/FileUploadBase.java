@@ -26,6 +26,7 @@ package org.primefaces.component.fileupload;
 import org.primefaces.cdk.api.FacesComponentBase;
 import org.primefaces.cdk.api.Facet;
 import org.primefaces.cdk.api.Property;
+import org.primefaces.component.api.AjaxAware;
 import org.primefaces.component.api.PrimeClientComponent;
 import org.primefaces.component.api.PrimeUIInput;
 import org.primefaces.component.api.StyleAware;
@@ -34,7 +35,7 @@ import jakarta.el.MethodExpression;
 import jakarta.faces.component.UIComponent;
 
 @FacesComponentBase
-public abstract class FileUploadBase extends PrimeUIInput implements PrimeClientComponent, StyleAware {
+public abstract class FileUploadBase extends PrimeUIInput implements AjaxAware, PrimeClientComponent, StyleAware {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -88,13 +89,6 @@ public abstract class FileUploadBase extends PrimeUIInput implements PrimeClient
     @Property(description = "Search expression to resolve a component as drop zone.")
     public abstract String getDropZone();
 
-    @Property(defaultValue = "true", description = "Global AJAX requests are listened by ajaxStatus component, " +
-        "if disabled only ajaxStatus components defined in parent naming containers are notified.")
-    public abstract boolean isGlobal();
-
-    @Property(defaultValue = "false", description = "If true, ajax requests will not update components with autoUpdate=\"true\".")
-    public abstract boolean isIgnoreAutoUpdate();
-
     @Property(defaultValue = "Choose", description = "Label of the choose button.")
     public abstract String getLabel();
 
@@ -122,15 +116,6 @@ public abstract class FileUploadBase extends PrimeUIInput implements PrimeClient
     @Property(description = "Client side callback to execute when upload is cancelled.")
     public abstract String getOncancel();
 
-    @Property(description = "Client side callback to execute when upload completes.")
-    public abstract String getOncomplete();
-
-    @Property(description = "Client side callback to execute when upload fails.")
-    public abstract String getOnerror();
-
-    @Property(description = "Client side callback to execute when upload starts.")
-    public abstract String getOnstart();
-
     @Property(description = "Client side callback to execute when a file is uploaded.")
     public abstract String getOnupload();
 
@@ -139,9 +124,6 @@ public abstract class FileUploadBase extends PrimeUIInput implements PrimeClient
 
     @Property(defaultValue = "80", description = "Width of the preview in pixels.")
     public abstract int getPreviewWidth();
-
-    @Property(description = "Component(s) to process in partial request.")
-    public abstract String getProcess();
 
     @Property(defaultValue = "1000", description = "Timeout in milliseconds between retries.")
     public abstract int getRetryTimeout();
@@ -154,9 +136,6 @@ public abstract class FileUploadBase extends PrimeUIInput implements PrimeClient
 
     @Property(description = "Title attribute of the file input.")
     public abstract String getTitle();
-
-    @Property(description = "Component(s) to update in partial request.")
-    public abstract String getUpdate();
 
     @Property(description = "Style class of the upload button.")
     public abstract String getUploadButtonStyleClass();

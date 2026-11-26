@@ -84,6 +84,11 @@ export interface FileUploadCfg extends PrimeFaces.component.BaseComponentCfg {
     dropZone: string;
 
     /**
+     * Client ID of the form to use for the AJAX request. Defaults to the enclosing form.
+     */
+    formId: string;
+
+    /**
      * Global AJAX requests are listened to by `ajaxStatus`. When `false`, `ajaxStatus` will not
      * get triggered.
      */
@@ -128,27 +133,47 @@ export interface FileUploadCfg extends PrimeFaces.component.BaseComponentCfg {
     oncancel: (this: FileUpload) => void;
 
     /**
-     * Callback that is invoked after a file was
-     * uploaded to the server successfully.
-     * @param pfArgs The additional arguments from the jQuery XHR requests.
-     * @param data Details about the uploaded file or files.
+     * Callback that is invoked when the request of a file completes, irrespective of whether it succeeded or failed.
+     * The arguments are the ones of {@link PrimeFaces.ajax.CallbackOncomplete}.
+     * @param xhrOrErrorThrown Either the XHR object from the HTTP request (in case of success), or the error that was
+     * thrown (in case of an error).
+     * @param status The status text of the request.
+     * @param pfArgs The additional arguments from the jQuery XHR request, an empty object in case of an error.
+     * @param dataOrXhr Either the XML document of the partial response (in case of success), or the XHR object (in
+     * case of an error).
      */
-    oncomplete: (this: FileUpload, pfArgs: PrimeFaces.ajax.PrimeFacesArgs, data: JQueryFileUpload.JQueryAjaxCallbackData) => void;
+    oncomplete: (
+        this: FileUpload,
+        xhrOrErrorThrown: unknown,
+        status: JQuery.Ajax.TextStatus,
+        pfArgs: PrimeFaces.ajax.PrimeFacesArgs,
+        dataOrXhr: XMLDocument | PrimeFaces.ajax.pfXHR
+    ) => void;
 
     /**
      * Callback that is invoked when a file could not be
      * uploaded to the server.
-     * @param jqXHR The XHR object from the HTTP request.
-     * @param textStatus The HTTP status text of the failed request.
-     * @param pfArgs The additional arguments from the jQuery XHR request.
+     * @param xhr The XHR object from the HTTP request.
+     * @param status The type of error that occurred.
+     * @param errorThrown The error with details on why the request failed.
      */
-    onerror: (this: FileUpload, jqXHR: PrimeFaces.ajax.pfXHR, textStatus: string, pfArgs: PrimeFaces.ajax.PrimeFacesArgs) => void;
+    onerror: (this: FileUpload, xhr: PrimeFaces.ajax.pfXHR, status: JQuery.Ajax.ErrorTextStatus, errorThrown: string) => void;
 
     /**
      * Callback that is invoked at the beginning of a file
      * upload, when a file is sent to the server.
+     * @param cfg The configuration of the AJAX request.
      */
-    onstart: (this: FileUpload) => void;
+    onstart: (this: FileUpload, cfg: PrimeFaces.ajax.Configuration) => void;
+
+    /**
+     * Callback that is invoked after a file was uploaded to the server successfully, before the response is handled.
+     * @param data The XML document of the partial response.
+     * @param status The type of success, usually `success`.
+     * @param xhr The XHR object from the HTTP request.
+     * @return `true` if this handler already handled the response, `false` or `undefined` otherwise.
+     */
+    onsuccess: (this: FileUpload, data: XMLDocument, status: JQuery.Ajax.SuccessTextStatus, xhr: PrimeFaces.ajax.pfXHR) => boolean | undefined;
 
     /**
      * Callback to execute before the files are sent.
@@ -175,6 +200,11 @@ export interface FileUploadCfg extends PrimeFaces.component.BaseComponentCfg {
     process: string;
 
     /**
+     * When `true`, the local values of the input components to be updated within the AJAX request are reset.
+     */
+    resetValues: boolean;
+
+    /**
      * Server-side path which provides information to resume chunked file upload.
      */
     resumeContextPath: string;
@@ -190,6 +220,11 @@ export interface FileUploadCfg extends PrimeFaces.component.BaseComponentCfg {
      * `true` to upload files one after each other, `false` to upload in parallel.
      */
     sequentialUploads: boolean;
+
+    /**
+     * Timeout in milliseconds for the AJAX request of a file (or of a chunk), `0` means no timeout.
+     */
+    timeout: number;
 
     /**
      * Component(s) to update after fileupload completes.
@@ -325,7 +360,9 @@ export class FileUpload<Cfg extends FileUploadCfg = FileUploadCfg> extends Prime
             return;
         }
 
-        this.form = this.jq.closest('form');
+        this.form = this.cfg.formId
+            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.formId)
+            : this.jq.closest('form');
         this.buttonBar = this.jq.children('.p-fileupload-buttonbar');
         this.dragoverCount = 0;
         this.chooseButton = this.buttonBar.children('.p-fileupload-choose');
@@ -367,6 +404,7 @@ export class FileUpload<Cfg extends FileUploadCfg = FileUploadCfg> extends Prime
             maxChunkSize: this.cfg.maxChunkSize,
             maxRetries: this.cfg.maxRetries,
             retryTimeout: this.cfg.retryTimeout,
+            timeout: this.cfg.timeout || 0,
             source: this.getId(),
             formData: () => this.createPostData(),
             beforeSend: function(xhr: PrimeFaces.ajax.pfXHR, settings) {
@@ -387,7 +425,16 @@ export class FileUpload<Cfg extends FileUploadCfg = FileUploadCfg> extends Prime
             },
             start: function(e) {
                 if($this.cfg.onstart) {
-                    $this.cfg.onstart.call($this);
+                    $this.cfg.onstart.call($this, {
+                        source: $this.getId(),
+                        formId: $this.cfg.formId,
+                        process: $this.cfg.process,
+                        update: $this.cfg.update,
+                        global: $this.cfg.global,
+                        ignoreAutoUpdate: $this.cfg.ignoreAutoUpdate,
+                        resetValues: $this.cfg.resetValues,
+                        timeout: $this.cfg.timeout,
+                    });
                 }
             },
             add: (_, data) => {
@@ -571,7 +618,7 @@ export class FileUpload<Cfg extends FileUploadCfg = FileUploadCfg> extends Prime
                 }
 
                 if ($this.cfg.onerror) {
-                    $this.cfg.onerror.call($this, data.jqXHR, data.textStatus, data.jqXHR.pfArgs ?? {});
+                    $this.cfg.onerror.call($this, data.jqXHR, data.textStatus, String(data.errorThrown));
                 }
             },
             progress: function(e, data) {
@@ -610,7 +657,13 @@ export class FileUpload<Cfg extends FileUploadCfg = FileUploadCfg> extends Prime
                     }
                 }
 
-                PrimeFaces.ajax.Response.handle(data.result as XMLDocument, data.textStatus, data.jqXHR, null);
+                // do not execute the default handler when the user callback already parsed the response
+                const parsed = $this.cfg.onsuccess
+                    ? $this.cfg.onsuccess.call($this, data.result as XMLDocument, data.textStatus, data.jqXHR)
+                    : false;
+                if (!parsed) {
+                    PrimeFaces.ajax.Response.handle(data.result as XMLDocument, data.textStatus, data.jqXHR, null);
+                }
                 
                 if($this.cfg.global) {
                     $(document).trigger('pfAjaxSuccess', [data.jqXHR, this]);
@@ -622,7 +675,13 @@ export class FileUpload<Cfg extends FileUploadCfg = FileUploadCfg> extends Prime
                         $(document).trigger('pfAjaxComplete', [data.jqXHR, this, data.jqXHR.pfArgs]);
                     }
                     if ($this.cfg.oncomplete) {
-                        $this.cfg.oncomplete.call($this, data.jqXHR.pfArgs ?? {}, data);
+                        // same arguments as the core: the error and the XHR change places when the request failed
+                        if ("result" in data) {
+                            $this.cfg.oncomplete.call($this, data.jqXHR, data.textStatus, data.jqXHR.pfArgs ?? {}, data.result as XMLDocument);
+                        }
+                        else {
+                            $this.cfg.oncomplete.call($this, data.errorThrown, data.textStatus, {}, data.jqXHR);
+                        }
                     }
                 }
             },
@@ -934,6 +993,10 @@ export class FileUpload<Cfg extends FileUploadCfg = FileUploadCfg> extends Prime
         PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_PROCESS_PARAM, process, parameterPrefix);
         PrimeFaces.ajax.Request.addParam(params, PrimeFaces.PARTIAL_SOURCE_PARAM, this.id, parameterPrefix);
         PrimeFaces.ajax.Request.addParam(params, this.id + "_totalFilesCount", String(this.files.length), parameterPrefix);
+
+        if (this.cfg.resetValues) {
+            PrimeFaces.ajax.Request.addParam(params, PrimeFaces.RESET_VALUES_PARAM, "true", parameterPrefix);
+        }
 
         if (this.cfg.update) {
             var update = PrimeFaces.expressions.SearchExpressionFacade.resolveComponents(this.jq, this.cfg.update).join(' ');

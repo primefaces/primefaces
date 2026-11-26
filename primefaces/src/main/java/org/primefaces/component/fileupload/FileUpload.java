@@ -83,6 +83,11 @@ public class FileUpload extends FileUploadBaseImpl {
     }
 
     @Override
+    public boolean isResetValuesSet() {
+        return (getStateHelper().get(PropertyKeys.resetValues) != null) || (getValueExpression(PropertyKeys.resetValues) != null);
+    }
+
+    @Override
     public void broadcast(FacesEvent event) throws AbortProcessingException {
         super.broadcast(event);
 

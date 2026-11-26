@@ -34,8 +34,10 @@ import org.primefaces.util.LangUtils;
 import org.primefaces.util.StyleClassBuilder;
 
 import java.io.IOException;
+import java.util.Set;
 
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.component.search.SearchExpressionHint;
 import jakarta.faces.context.FacesContext;
 import jakarta.faces.context.ResponseWriter;
 import jakarta.faces.convert.ConverterException;
@@ -71,13 +73,17 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
     }
 
     protected void encodeScript(FacesContext context, FileUpload component) throws IOException {
-        String update = component.getUpdate();
-        String process = component.getProcess();
+        PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
+        Set<SearchExpressionHint> hints = component.isIgnoreComponentNotFound()
+                ? SearchExpressionUtils.HINTS_IGNORE_NO_RESULT_RESOLVE_CLIENT_SIDE
+                : SearchExpressionUtils.HINTS_RESOLVE_CLIENT_SIDE;
+        String update = SearchExpressionUtils.resolveClientIdsAsString(context, component, component.getUpdate(), hints, null);
+        String process = SearchExpressionUtils.resolveClientIdsAsString(context, component, component.getProcess(), hints, null);
+        // component can override global setting
+        boolean resetValues = component.isResetValuesSet() ? component.isResetValues() : pfContext.getConfig().isResetValuesEnabled();
         ComponentScriptBuilder wb = getComponentScriptBuilder(context);
 
         if (component.getMode().equals("advanced")) {
-            PrimeApplicationContext pfContext = PrimeApplicationContext.getCurrentInstance(context);
-
             wb.init("FileUpload", component)
                     .attr("dnd", component.isDragDrop(), true)
                     .attr("previewWidth", component.getPreviewWidth(), 80)
@@ -100,15 +106,19 @@ public class FileUploadRenderer extends CoreRenderer<FileUpload> {
 
         wb.attr("mode", component.getMode())
                 .attr("auto", component.isAuto(), false)
-                .attr("update", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, update))
-                .attr("process", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, process))
+                .attr("update", update)
+                .attr("process", process)
+                .attr("formId", SearchExpressionUtils.resolveClientId(context, component, component.getForm()))
                 .attr("global", component.isGlobal(), true)
                 .attr("disabled", component.isDisabled(), false)
                 .attr("dropZone", SearchExpressionUtils.resolveClientIdsForClientSide(context, component, component.getDropZone()))
                 .attr("ignoreAutoUpdate", component.isIgnoreAutoUpdate(), false)
-                .callback("onstart", "function()", component.getOnstart())
-                .callback("onerror", "function()", component.getOnerror())
-                .callback("oncomplete", "function(args)", component.getOncomplete())
+                .attr("resetValues", resetValues, false)
+                .attr("timeout", component.getTimeout(), 0)
+                .callback("onstart", "function(cfg)", component.getOnstart())
+                .callback("onerror", "function(xhr,status,error)", component.getOnerror())
+                .callback("onsuccess", "function(data,status,xhr)", component.getOnsuccess())
+                .callback("oncomplete", "function(xhr,status,args,data)", component.getOncomplete())
                 .callback("onvalidationfailure", "function(msg)", component.getOnvalidationfailure());
 
         wb.finish();

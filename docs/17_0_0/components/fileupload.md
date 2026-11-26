@@ -140,6 +140,14 @@ public class FileUploadView {
 }
 ```
 
+Besides `update`, the AJAX attributes `process`, `global`, `ignoreAutoUpdate`, `ignoreComponentNotFound`, `resetValues`,
+`timeout` and `form` and the callbacks `onstart`, `onsuccess`, `onerror` and `oncomplete` are available. The callbacks get
+the same arguments as the ones of `p:ajax`: `onstart(cfg)`, `onsuccess(data, status, xhr)`, `onerror(xhr, status, error)`
+and `oncomplete(xhr, status, args, data)`, e.g. `oncomplete="handle(xhr, status, args)"`. As FileUpload sends the
+request on its own, `async`, `delay` and `partialSubmit` are not supported. Returning `false` in `onstart` cancels the
+upload in simple mode only; in advanced mode the upload has already started then, use `onupload` to cancel it. In
+advanced mode `timeout` applies to the request of each file (or chunk).
+
 ### Confirmation Before Upload
 You can add a client side callback, if you want a confirmation dialog before the uploads begin.
 Any return of `false` from the `onupload` callback will not send the files:

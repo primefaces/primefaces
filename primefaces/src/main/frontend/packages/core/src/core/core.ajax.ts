@@ -269,7 +269,7 @@ declare global {
              * thrown (in case of an error).
              * @param status The type of error or success.
              * @param pfArgs Additional arguments returned by PrimeFaces, such as AJAX callback params from beans (in
-             * case of success); or undefined (in case of an error).
+             * case of success); or an empty object (in case of an error).
              * @param dataOrXhr Either the XMLDocument (in case of success), or the XHR request (in case of an error).
              */
             (

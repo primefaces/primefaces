@@ -33,10 +33,10 @@ The most common options are:
 [process](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#process) | Component(s) to process in partial request.
 [source](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#source) | Client id of the source component causing the request.
 [params](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#params) | Additional parameters to send in ajax request.
-[onstart()](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#onstart) | Javascript callback to process before sending the ajax request, return false to cancel the request.
+[onstart(cfg)](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#onstart) | Javascript callback to process before sending the ajax request, return false to cancel the request. Takes the configuration of the request as argument.
 [onsuccess(data, status, xhr)](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#onsuccess) | Javascript callback to process when ajax request returns with success code. Takes three arguments, xml response, status code and xmlhttprequest.
 [onerror(xhr, status, error)](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#onerror) | Javascript callback to process when ajax request fails. Takes three arguments, xmlhttprequest, status string and exception thrown if any.
-[oncomplete(xhr, status, args, data)](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#oncomplete) | Javascript callback to process when ajax request completes. Takes three arguments, xmlhttprequest, status string and optional arguments provided by PrimeFaces.current() API.
+[oncomplete(xhr, status, args, data)](../jsdocs/interfaces/src_PrimeFaces.PrimeFaces.ajax.Configuration.html#oncomplete) | Javascript callback to process when ajax request completes. Takes four arguments, xmlhttprequest, status string, optional arguments provided by PrimeFaces.current() API and the xml response. When the request failed, the first argument is the exception thrown and the last one the xmlhttprequest.
 
 ### Examples
 Suppose you have a Jakarta Faces page called _createUser_ with a simple form and some input components.

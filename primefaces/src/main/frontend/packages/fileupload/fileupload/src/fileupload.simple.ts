@@ -30,6 +30,11 @@ export interface SimpleFileUploadCfg extends PrimeFaces.component.BaseComponentC
     dropZone: string;
 
     /**
+     * Client ID of the form to use for the AJAX request. Defaults to the enclosing form.
+     */
+    formId: string;
+
+    /**
      * Global AJAX requests are listened to by `ajaxStatus`. When `false`, `ajaxStatus` will not
      * get triggered.
      */
@@ -59,9 +64,11 @@ export interface SimpleFileUploadCfg extends PrimeFaces.component.BaseComponentC
 
     /**
      * Client-side callback to invoke when the AJAX request to upload files
-     * is about to begin.
+     * is about to begin. Return `false` to cancel the upload.
+     * @param cfg The configuration of the AJAX request.
+     * @return `false` to not upload the files, `true` or `undefined` otherwise.
      */
-    onstart: (this: SimpleFileUpload) => void;
+    onstart: (this: SimpleFileUpload, cfg: PrimeFaces.ajax.Configuration) => boolean | void;
 
     /**
      * Client-side callback to invoke when the AJAX request to upload files
@@ -76,9 +83,19 @@ export interface SimpleFileUploadCfg extends PrimeFaces.component.BaseComponentC
     process: string;
 
     /**
+     * When `true`, the local values of the input components to be updated within the AJAX request are reset.
+     */
+    resetValues: boolean;
+
+    /**
      * Whether to apply theming to the simple upload component.
      */
     skinSimple: boolean;
+
+    /**
+     * Timeout in milliseconds for the AJAX request, `0` means no timeout.
+     */
+    timeout: number;
 
     /**
      * List of components to update (re-render) when files are uploaded.
@@ -128,7 +145,9 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg = SimpleFileUpload
         this.cfg.messageTemplate = this.cfg.messageTemplate || '{name} {size}';
         this.cfg.global = this.cfg.global !== false;
 
-        this.form = this.jq.closest('form');
+        this.form = this.cfg.formId
+            ? PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(this.jq, this.cfg.formId)
+            : this.jq.closest('form');
         this.input = $(this.jqId);
 
         if (this.cfg.dropZone) {
@@ -297,9 +316,29 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg = SimpleFileUpload
         const files = this.input[0] instanceof HTMLInputElement ? this.input[0].files ?? [] : [];
         const parameterPrefix = PrimeFaces.ajax.Request.extractParameterNamespace(this.form);
         const formData = PrimeFaces.ajax.Request.createFacesAjaxFormData(this.form, parameterPrefix, this.getId(), process, update, ignoreAutoUpdate);
+        if (this.cfg.resetValues) {
+            PrimeFaces.ajax.Request.addFormData(formData, PrimeFaces.RESET_VALUES_PARAM, "true", parameterPrefix);
+        }
 
         if($this.cfg.onstart) {
-            $this.cfg.onstart.call($this);
+            const retVal = $this.cfg.onstart.call($this, {
+                source: this.getId(),
+                formId: this.cfg.formId,
+                process: process,
+                update: update ?? undefined,
+                global: this.cfg.global,
+                ignoreAutoUpdate: ignoreAutoUpdate,
+                resetValues: this.cfg.resetValues,
+                timeout: this.cfg.timeout,
+            });
+
+            // like the core: the callback can cancel the request
+            if (retVal === false) {
+                PrimeFaces.debug('File upload cancelled by onstart callback.');
+                // otherwise choosing the same file again would not trigger an upload
+                $this.clear();
+                return;
+            }
         }
         if($this.cfg.global) {
             $(document).trigger('pfAjaxStart');
@@ -324,6 +363,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg = SimpleFileUpload
             processData: false,
             contentType: false,
             global: false,
+            timeout: this.cfg.timeout || 0,
             beforeSend: function(xhr, settings) {
                 xhr.setRequestHeader('Faces-Request', 'partial/ajax');
                 xhr.pfSettings = settings;
@@ -336,6 +376,11 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg = SimpleFileUpload
 
         const jqXhr = $.ajax(xhrOptions)
             .fail(function(this: PrimeFaces.ajax.PrimeFacesSettings, xhr, status, errorThrown) {
+                // like the core: an aborted request is not an error
+                if (status === "abort") {
+                    return;
+                }
+
                 var location = xhr.getResponseHeader("Location");
                 if (xhr.status === 401 && location) {
                     PrimeFaces.debug('Unauthorized status received. Redirecting to ' + location);
@@ -382,7 +427,7 @@ export class SimpleFileUpload<Cfg extends SimpleFileUploadCfg = SimpleFileUpload
                 PrimeFaces.debug('DOM is updated.');
             })
             .always(function(this: PrimeFaces.ajax.PrimeFacesSettings, data, status, xhr: string | PrimeFaces.ajax.pfXHR) {
-                const pfArgs = typeof xhr === "string" ? undefined : xhr.pfArgs;
+                const pfArgs = typeof xhr === "string" ? {} : xhr.pfArgs ?? {};
 
                 if($this.cfg.oncomplete) {
                     $this.cfg.oncomplete.call(this, xhr, status, pfArgs, data);
