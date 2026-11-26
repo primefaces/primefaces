@@ -663,31 +663,49 @@
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="escapeJavaScriptVarName.fn.html">escapeJavaScriptVarName</a></b>(java.lang.String)</code></td><td class="colLast">Escapes a string for a JS var name (e.g. ':' in a clientId). This is useful if you need to use a clientId in the name of a p:remoteCommand.</td>
                         </tr>
                         <tr class="rowColor">
+                            <td class="colFirst"><code>boolean</code></td><td class="colOne"><code><b><a href="ifAllGranted.fn.html">ifAllGranted</a></b>(java.lang.Object)</code></td><td class="colLast">Returns true if user has all of the given roles, else false.</td>
+                        </tr>
+                        <tr class="altColor">
+                            <td class="colFirst"><code>boolean</code></td><td class="colOne"><code><b><a href="ifAnyGranted.fn.html">ifAnyGranted</a></b>(java.lang.Object)</code></td><td class="colLast">Returns true if user has any of the given roles, else false.</td>
+                        </tr>
+                        <tr class="rowColor">
+                            <td class="colFirst"><code>boolean</code></td><td class="colOne"><code><b><a href="ifGranted.fn.html">ifGranted</a></b>(java.lang.String)</code></td><td class="colLast">Returns true if user has the given role, else false.</td>
+                        </tr>
+                        <tr class="altColor">
+                            <td class="colFirst"><code>boolean</code></td><td class="colOne"><code><b><a href="ifNoneGranted.fn.html">ifNoneGranted</a></b>(java.lang.Object)</code></td><td class="colLast">Returns true if user has none of the given roles, else false.</td>
+                        </tr>
+                        <tr class="rowColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="language.fn.html">language</a></b>()</code></td><td class="colLast">Gets the current ISO 639-1 Language Code from current Locale so 'pt_BR' becomes 'pt'.</td>
                         </tr>
                         <tr class="altColor">
+                            <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="remoteUser.fn.html">remoteUser</a></b>()</code></td><td class="colLast">Returns the name of the logged in user.</td>
+                        </tr>
+                        <tr class="rowColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="resolveClientId.fn.html">resolveClientId</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the clientId of the resolved component for the given expression.</td>
                         </tr>
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="resolveClientIds.fn.html">resolveClientIds</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the clientIds of the resolved components for the given expression.</td>
                         </tr>
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code>jakarta.faces.component.UIComponent</code></td><td class="colOne"><code><b><a href="resolveComponent.fn.html">resolveComponent</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the resolved UIComponent for the given expression.</td>
                         </tr>
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code>jakarta.faces.component.UIComponent</code></td><td class="colOne"><code><b><a href="resolveFirstComponentWithId.fn.html">resolveFirstComponentWithId</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the first UIComponent with the same id (not clientId!) as the requested id. This method ignores any algorithm or NamingContainers.</td>
                         </tr>
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="resolveRef.fn.html">resolveRef</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns the name (ref) of the client side component of the resolved component for the given expression.</td>
                         </tr>
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="resolveWidgetVar.fn.html">resolveWidgetVar</a></b>(java.lang.String,jakarta.faces.component.UIComponent)</code></td><td class="colLast">Deprecated, use p:resolveRef instead.</td>
                         </tr>
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code>boolean</code></td><td class="colOne"><code><b><a href="shouldRenderFacet.fn.html">shouldRenderFacet</a></b>(jakarta.faces.component.UIComponent)</code></td><td class="colLast">Returns true when facet and one of the first level children is rendered.</td>
                         </tr>
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code>java.lang.String</code></td><td class="colOne"><code><b><a href="theme.fn.html">theme</a></b>()</code></td><td class="colLast">Gets the preset of the current request: the one chosen by the user (primefaces.THEME_CONFIGURATOR) or primefaces.THEME.</td>
+                        </tr>
+                        <tr class="rowColor">
+                            <td class="colFirst"><code>java.security.Principal</code></td><td class="colOne"><code><b><a href="userPrincipal.fn.html">userPrincipal</a></b>()</code></td><td class="colLast">Returns the principal instance of the logged in user.</td>
                         </tr>
                     </tbody>
                 </table>
