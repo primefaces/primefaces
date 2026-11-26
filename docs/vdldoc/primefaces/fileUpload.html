@@ -191,23 +191,35 @@
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Search expression to resolve a component as drop zone.</td>
                         </tr>
-                        <tr id="global" class="rowColor">
+                        <tr id="form" class="rowColor">
+                            <td class="colFirst"><a href="#form"><code>form</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Form to serialize for an ajax request.Default is The enclosing form.</td>
+                        </tr>
+                        <tr id="global" class="altColor">
                             <td class="colFirst"><a href="#global"><code>global</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
-                    </td><td class="colLast">Global AJAX requests are listened by ajaxStatus component, if disabled only ajaxStatus components defined in parent naming containers are notified.Default is true.</td>
+                    </td><td class="colLast">Global ajax requests are listened by ajaxStatus component, setting global to false will not trigger ajaxStatus.Default is true.</td>
                         </tr>
-                        <tr id="id" class="altColor">
+                        <tr id="id" class="rowColor">
                             <td class="colFirst"><a href="#id"><code>id</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Unique identifier of the component in a namingContainer.Default is generated.</td>
                         </tr>
-                        <tr id="ignoreAutoUpdate" class="rowColor">
+                        <tr id="ignoreAutoUpdate" class="altColor">
                             <td class="colFirst"><a href="#ignoreAutoUpdate"><code>ignoreAutoUpdate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
-                    </td><td class="colLast">If true, ajax requests will not update components with autoUpdate="true".Default is false.</td>
+                    </td><td class="colLast">If true, components which autoUpdate="true" will not be updated for this request. If not specified, or the value is false, no such indication is made.Default is false.</td>
+                        </tr>
+                        <tr id="ignoreComponentNotFound" class="rowColor">
+                            <td class="colFirst"><a href="#ignoreComponentNotFound"><code>ignoreComponentNotFound</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
+                    </td><td class="colLast">If true, unresolvable components (ComponentNotFoundException) referenced in the update/process attribute are ignored.Default is false.</td>
                         </tr>
                         <tr id="immediate" class="altColor">
                             <td class="colFirst"><a href="#immediate"><code>immediate</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -273,67 +285,79 @@
                             <td class="colFirst"><a href="#oncomplete"><code>oncomplete</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Client side callback to execute when upload completes.</td>
+                    </td><td class="colLast">Client-side javascript callback to execute when ajax request is completed.</td>
                         </tr>
                         <tr id="onerror" class="rowColor">
                             <td class="colFirst"><a href="#onerror"><code>onerror</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Client side callback to execute when upload fails.</td>
+                    </td><td class="colLast">Client-side javascript callback to execute when ajax request fails.</td>
                         </tr>
                         <tr id="onstart" class="altColor">
                             <td class="colFirst"><a href="#onstart"><code>onstart</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Client side callback to execute when upload starts.</td>
+                    </td><td class="colLast">Client-side javascript callback to execute before ajax request begins.</td>
                         </tr>
-                        <tr id="onupload" class="rowColor">
+                        <tr id="onsuccess" class="rowColor">
+                            <td class="colFirst"><a href="#onsuccess"><code>onsuccess</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.String</code>)
+                    </td><td class="colLast">Client-side javascript callback to execute when ajax request succeeds.</td>
+                        </tr>
+                        <tr id="onupload" class="altColor">
                             <td class="colFirst"><a href="#onupload"><code>onupload</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Client side callback to execute when a file is uploaded.</td>
                         </tr>
-                        <tr id="onvalidationfailure" class="altColor">
+                        <tr id="onvalidationfailure" class="rowColor">
                             <td class="colFirst"><a href="#onvalidationfailure"><code>onvalidationfailure</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Client side callback to execute when validation fails.</td>
                         </tr>
-                        <tr id="previewWidth" class="rowColor">
+                        <tr id="previewWidth" class="altColor">
                             <td class="colFirst"><a href="#previewWidth"><code>previewWidth</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Integer</code>)
                     </td><td class="colLast">Width of the preview in pixels.Default is 80.</td>
                         </tr>
-                        <tr id="process" class="altColor">
+                        <tr id="process" class="rowColor">
                             <td class="colFirst"><a href="#process"><code>process</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Component(s) to process in partial request.</td>
                         </tr>
-                        <tr id="ref" class="rowColor">
+                        <tr id="ref" class="altColor">
                             <td class="colFirst"><a href="#ref"><code>ref</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Name of the client side component, e.g. to access it via PF('name').Default is generated ('pf_' + componentClientId).</td>
                         </tr>
-                        <tr id="rendered" class="altColor">
+                        <tr id="rendered" class="rowColor">
                             <td class="colFirst"><a href="#rendered"><code>rendered</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Boolean value to specify the rendering of the component, when set to false component will not be rendered.Default is true.</td>
                         </tr>
-                        <tr id="required" class="rowColor">
+                        <tr id="required" class="altColor">
                             <td class="colFirst"><a href="#required"><code>required</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Boolean</code>)
                     </td><td class="colLast">Marks component as required.Default is false.</td>
                         </tr>
-                        <tr id="requiredMessage" class="altColor">
+                        <tr id="requiredMessage" class="rowColor">
                             <td class="colFirst"><a href="#requiredMessage"><code>requiredMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast"><i>No Description</i></td>
+                        </tr>
+                        <tr id="resetValues" class="altColor">
+                            <td class="colFirst"><a href="#resetValues"><code>resetValues</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Boolean</code>)
+                    </td><td class="colLast">If true, local values of input components to be updated within the ajax request would be reset.Default is false.</td>
                         </tr>
                         <tr id="retryTimeout" class="rowColor">
                             <td class="colFirst"><a href="#retryTimeout"><code>retryTimeout</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
@@ -371,61 +395,67 @@
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="title" class="rowColor">
+                        <tr id="timeout" class="rowColor">
+                            <td class="colFirst"><a href="#timeout"><code>timeout</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
+                                <br>
+                                (<i>must evaluate to </i><code>java.lang.Integer</code>)
+                    </td><td class="colLast">Timeout in milliseconds for ajax request, whereas 0 means no timeout.Default is 0.</td>
+                        </tr>
+                        <tr id="title" class="altColor">
                             <td class="colFirst"><a href="#title"><code>title</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Title attribute of the file input.</td>
                         </tr>
-                        <tr id="update" class="altColor">
+                        <tr id="update" class="rowColor">
                             <td class="colFirst"><a href="#update"><code>update</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
-                    </td><td class="colLast">Component(s) to update in partial request.</td>
+                    </td><td class="colLast">Component(s) to update with ajax.</td>
                         </tr>
-                        <tr id="uploadButtonStyleClass" class="rowColor">
+                        <tr id="uploadButtonStyleClass" class="altColor">
                             <td class="colFirst"><a href="#uploadButtonStyleClass"><code>uploadButtonStyleClass</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Style class of the upload button.</td>
                         </tr>
-                        <tr id="uploadButtonTitle" class="altColor">
+                        <tr id="uploadButtonTitle" class="rowColor">
                             <td class="colFirst"><a href="#uploadButtonTitle"><code>uploadButtonTitle</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Title attribute of the upload button.</td>
                         </tr>
-                        <tr id="uploadLabel" class="rowColor">
+                        <tr id="uploadLabel" class="altColor">
                             <td class="colFirst"><a href="#uploadLabel"><code>uploadLabel</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast">Label of the upload button.Default is Upload.</td>
                         </tr>
-                        <tr id="validator" class="altColor">
+                        <tr id="validator" class="rowColor">
                             <td class="colFirst"><a href="#validator"><code>validator</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.faces.validator.Validator</code>)
                     </td><td class="colLast">A method expression referring to a method validating the input.</td>
                         </tr>
-                        <tr id="validatorMessage" class="rowColor">
+                        <tr id="validatorMessage" class="altColor">
                             <td class="colFirst"><a href="#validatorMessage"><code>validatorMessage</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
                     </td><td class="colLast"><i>No Description</i></td>
                         </tr>
-                        <tr id="value" class="altColor">
+                        <tr id="value" class="rowColor">
                             <td class="colFirst"><a href="#value"><code>value</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.Object</code>)
                     </td><td class="colLast">Value of the component.</td>
                         </tr>
-                        <tr id="valueChangeListener" class="rowColor">
+                        <tr id="valueChangeListener" class="altColor">
                             <td class="colFirst"><a href="#valueChangeListener"><code>valueChangeListener</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>jakarta.faces.event.ValueChangeListener</code>)
                     </td><td class="colLast">A method binding expression referring to a method for handling a valuchangeevent.</td>
                         </tr>
-                        <tr id="widgetVar" class="altColor">
+                        <tr id="widgetVar" class="rowColor">
                             <td class="colFirst"><a href="#widgetVar"><code>widgetVar</code></a></td><td class="colOne"><code>false</code></td><td class="colOne"><code>jakarta.el.ValueExpression</code>
                                 <br>
                                 (<i>must evaluate to </i><code>java.lang.String</code>)
