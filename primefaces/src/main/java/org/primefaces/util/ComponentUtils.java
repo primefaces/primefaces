@@ -276,7 +276,7 @@ public class ComponentUtils {
         // AjaxSource components like p:remoteCommand, p:poll and p:hotkey aren't ClientBehaviorHolders but also need this
         if (component instanceof AjaxSource && component.getValueExpression("oncomplete") != null) {
             PhaseId phaseId = isImmediate(component) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION;
-            component.queueEvent(new DynamicOncompleteEvent(component, (AjaxSource) component, phaseId));
+            DynamicOncompleteEvent.queue(context, component, (AjaxSource) component, phaseId);
         }
 
         if (!(component instanceof ClientBehaviorHolder)) {
