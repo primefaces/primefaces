@@ -25,10 +25,8 @@ package org.primefaces.model;
 
 import org.primefaces.mock.FacesContextMock;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -43,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class JPALazyDataModelTest {
 
@@ -52,79 +51,104 @@ class JPALazyDataModelTest {
     }
 
     @Test
+    void countResolvesCreateQueryForAvailableJpaVersion() {
+        Fixture fixture = createMocksForCountWithFilters();
+
+        assertEquals(5, fixture.model.count(Collections.emptyMap()));
+
+        Mockito.verify(fixture.entityManager).createQuery(fixture.countQuery);
+        Mockito.verify(fixture.countQuery, Mockito.never()).where(Mockito.any(Expression.class));
+    }
+
+    @Test
+    void filtersAreCombinedWithBinaryAnd() {
+        // CriteriaBuilder#and(Predicate...) was removed in Jakarta Persistence 4.0,
+        // whereas and(Expression, Expression) exists in all versions
+        Predicate p1 = Mockito.mock(Predicate.class);
+        Predicate p2 = Mockito.mock(Predicate.class);
+        Predicate p3 = Mockito.mock(Predicate.class);
+        Predicate p1AndP2 = Mockito.mock(Predicate.class);
+        Predicate all = Mockito.mock(Predicate.class);
+        Fixture fixture = createMocksForCountWithFilters(p1, p2, p3);
+        Mockito.when(fixture.criteriaBuilder.and(p1, p2)).thenReturn(p1AndP2);
+        Mockito.when(fixture.criteriaBuilder.and(p1AndP2, p3)).thenReturn(all);
+
+        assertEquals(5, fixture.model.count(Collections.emptyMap()));
+
+        Mockito.verify(fixture.countQuery).where(all);
+        Mockito.verify(fixture.criteriaBuilder, Mockito.never()).and(Mockito.<Predicate[]>any());
+    }
+
+    @Test
+    void singleFilterIsAppliedWithoutAnd() {
+        Predicate p1 = Mockito.mock(Predicate.class);
+        Fixture fixture = createMocksForCountWithFilters(p1);
+
+        assertEquals(5, fixture.model.count(Collections.emptyMap()));
+
+        Mockito.verify(fixture.countQuery).where(p1);
+        Mockito.verify(fixture.criteriaBuilder, Mockito.never()).and(Mockito.any(), Mockito.any());
+        Mockito.verify(fixture.criteriaBuilder, Mockito.never()).and(Mockito.<Predicate[]>any());
+    }
+
+    @Test
     @SuppressWarnings("unchecked")
-    void overriddenHooksReplaceVersionSpecificJpaCalls() {
-        // Simulates a subclass for Jakarta Persistence 4.0, where EntityManager#createQuery(CriteriaQuery)
-        // and CriteriaBuilder#and(Predicate...) no longer exist.
+    void createTypedQueryRethrowsPersistenceExceptionsUnwrapped() {
+        Fixture fixture = createMocksForCountWithFilters();
+        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
+        Mockito.when(fixture.entityManager.createQuery(entityQuery)).thenThrow(new IllegalArgumentException("invalid query"));
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> fixture.model.createTypedQuery(fixture.entityManager, entityQuery));
+        assertEquals("invalid query", ex.getMessage());
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Fixture createMocksForCountWithFilters(Predicate... filters) {
         EntityManager em = Mockito.mock(EntityManager.class);
-        CriteriaBuilder criteriaBuilder = Mockito.mock(CriteriaBuilder.class);
+        CriteriaBuilder cb = Mockito.mock(CriteriaBuilder.class);
         Root<TestEntity> root = Mockito.mock(Root.class);
-        Mockito.when(em.getCriteriaBuilder()).thenReturn(criteriaBuilder);
+        Mockito.when(em.getCriteriaBuilder()).thenReturn(cb);
 
         CriteriaQuery<Long> countQuery = Mockito.mock(CriteriaQuery.class);
         TypedQuery<Long> countTypedQuery = Mockito.mock(TypedQuery.class);
         Expression<Long> countExpression = Mockito.mock(Expression.class);
-        Mockito.when(criteriaBuilder.createQuery(Long.class)).thenReturn(countQuery);
+        Mockito.when(cb.createQuery(Long.class)).thenReturn(countQuery);
         Mockito.when(countQuery.from(TestEntity.class)).thenReturn(root);
-        Mockito.when(criteriaBuilder.count(root)).thenReturn(countExpression);
+        Mockito.when(cb.count(root)).thenReturn(countExpression);
         Mockito.when(countQuery.select(countExpression)).thenReturn(countQuery);
-        Mockito.when(countTypedQuery.getSingleResult()).thenReturn(7L);
+        Mockito.when(em.createQuery(countQuery)).thenReturn(countTypedQuery);
+        Mockito.when(countTypedQuery.getSingleResult()).thenReturn(5L);
 
-        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
-        TypedQuery<TestEntity> entityTypedQuery = Mockito.mock(TypedQuery.class);
-        Mockito.when(criteriaBuilder.createQuery(TestEntity.class)).thenReturn(entityQuery);
-        Mockito.when(entityQuery.from(TestEntity.class)).thenReturn(root);
-        Mockito.when(entityQuery.select(root)).thenReturn(entityQuery);
-        Mockito.when(entityTypedQuery.getResultList()).thenReturn(Collections.singletonList(new TestEntity("1")));
-
-        Predicate filterPredicate = Mockito.mock(Predicate.class);
-        Predicate combinedPredicate = Mockito.mock(Predicate.class);
-        List<CriteriaQuery<?>> createdQueries = new ArrayList<>();
-        List<List<Predicate>> combinedPredicates = new ArrayList<>();
-
-        JPALazyDataModel<TestEntity> model = new JPALazyDataModel<TestEntity>() {
-            @Override
-            protected <R> TypedQuery<R> createTypedQuery(EntityManager em, CriteriaQuery<R> cq) {
-                createdQueries.add(cq);
-                return (TypedQuery<R>) (cq == countQuery ? countTypedQuery : entityTypedQuery);
-            }
-
-            @Override
-            protected Predicate and(CriteriaBuilder cb, List<Predicate> predicates) {
-                combinedPredicates.add(new ArrayList<>(predicates));
-                return combinedPredicate;
-            }
-        };
+        JPALazyDataModel<TestEntity> model = new JPALazyDataModel<>();
         new JPALazyDataModel.Builder<>(model)
                 .entityClass(TestEntity.class)
                 .entityManager(() -> em)
                 .rowKeyField("id")
                 .rowKeyType(String.class)
                 .rowKeyProvider(TestEntity::getId)
-                .filterEnricher((filterBy, cb, cq, r, predicates) -> predicates.add(filterPredicate))
+                .filterEnricher((filterBy, criteriaBuilder, cq, r, predicates) -> predicates.addAll(Arrays.asList(filters)))
                 .build();
+        return new Fixture(model, em, cb, countQuery);
+    }
 
-        assertEquals(7, model.count(Collections.emptyMap()));
-        assertEquals(1, model.load(0, 10, Collections.emptyMap(), Collections.emptyMap()).size());
+    private static class Fixture {
+        final JPALazyDataModel<TestEntity> model;
+        final EntityManager entityManager;
+        final CriteriaBuilder criteriaBuilder;
+        final CriteriaQuery<Long> countQuery;
 
-        assertEquals(Arrays.asList(countQuery, entityQuery), createdQueries);
-        assertEquals(Arrays.asList(Collections.singletonList(filterPredicate), Collections.singletonList(filterPredicate)),
-                combinedPredicates);
-        Mockito.verify(countQuery).where(combinedPredicate);
-        Mockito.verify(entityQuery).where(combinedPredicate);
-        Mockito.verify(em, Mockito.never()).createQuery(Mockito.any(CriteriaQuery.class));
-        Mockito.verify(criteriaBuilder, Mockito.never()).and(Mockito.<Predicate[]>any());
+        Fixture(JPALazyDataModel<TestEntity> model, EntityManager entityManager, CriteriaBuilder criteriaBuilder,
+                CriteriaQuery<Long> countQuery) {
+            this.model = model;
+            this.entityManager = entityManager;
+            this.criteriaBuilder = criteriaBuilder;
+            this.countQuery = countQuery;
+        }
     }
 
     public static class TestEntity {
         private String id;
-
-        public TestEntity() {
-        }
-
-        public TestEntity(String id) {
-            this.id = id;
-        }
 
         public String getId() {
             return id;
