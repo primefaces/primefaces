@@ -103,7 +103,7 @@ final class FilterMatchModeOptions {
     static void apply(FacesContext context, UITable<?> table, UIColumn column, FilterMeta filterMeta) {
         List<MatchMode> options = resolve(context, table, column);
         filterMeta.setMatchModeOptions(options);
-        if (options.isEmpty()) {
+        if (options == null || options.isEmpty()) {
             return;
         }
 

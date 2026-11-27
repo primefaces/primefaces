@@ -217,7 +217,7 @@ public class TabViewRenderer extends CoreRenderer<TabView> {
         AtomicBoolean withActiveFacet = new AtomicBoolean(false);
         AtomicReference<String> activeTab = new AtomicReference<>(Constants.EMPTY_STRING);
         component.forEachTab(activeIndex, (tab, i, active) -> {
-            if (active) {
+            if (Boolean.TRUE.equals(active)) {
                 activeTab.set(tab.getKeyOrIndex(i));
             }
 

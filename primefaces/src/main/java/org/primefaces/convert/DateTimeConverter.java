@@ -131,11 +131,11 @@ public class DateTimeConverter extends jakarta.faces.convert.DateTimeConverter i
             if (pattern == null) {
                 DateFormat df = null;
                 if ("both".equals(type) || "date".equals(type)) {
-                    df = DateFormat.getDateInstance(getStyle(dateStyle), this.getLocale());
+                    df = DateFormat.getDateInstance(getDateFormatStyle(dateStyle), this.getLocale());
                     metadata.put(HTML.ValidationMetadata.DATE_STYLE_PATTERN, ((SimpleDateFormat) df).toPattern());
                 }
                 if ("both".equals(type) || "time".equals(type)) {
-                    df = DateFormat.getTimeInstance(getStyle(timeStyle), this.getLocale());
+                    df = DateFormat.getTimeInstance(getDateFormatStyle(timeStyle), this.getLocale());
                     metadata.put(HTML.ValidationMetadata.TIME_STYLE_PATTERN, ((SimpleDateFormat) df).toPattern());
                 }
             }
@@ -149,24 +149,23 @@ public class DateTimeConverter extends jakarta.faces.convert.DateTimeConverter i
         return DateTimeConverter.CONVERTER_ID;
     }
 
-    private int getStyle(String style) {
+    private int getDateFormatStyle(String style) {
         if ("default".equals(style)) {
-            return (DateFormat.DEFAULT);
+            return DateFormat.DEFAULT;
         }
         else if ("short".equals(style)) {
-            return (DateFormat.SHORT);
+            return DateFormat.SHORT;
         }
         else if ("medium".equals(style)) {
-            return (DateFormat.MEDIUM);
+            return DateFormat.MEDIUM;
         }
         else if ("long".equals(style)) {
-            return (DateFormat.LONG);
+            return DateFormat.LONG;
         }
         else if ("full".equals(style)) {
-            return (DateFormat.FULL);
+            return DateFormat.FULL;
         }
-        else {
-            throw new ConverterException("Invalid style '" + style + '\'');
-        }
+
+        throw new ConverterException("Invalid style '" + style + '\'');
     }
 }

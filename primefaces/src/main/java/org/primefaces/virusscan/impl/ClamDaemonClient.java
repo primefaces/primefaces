@@ -183,14 +183,17 @@ public class ClamDaemonClient {
      */
     protected Socket getSocket() throws IOException {
         Socket socket = new Socket();
+        boolean connected = false;
         try {
             socket.setSoTimeout(timeout);
             socket.connect(new InetSocketAddress(host, port), timeout);
+            connected = true;
             return socket;
         }
-        catch (IOException | RuntimeException e) {
-            socket.close();
-            throw e;
+        finally {
+            if (!connected) {
+                socket.close();
+            }
         }
     }
 

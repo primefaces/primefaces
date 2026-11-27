@@ -73,6 +73,7 @@ import java.util.stream.Stream;
 
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.ExternalContext;
 import jakarta.faces.context.FacesContext;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletRegistration;
@@ -280,12 +281,12 @@ public class PrimeApplicationContext {
     }
 
     public static PrimeApplicationContext getCurrentInstance(FacesContext facesContext, boolean create) {
-        if (facesContext == null || facesContext.getExternalContext() == null) {
+        ExternalContext externalContext = facesContext == null ? null : facesContext.getExternalContext();
+        if (externalContext == null) {
             throw new IllegalArgumentException("FacesContext and ExternalContext must not be null.");
         }
 
-        PrimeApplicationContext applicationContext =
-                (PrimeApplicationContext) facesContext.getExternalContext().getApplicationMap().get(INSTANCE_KEY);
+        PrimeApplicationContext applicationContext = (PrimeApplicationContext) externalContext.getApplicationMap().get(INSTANCE_KEY);
 
         if (create && applicationContext == null) {
             applicationContext = new PrimeApplicationContext(facesContext);
