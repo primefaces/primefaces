@@ -1123,6 +1123,13 @@ public class MyJPALazyDataModel<T> extends JPALazyDataModel<T> {
 }
 ```
 
+#### Jakarta Persistence 4.0
+
+`JPALazyDataModel` supports Jakarta Persistence 3.x as well as 4.0 (Jakarta EE 12) out of the box.
+Jakarta Persistence 4.0 removed `EntityManager#createQuery(CriteriaQuery)` and `CriteriaBuilder#and(Predicate...)`, so `JPALazyDataModel`
+resolves the available `createQuery` method at runtime and combines predicates with `CriteriaBuilder#and(Expression, Expression)`.
+Both are implemented in the protected methods `createTypedQuery` and `and`, which can be overridden if needed.
+
 #### Unsupported features
 
 Due to its implementation based on Criteria API, certain features of `DataTable` simply cannot work with `JPALazyDataModel` but may "fail silently". To aid implementors in avoiding running into issues, we've compiled (and will continue to add to) a list of features in this category:

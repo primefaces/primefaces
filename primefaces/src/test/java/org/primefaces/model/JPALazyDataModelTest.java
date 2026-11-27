@@ -37,6 +37,7 @@ import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -126,6 +127,87 @@ class JPALazyDataModelTest {
         assertEquals("1", entity.getId());
         Mockito.verify(fixture.entityManager, Mockito.never()).createQuery(Mockito.any(CriteriaQuery.class));
         Mockito.verify(fixture.criteriaBuilder, Mockito.never()).createQuery(Mockito.any(Class.class));
+    }
+
+    @Test
+    void filtersAreCombinedWithBinaryAnd() {
+        // CriteriaBuilder#and(Predicate...) was removed in Jakarta Persistence 4.0,
+        // whereas and(Expression, Expression) exists in all versions
+        Predicate p1 = Mockito.mock(Predicate.class);
+        Predicate p2 = Mockito.mock(Predicate.class);
+        Predicate p3 = Mockito.mock(Predicate.class);
+        Predicate p1AndP2 = Mockito.mock(Predicate.class);
+        Predicate all = Mockito.mock(Predicate.class);
+        CountWithFilters fixture = createMocksForCountWithFilters(p1, p2, p3);
+        Mockito.when(fixture.ctx.criteriaBuilder.and(p1, p2)).thenReturn(p1AndP2);
+        Mockito.when(fixture.ctx.criteriaBuilder.and(p1AndP2, p3)).thenReturn(all);
+
+        assertEquals(5, fixture.model.count(Collections.emptyMap()));
+
+        Mockito.verify(fixture.countQuery).where(all);
+        Mockito.verify(fixture.ctx.criteriaBuilder, Mockito.never()).and(Mockito.<Predicate[]>any());
+    }
+
+    @Test
+    void singleFilterIsAppliedWithoutAnd() {
+        Predicate p1 = Mockito.mock(Predicate.class);
+        CountWithFilters fixture = createMocksForCountWithFilters(p1);
+
+        assertEquals(5, fixture.model.count(Collections.emptyMap()));
+
+        Mockito.verify(fixture.countQuery).where(p1);
+        Mockito.verify(fixture.ctx.criteriaBuilder, Mockito.never()).and(Mockito.any(), Mockito.any());
+        Mockito.verify(fixture.ctx.criteriaBuilder, Mockito.never()).and(Mockito.<Predicate[]>any());
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void createTypedQueryRethrowsPersistenceExceptionsUnwrapped() {
+        JpaContext ctx = createJpaContext();
+        CriteriaQuery<TestEntity> entityQuery = Mockito.mock(CriteriaQuery.class);
+        Mockito.when(ctx.entityManager.createQuery(entityQuery)).thenThrow(new IllegalArgumentException("invalid query"));
+        JPALazyDataModel<TestEntity> model = createModel(ctx.entityManager, null);
+
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
+                () -> model.createTypedQuery(ctx.entityManager, entityQuery));
+        assertEquals("invalid query", ex.getMessage());
+    }
+
+    @SuppressWarnings("unchecked")
+    private static CountWithFilters createMocksForCountWithFilters(Predicate... filters) {
+        JpaContext ctx = createJpaContext();
+        CriteriaQuery<Long> countQuery = Mockito.mock(CriteriaQuery.class);
+        TypedQuery<Long> countTypedQuery = Mockito.mock(TypedQuery.class);
+        Expression<Long> countExpression = Mockito.mock(Expression.class);
+        Mockito.when(ctx.criteriaBuilder.createQuery(Long.class)).thenReturn(countQuery);
+        Mockito.when(countQuery.from(TestEntity.class)).thenReturn(ctx.root);
+        Mockito.when(ctx.criteriaBuilder.count(ctx.root)).thenReturn(countExpression);
+        Mockito.when(countQuery.select(countExpression)).thenReturn(countQuery);
+        Mockito.when(ctx.entityManager.createQuery(countQuery)).thenReturn(countTypedQuery);
+        Mockito.when(countTypedQuery.getSingleResult()).thenReturn(5L);
+
+        JPALazyDataModel<TestEntity> model = new JPALazyDataModel<>();
+        new JPALazyDataModel.Builder<>(model)
+                .entityClass(TestEntity.class)
+                .entityManager(() -> ctx.entityManager)
+                .rowKeyField("id")
+                .rowKeyType(String.class)
+                .rowKeyProvider(TestEntity::getId)
+                .filterEnricher((filterBy, cb, cq, root, predicates) -> predicates.addAll(Arrays.asList(filters)))
+                .build();
+        return new CountWithFilters(ctx, model, countQuery);
+    }
+
+    private static class CountWithFilters {
+        final JpaContext ctx;
+        final JPALazyDataModel<TestEntity> model;
+        final CriteriaQuery<Long> countQuery;
+
+        CountWithFilters(JpaContext ctx, JPALazyDataModel<TestEntity> model, CriteriaQuery<Long> countQuery) {
+            this.ctx = ctx;
+            this.model = model;
+            this.countQuery = countQuery;
+        }
     }
 
     private static JPALazyDataModel<TestEntity> createModel(EntityManager em, Converter<TestEntity> converter) {
