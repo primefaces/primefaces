@@ -265,7 +265,18 @@
     }
 }
 
-/* inline p:message next to its input; p:staticMessage is a block of its own */
-.p-component + .p-message:not(.p-staticmessage) {
+/* inline p:message next to its input; p:staticMessage is a block of its own, an empty p:message takes no space */
+.p-component + .p-message:not(.p-staticmessage, :empty) {
     margin-inline-start: var(--p-message-content-gap);
+}
+
+/* .p-fluid: the input takes the full width, the message is a block below it and what follows starts on a new line */
+.p-fluid .p-message:not(.p-staticmessage, .p-hidden) {
+    display: block;
+    width: fit-content;
+
+    &:not(:empty) {
+        margin-block-start: var(--p-message-content-gap);
+        margin-inline-start: 0;
+    }
 }
