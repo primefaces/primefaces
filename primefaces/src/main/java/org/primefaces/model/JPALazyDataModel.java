@@ -105,7 +105,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
 
         applyFilters(cb, cq, root, filterBy);
 
-        TypedQuery<Long> query = em.createQuery(cq);
+        TypedQuery<Long> query = createTypedQuery(em, cq);
         return query.getSingleResult().intValue();
     }
 
@@ -121,7 +121,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         applyFilters(cb, cq, root, filterBy);
         applySort(cb, cq, root, sortBy);
 
-        TypedQuery<T> query = em.createQuery(cq);
+        TypedQuery<T> query = createTypedQuery(em, cq);
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
 
@@ -154,9 +154,41 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         }
 
         if (!predicates.isEmpty()) {
-            cq.where(
-                cb.and(predicates.toArray(new Predicate[0])));
+            cq.where(and(cb, predicates));
         }
+    }
+
+    /**
+     * Creates the {@link TypedQuery} for the given {@link CriteriaQuery}.
+     * <p>
+     * This is a hook to support different Jakarta Persistence versions. The default implementation
+     * calls {@code EntityManager#createQuery(CriteriaQuery)}, which was removed in Jakarta Persistence 4.0.
+     * When running on Jakarta Persistence 4.0+, override this method in a subclass compiled against the 4.0 API
+     * with {@code return em.createQuery(cq);}, which then binds to {@code createQuery(CriteriaSelect)}.
+     *
+     * @param em the {@link EntityManager}
+     * @param cq the {@link CriteriaQuery}
+     * @param <R> the result type
+     * @return the {@link TypedQuery}
+     */
+    protected <R> TypedQuery<R> createTypedQuery(EntityManager em, CriteriaQuery<R> cq) {
+        return em.createQuery(cq);
+    }
+
+    /**
+     * Combines the given predicates with a conjunction.
+     * <p>
+     * This is a hook to support different Jakarta Persistence versions. The default implementation
+     * calls {@code CriteriaBuilder#and(Predicate...)}, which was removed in Jakarta Persistence 4.0.
+     * When running on Jakarta Persistence 4.0+, override this method in a subclass compiled against the 4.0 API
+     * with {@code return cb.and(predicates);}, which then binds to {@code and(List)}.
+     *
+     * @param cb the {@link CriteriaBuilder}
+     * @param predicates the predicates to combine
+     * @return the combined {@link Predicate}
+     */
+    protected Predicate and(CriteriaBuilder cb, List<Predicate> predicates) {
+        return cb.and(predicates.toArray(new Predicate[0]));
     }
 
     protected void applyFiltersFromFilterMeta(Class<T> entityClass, Collection<FilterMeta> filterBy, CriteriaBuilder cb,
@@ -335,7 +367,7 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
         Root<T> root = cq.from(entityClass);
         cq.select(root).where(criteriaBuilder.equal(root.get(rowKeyField), convertedRowKey));
 
-        TypedQuery<T> query = em.createQuery(cq);
+        TypedQuery<T> query = createTypedQuery(em, cq);
         T result = query.getSingleResult();
         if (resultEnricher != null) {
             resultEnricher.accept(List.of(result));
