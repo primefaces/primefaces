@@ -56,7 +56,7 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
             component.queueEvent(event);
 
             if (ajaxBehavior.getValueExpression("oncomplete") != null) {
-                component.queueEvent(new DynamicOncompleteEvent(component, ajaxBehavior, phaseId));
+                DynamicOncompleteEvent.queue(context, component, ajaxBehavior, phaseId);
             }
         }
     }

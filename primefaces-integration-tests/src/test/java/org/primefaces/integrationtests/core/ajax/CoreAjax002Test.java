@@ -27,6 +27,8 @@ import org.primefaces.selenium.AbstractPrimePage;
 import org.primefaces.selenium.AbstractPrimePageTest;
 import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.CommandButton;
+import org.primefaces.selenium.component.DataTable;
+import org.primefaces.selenium.component.ProgressBar;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -117,6 +119,60 @@ class CoreAjax002Test extends AbstractPrimePageTest {
         assertEquals("modified", page.output10.getText());
     }
 
+    @Test
+    @DisplayName("Core-AJAX: UICommand with partial EL oncomplete and failed validation - https://github.com/primefaces/primefaces/issues/15601")
+    void commandWithPartialELOncompleteAndFailedValidation(Page page) {
+        assertEquals("", page.output11.getText());
+        page.button11.click();
+        assertEquals("initial true", page.output11.getText());
+    }
+
+    @Test
+    @DisplayName("Core-AJAX: AjaxBehavior with partial EL oncomplete and failed validation - https://github.com/primefaces/primefaces/issues/15601")
+    void behaviorWithPartialELOncompleteAndFailedValidation(Page page) {
+        assertEquals("", page.output12.getText());
+        page.button12.click();
+        assertEquals("initial true", page.output12.getText());
+    }
+
+    @Test
+    @DisplayName("Core-AJAX: UICommand in row with partial EL oncomplete and failed validation - https://github.com/primefaces/primefaces/issues/15601")
+    void commandInRowWithPartialELOncompleteAndFailedValidation(Page page) {
+        assertEquals("", page.output13.getText());
+        page.button13.click();
+        assertEquals("item1 true", page.output13.getText());
+    }
+
+    @Test
+    @DisplayName("Core-AJAX: AjaxBehavior with partial EL oncomplete on wrapped behavior event - https://github.com/primefaces/primefaces/issues/15601")
+    void behaviorWithPartialELOncompleteOnWrappedEvent(Page page) {
+        assertEquals("", page.output14.getText());
+        PrimeSelenium.guardAjax(page.table14.getCell(1, 0).getWebElement()).click();
+        assertEquals("modified", page.output14.getText());
+    }
+
+    /**
+     * DataTable, TreeTable, PickList, OrderList and Rating defer the ajax event of the request per event name and broadcast it after their own
+     * validation. The oncomplete must not take the place of the deferred event, else its listener is not invoked. The filter of DataTable stands
+     * for all of them: they recognize the deferred event by the same instanceof AjaxBehaviorEvent check, which the oncomplete event does not pass.
+     */
+    @Test
+    @DisplayName("Core-AJAX: AjaxBehavior with partial EL oncomplete on deferred behavior event - https://github.com/primefaces/primefaces/issues/15601")
+    void behaviorWithPartialELOncompleteOnDeferredEvent(Page page) {
+        assertEquals("", page.output15.getText());
+        page.table15.filter("Item", "item1");
+        assertEquals("modified", page.output15.getText());
+    }
+
+    @Test
+    @DisplayName("Core-AJAX: AjaxBehavior with partial EL oncomplete on re-phased behavior event - https://github.com/primefaces/primefaces/issues/15601")
+    void behaviorWithPartialELOncompleteOnRephasedEvent(Page page) {
+        assertEquals("", page.output16.getText());
+        page.progressBar16.start();
+        page.progressBar16.waitUntilComplete();
+        assertEquals("modified", page.output16.getText());
+    }
+
     public static class Page extends AbstractPrimePage {
         @FindBy(id = "form1:button")
         CommandButton button1;
@@ -171,6 +227,42 @@ class CoreAjax002Test extends AbstractPrimePageTest {
 
         @FindBy(id = "output10")
         WebElement output10;
+
+        @FindBy(id = "form11:button")
+        CommandButton button11;
+
+        @FindBy(id = "output11")
+        WebElement output11;
+
+        @FindBy(id = "form12:button")
+        CommandButton button12;
+
+        @FindBy(id = "output12")
+        WebElement output12;
+
+        @FindBy(id = "form13:table:1:button")
+        CommandButton button13;
+
+        @FindBy(id = "output13")
+        WebElement output13;
+
+        @FindBy(id = "form14:table")
+        DataTable table14;
+
+        @FindBy(id = "output14")
+        WebElement output14;
+
+        @FindBy(id = "form15:table")
+        DataTable table15;
+
+        @FindBy(id = "output15")
+        WebElement output15;
+
+        @FindBy(id = "form16:progressBar")
+        ProgressBar progressBar16;
+
+        @FindBy(id = "output16")
+        WebElement output16;
 
         @Override
         public String getLocation() {

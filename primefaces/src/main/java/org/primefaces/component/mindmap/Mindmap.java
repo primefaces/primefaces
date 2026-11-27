@@ -77,6 +77,9 @@ public class Mindmap extends MindmapBaseImpl {
                 super.queueEvent(new SelectEvent<>(this, behaviorEvent.getBehavior(), node));
             }
         }
+        else {
+            super.queueEvent(event);
+        }
     }
 
     protected MindmapNode findNode(MindmapNode searchRoot, String rowKey) {
