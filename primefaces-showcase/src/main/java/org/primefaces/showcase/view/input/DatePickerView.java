@@ -66,6 +66,7 @@ public class DatePickerView implements Serializable {
     private Date date15;
     private Date date16;
     private Date date17;
+    private Date date18;
     private Date dateTimeDe;
     private Date dateTimeMillis;
     private List<Date> multi;
@@ -263,6 +264,14 @@ public class DatePickerView implements Serializable {
 
     public void setDate17(Date date17) {
         this.date17 = date17;
+    }
+
+    public Date getDate18() {
+        return date18;
+    }
+
+    public void setDate18(Date date18) {
+        this.date18 = date18;
     }
 
     public List<Date> getMulti() {

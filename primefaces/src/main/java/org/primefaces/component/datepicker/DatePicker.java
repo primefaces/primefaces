@@ -48,6 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import jakarta.faces.FacesException;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.application.ResourceDependency;
 import jakarta.faces.component.FacesComponent;
@@ -281,6 +282,11 @@ public class DatePicker extends DatePickerBaseImpl {
             }
         }
 
+        if (isValid() && timePart != null && !isInTimeWindow(timePart)) {
+            setValid(false);
+            return ValidationResult.INVALID_DISABLED_DATE;
+        }
+
         // like the popup: the day based restrictions only apply to the date view, the week view selects the first and last day
         // of the week and the month view the first day of the month, even if they are disabled
         if (!isDateView()) {
@@ -390,7 +396,37 @@ public class DatePicker extends DatePickerBaseImpl {
             }
         }
 
+        if (isValid() && !isInTimeWindow(time)) {
+            setValid(false);
+            return ValidationResult.INVALID_DISABLED_DATE;
+        }
+
         return ValidationResult.OK;
+    }
+
+    protected boolean isInTimeWindow(LocalTime time) {
+        LocalTime minTime = toLocalTime(getMinTime());
+        LocalTime maxTime = toLocalTime(getMaxTime());
+        return (minTime == null || !time.isBefore(minTime)) && (maxTime == null || !time.isAfter(maxTime));
+    }
+
+    public static LocalTime toLocalTime(Object value) {
+        if (value == null || value instanceof LocalTime) {
+            return (LocalTime) value;
+        }
+        String text = value.toString();
+        return LangUtils.isBlank(text) ? null : LocalTime.parse(text);
+    }
+
+    @Override
+    public void validateMinMax(FacesContext context) {
+        super.validateMinMax(context);
+
+        LocalTime minTime = toLocalTime(getMinTime());
+        LocalTime maxTime = toLocalTime(getMaxTime());
+        if (minTime != null && maxTime != null && maxTime.isBefore(minTime)) {
+            throw new FacesException("DatePicker : \"" + getClientId(context) + "\" minimum time must be less than maximum time.");
+        }
     }
 
     @Override

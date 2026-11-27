@@ -176,6 +176,12 @@ public abstract class DatePickerBase extends UICalendar implements PrimeClientCo
     @Property(description = "List of disabled days of week (0=Sunday, 6=Saturday).")
     public abstract List<Integer> getDisabledDays();
 
+    @Property(description = "Earliest selectable time of every day, a LocalTime or a string like 09:00.")
+    public abstract Object getMinTime();
+
+    @Property(description = "Latest selectable time of every day, a LocalTime or a string like 17:00.")
+    public abstract Object getMaxTime();
+
     @Property(description = "When disabled, the value is not validated against mindate / maxdate, disabledDates, enabledDates, disabledDays"
             + " and the order of the range dates on the server. Required, the converter and the validators are still executed.",
             defaultValue = "true")
