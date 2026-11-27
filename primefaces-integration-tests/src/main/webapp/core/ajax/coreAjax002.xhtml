@@ -81,5 +81,38 @@
                 oncomplete="#{coreAjax002.oncomplete}" />
             <span id="output10"></span>
         </h:form>
+
+
+
+
+        <h:form id="form14">
+            <p:dataTable id="table" value="#{coreAjax002.items}" var="item" rowKey="#{item}"
+                selectionMode="single" selection="#{coreAjax002.selectedItem}">
+                <p:ajax event="rowSelect"
+                    listener="#{coreAjax002.modifyProperty}"
+                    oncomplete="$('#output14').append('#{coreAjax002.property}');" />
+                <p:column>#{item}</p:column>
+            </p:dataTable>
+            <span id="output14"></span>
+        </h:form>
+
+        <h:form id="form15">
+            <p:dataTable id="table" value="#{coreAjax002.items}" var="item">
+                <p:ajax event="filter"
+                    listener="#{coreAjax002.modifyProperty}"
+                    oncomplete="$('#output15').append('#{coreAjax002.property}');" />
+                <p:column headerText="Item" filterBy="#{item}">#{item}</p:column>
+            </p:dataTable>
+            <span id="output15"></span>
+        </h:form>
+
+        <h:form id="form16">
+            <p:progressBar id="progressBar" ajax="true" interval="200" value="#{coreAjax002.progress}" global="false">
+                <p:ajax event="complete"
+                    listener="#{coreAjax002.modifyProperty}"
+                    oncomplete="$('#output16').append('#{coreAjax002.property}');" />
+            </p:progressBar>
+            <span id="output16"></span>
+        </h:form>
     </h:body>
 </html>
