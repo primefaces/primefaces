@@ -57,7 +57,7 @@ public class ProgressBar extends ProgressBarBaseImpl {
     public void queueEvent(FacesEvent event) {
         FacesContext context = event.getFacesContext();
 
-        if (isAjaxRequestSource(context)) {
+        if (isAjaxRequestSource(context) && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             behaviorEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);

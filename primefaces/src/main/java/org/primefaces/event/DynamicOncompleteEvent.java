@@ -28,13 +28,15 @@ import org.primefaces.component.api.AjaxSource;
 
 import jakarta.el.ValueExpression;
 import jakarta.faces.component.UIComponent;
+import jakarta.faces.event.BehaviorEvent;
+import jakarta.faces.event.FacesListener;
 import jakarta.faces.event.PhaseId;
 
 /**
  * Queue this event during decode in case your {@code oncomplete} attribute is a {@link ValueExpression}.
  * This way the value will be re-evaluated and executed via {@link PrimeFaces#executeScript(String)}.
  */
-public class DynamicOncompleteEvent extends AbstractAjaxBehaviorEvent {
+public class DynamicOncompleteEvent extends BehaviorEvent {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,5 +50,15 @@ public class DynamicOncompleteEvent extends AbstractAjaxBehaviorEvent {
         });
 
         setPhaseId(phaseId);
+    }
+
+    @Override
+    public boolean isAppropriateListener(FacesListener listener) {
+        return false;
+    }
+
+    @Override
+    public void processListener(FacesListener listener) {
+        // NOOP
     }
 }

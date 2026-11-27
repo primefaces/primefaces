@@ -69,7 +69,7 @@ public class GMap extends GMapBaseImpl {
         String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
         String clientId = getClientId(context);
 
-        if (ComponentUtils.isRequestSource(this, context)) {
+        if (ComponentUtils.isRequestSource(this, context) && event instanceof AjaxBehaviorEvent) {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
