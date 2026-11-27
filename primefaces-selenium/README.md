@@ -117,6 +117,7 @@ Currently, only the following components are implemented (partially):
 - Panel
 - Password
 - Picklist
+- ProgressBar
 - Rating
 - Schedule
 - SelectBooleanCheckbox
