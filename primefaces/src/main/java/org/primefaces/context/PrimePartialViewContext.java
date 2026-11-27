@@ -25,6 +25,7 @@ package org.primefaces.context;
 
 import org.primefaces.config.PrimeConfiguration;
 import org.primefaces.csp.CspPartialResponseWriter;
+import org.primefaces.event.DynamicOncompleteEvent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
 import org.primefaces.util.LangUtils;
@@ -60,6 +61,8 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
             if (context.isProjectStage(ProjectStage.Development)) {
                 validateRenderers(context);
             }
+
+            DynamicOncompleteEvent.executePending(context);
         }
 
         getWrapped().processPartial(phaseId);

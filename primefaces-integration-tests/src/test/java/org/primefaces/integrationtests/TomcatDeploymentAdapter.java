@@ -26,12 +26,17 @@ package org.primefaces.integrationtests;
 import org.primefaces.selenium.spi.DeploymentAdapter;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.catalina.Context;
@@ -55,7 +60,9 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
         tomcat.getConnector().setMaxPartHeaderSize(5 * 1024); // increase multipart header size limit
         tomcat.getHost().setAppBase(".");
 
-        Context context = tomcat.addWebapp("", new File("target/primefaces-integration-tests/").getAbsolutePath());
+        File webapp = new File("target/primefaces-integration-tests/");
+        Context context = tomcat.addWebapp("", webapp.getAbsolutePath());
+        context.setParentClassLoader(new WebappParentClassLoader(getClass().getClassLoader(), webapp));
         StandardJarScanner jarScanner = new StandardJarScanner();
         jarScanner.setScanClassPath(false);
         jarScanner.setScanBootstrapClassPath(false);
@@ -102,6 +109,37 @@ public class TomcatDeploymentAdapter implements DeploymentAdapter {
 
     public Tomcat getTomcat() {
         return tomcat;
+    }
+
+    /**
+     * The test classpath contains the JARs and classes of the webapp a second time (WEB-INF/lib and WEB-INF/classes).
+     * Hides their resources from the webapp, otherwise e.g. the META-INF/faces-config.xml of PrimeFaces is loaded twice.
+     */
+    private static class WebappParentClassLoader extends ClassLoader {
+
+        private final Set<String> webappLibs;
+
+        WebappParentClassLoader(ClassLoader parent, File webapp) {
+            super(parent);
+            String[] libs = new File(webapp, "WEB-INF/lib").list();
+            webappLibs = libs == null ? Set.of() : Set.of(libs);
+        }
+
+        @Override
+        public Enumeration<URL> getResources(String name) throws IOException {
+            List<URL> resources = Collections.list(super.getResources(name));
+            resources.removeIf(this::isProvidedByWebapp);
+            return Collections.enumeration(resources);
+        }
+
+        private boolean isProvidedByWebapp(URL url) {
+            String location = url.toString();
+            if ("jar".equals(url.getProtocol())) {
+                String jar = location.substring(0, location.indexOf("!/"));
+                return webappLibs.contains(jar.substring(jar.lastIndexOf('/') + 1));
+            }
+            return location.contains("/target/classes/");
+        }
     }
 
 }

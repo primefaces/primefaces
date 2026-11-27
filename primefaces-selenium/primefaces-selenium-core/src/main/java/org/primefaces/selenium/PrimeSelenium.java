@@ -461,6 +461,17 @@ public final class PrimeSelenium {
     }
 
     /**
+     * Like {@link #waitGui()} but uses the configured AJAX timeout.
+     *
+     * @return the {@link WebDriverWait}
+     */
+    public static WebDriverWait waitAjax() {
+        ConfigProvider config = ConfigProvider.getInstance();
+        WebDriver driver = WebDriverProvider.get();
+        return new WebDriverWait(driver, Duration.ofSeconds(config.getTimeoutAjax()), Duration.ofMillis(100));
+    }
+
+    /**
      * Wait until the document is loaded.
      *
      * @return the {@link WebDriverWait}
