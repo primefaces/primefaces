@@ -1599,9 +1599,14 @@ PrimeFaces.widget.AutoComplete = class AutoComplete extends PrimeFaces.widget.Ba
         if (valid) {
             // #15304 sync the hidden input when a matching label was typed instead of selected
             if (this.cfg.pojo && !this.cfg.multiple && this.items) {
-                var matchedItem = this.items.filter(':not(.ui-autocomplete-moretext)[data-item-label="' + CSS.escape(value) + '"]');
-                if (matchedItem.length) {
-                    this.hinput.val(matchedItem.attr('data-item-value'));
+                var matchedItems = this.items.filter(':not(.ui-autocomplete-moretext)[data-item-label="' + CSS.escape(value) + '"]');
+                // #15602 keep the selected item when several suggestions share the same label
+                var currentValue = this.hinput.val();
+                var alreadySelected = matchedItems.toArray().some(function(item) {
+                    return $(item).attr('data-item-value') === currentValue;
+                });
+                if (matchedItems.length && !alreadySelected) {
+                    this.hinput.val(matchedItems.attr('data-item-value'));
                 }
             }
         }
