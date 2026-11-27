@@ -82,8 +82,34 @@
             <span id="output10"></span>
         </h:form>
 
+        <h:form id="form11">
+            <p:inputText id="input" required="true" />
+            <p:commandButton id="button" value="UICommand with partial EL oncomplete and failed validation" process="@form"
+                action="#{coreAjax002.modifyProperty}"
+                oncomplete="$('#output11').append('#{coreAjax002.property} ' + args.validationFailed);" />
+            <span id="output11"></span>
+        </h:form>
 
+        <h:form id="form12">
+            <p:inputText id="input" required="true" />
+            <p:commandButton id="button" value="AjaxBehavior with partial EL oncomplete and failed validation">
+                <p:ajax process="@form"
+                    listener="#{coreAjax002.modifyProperty}"
+                    oncomplete="$('#output12').append('#{coreAjax002.property} ' + args.validationFailed);" />
+            </p:commandButton>
+            <span id="output12"></span>
+        </h:form>
 
+        <h:form id="form13">
+            <p:inputText id="input" required="true" />
+            <p:dataTable id="table" value="#{coreAjax002.items}" var="item">
+                <p:column>
+                    <p:commandButton id="button" value="UICommand in row with partial EL oncomplete and failed validation" process="@form"
+                        oncomplete="$('#output13').append('#{item} ' + args.validationFailed);" />
+                </p:column>
+            </p:dataTable>
+            <span id="output13"></span>
+        </h:form>
 
         <h:form id="form14">
             <p:dataTable id="table" value="#{coreAjax002.items}" var="item" rowKey="#{item}"

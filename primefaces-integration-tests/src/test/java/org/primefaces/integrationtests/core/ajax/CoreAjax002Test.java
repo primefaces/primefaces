@@ -120,6 +120,30 @@ class CoreAjax002Test extends AbstractPrimePageTest {
     }
 
     @Test
+    @DisplayName("Core-AJAX: UICommand with partial EL oncomplete and failed validation - https://github.com/primefaces/primefaces/issues/15601")
+    void commandWithPartialELOncompleteAndFailedValidation(Page page) {
+        assertEquals("", page.output11.getText());
+        page.button11.click();
+        assertEquals("initial true", page.output11.getText());
+    }
+
+    @Test
+    @DisplayName("Core-AJAX: AjaxBehavior with partial EL oncomplete and failed validation - https://github.com/primefaces/primefaces/issues/15601")
+    void behaviorWithPartialELOncompleteAndFailedValidation(Page page) {
+        assertEquals("", page.output12.getText());
+        page.button12.click();
+        assertEquals("initial true", page.output12.getText());
+    }
+
+    @Test
+    @DisplayName("Core-AJAX: UICommand in row with partial EL oncomplete and failed validation - https://github.com/primefaces/primefaces/issues/15601")
+    void commandInRowWithPartialELOncompleteAndFailedValidation(Page page) {
+        assertEquals("", page.output13.getText());
+        page.button13.click();
+        assertEquals("item1 true", page.output13.getText());
+    }
+
+    @Test
     @DisplayName("Core-AJAX: AjaxBehavior with partial EL oncomplete on wrapped behavior event - https://github.com/primefaces/primefaces/issues/15601")
     void behaviorWithPartialELOncompleteOnWrappedEvent(Page page) {
         assertEquals("", page.output14.getText());
@@ -203,6 +227,24 @@ class CoreAjax002Test extends AbstractPrimePageTest {
 
         @FindBy(id = "output10")
         WebElement output10;
+
+        @FindBy(id = "form11:button")
+        CommandButton button11;
+
+        @FindBy(id = "output11")
+        WebElement output11;
+
+        @FindBy(id = "form12:button")
+        CommandButton button12;
+
+        @FindBy(id = "output12")
+        WebElement output12;
+
+        @FindBy(id = "form13:table:1:button")
+        CommandButton button13;
+
+        @FindBy(id = "output13")
+        WebElement output13;
 
         @FindBy(id = "form14:table")
         DataTable table14;
