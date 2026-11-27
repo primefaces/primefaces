@@ -1630,9 +1630,12 @@ export class AutoComplete<Cfg extends AutoCompleteCfg = AutoCompleteCfg> extends
         if (valid) {
             // #15304 sync the hidden input when a matching label was typed instead of selected
             if (this.cfg.pojo && !this.cfg.multiple && this.items) {
-                const matchedItem = this.items.filter(':not(.p-autocomplete-moretext)[data-item-label="' + CSS.escape(value) + '"]');
-                if (matchedItem.length) {
-                    this.hinput.val(matchedItem.attr('data-item-value') as string);
+                const matchedItems = this.items.filter(':not(.p-autocomplete-moretext)[data-item-label="' + CSS.escape(value) + '"]');
+                // #15602 keep the selected item when several suggestions share the same label
+                const currentValue = this.hinput.val() as string;
+                const alreadySelected = matchedItems.toArray().some((item) => $(item).attr('data-item-value') === currentValue);
+                if (matchedItems.length && !alreadySelected) {
+                    this.hinput.val(matchedItems.attr('data-item-value') as string);
                 }
             }
         }
