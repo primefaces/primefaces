@@ -40,15 +40,15 @@ public class CoreAjax002 {
     }
 
     public void fullOncomplete3() {
-        oncomplete = "$('#output3').text('modified');";
+        oncomplete = "$('#output3').append('modified');";
     }
 
     public void fullOncomplete6() {
-        oncomplete = "$('#output6').text('modified');";
+        oncomplete = "$('#output6').append('modified');";
     }
 
     public void fullOncomplete10() {
-        oncomplete = "$('#output10').text('modified');";
+        oncomplete = "$('#output10').append('modified');";
     }
 
     public void addCallbackParam() {
