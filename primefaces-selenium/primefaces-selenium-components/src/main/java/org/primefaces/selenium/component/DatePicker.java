@@ -28,6 +28,8 @@ import org.primefaces.selenium.PrimeSelenium;
 import org.primefaces.selenium.component.base.AbstractInputComponent;
 import org.primefaces.selenium.component.base.ComponentUtils;
 import org.primefaces.selenium.findby.FindByParentPartialId;
+import org.primefaces.selenium.internal.ConfigProvider;
+import org.primefaces.selenium.internal.Guard;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -128,11 +130,24 @@ public abstract class DatePicker extends AbstractInputComponent {
     public WebElement selectDay(String day) {
         WebElement link = showPanel().findElement(By.linkText(day));
         PrimeSelenium.waitGui().until(ExpectedConditions.elementToBeClickable(link));
-        if (isDateSelectAjaxified()) {
-            link = PrimeSelenium.guardAjax(link);
-        }
+        link = guardSelection(link);
         link.click();
         return link;
+    }
+
+    /**
+     * Guards a target which selects a date. Its requests ("viewChange", "dateSelect", "change", lazy model) are sent within
+     * the click. If the selection closes the panel, the client component does so 100ms later, which sends further requests
+     * ("close", "viewChange" or lazy model). So it waits out that delay and then until the AJAX queue is empty and no
+     * animation is running. No request has to be sent at all, unlike {@link PrimeSelenium#guardAjax(Object)}.
+     *
+     * @param target the target to guard
+     * @param <T> the type of the target
+     * @return the guarded target
+     */
+    private <T> T guardSelection(T target) {
+        return Guard.custom(target, 200, ConfigProvider.getInstance().getTimeoutAjax(),
+                    PrimeExpectedConditions.animationNotActive(), PrimeExpectedConditions.ajaxQueueEmpty());
     }
 
     /**
