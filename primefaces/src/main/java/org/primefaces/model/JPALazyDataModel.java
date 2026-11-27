@@ -34,6 +34,8 @@ import org.primefaces.util.PropertyDescriptorResolver;
 import java.beans.PropertyDescriptor;
 import java.io.Serial;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -162,34 +164,77 @@ public class JPALazyDataModel<T> extends LazyDataModel<T> implements Serializabl
     /**
      * Creates the {@link TypedQuery} for the given {@link CriteriaQuery}.
      * <p>
-     * This is a hook to support different Jakarta Persistence versions. The default implementation
-     * calls {@code EntityManager#createQuery(CriteriaQuery)}, which was removed in Jakarta Persistence 4.0.
-     * When running on Jakarta Persistence 4.0+, override this method in a subclass compiled against the 4.0 API
-     * with {@code return em.createQuery(cq);}, which then binds to {@code createQuery(CriteriaSelect)}.
+     * Supports Jakarta Persistence 3.x and 4.0+: {@code EntityManager#createQuery(CriteriaQuery)} was removed in 4.0
+     * in favor of {@code createQuery(CriteriaSelect)}, so the available method is resolved at runtime.
      *
      * @param em the {@link EntityManager}
      * @param cq the {@link CriteriaQuery}
      * @param <R> the result type
      * @return the {@link TypedQuery}
      */
+    @SuppressWarnings("unchecked")
     protected <R> TypedQuery<R> createTypedQuery(EntityManager em, CriteriaQuery<R> cq) {
-        return em.createQuery(cq);
+        try {
+            return (TypedQuery<R>) CreateQueryHolder.METHOD.invoke(em, cq);
+        }
+        catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof RuntimeException) {
+                throw (RuntimeException) cause;
+            }
+            throw new FacesException(cause);
+        }
+        catch (IllegalAccessException e) {
+            throw new FacesException(e);
+        }
     }
 
     /**
      * Combines the given predicates with a conjunction.
      * <p>
-     * This is a hook to support different Jakarta Persistence versions. The default implementation
-     * calls {@code CriteriaBuilder#and(Predicate...)}, which was removed in Jakarta Persistence 4.0.
-     * When running on Jakarta Persistence 4.0+, override this method in a subclass compiled against the 4.0 API
-     * with {@code return cb.and(predicates);}, which then binds to {@code and(List)}.
+     * Supports Jakarta Persistence 3.x and 4.0+: {@code CriteriaBuilder#and(Predicate...)} was removed in 4.0,
+     * so the predicates are chained with {@code CriteriaBuilder#and(Expression, Expression)}, which exists in all versions.
      *
      * @param cb the {@link CriteriaBuilder}
-     * @param predicates the predicates to combine
+     * @param predicates the predicates to combine, must not be empty
      * @return the combined {@link Predicate}
      */
     protected Predicate and(CriteriaBuilder cb, List<Predicate> predicates) {
-        return cb.and(predicates.toArray(new Predicate[0]));
+        Iterator<Predicate> iterator = predicates.iterator();
+        Predicate result = iterator.next();
+        while (iterator.hasNext()) {
+            result = cb.and(result, iterator.next());
+        }
+        return result;
+    }
+
+    /**
+     * Lazily resolves {@code EntityManager#createQuery} for the available Jakarta Persistence version.
+     */
+    private static final class CreateQueryHolder {
+
+        static final Method METHOD = resolve();
+
+        private CreateQueryHolder() {
+        }
+
+        private static Method resolve() {
+            try {
+                // Jakarta Persistence 3.x
+                return EntityManager.class.getMethod("createQuery", CriteriaQuery.class);
+            }
+            catch (NoSuchMethodException e) {
+                try {
+                    // Jakarta Persistence 4.0+
+                    Class<?> criteriaSelect = Class.forName("jakarta.persistence.criteria.CriteriaSelect", false,
+                            CriteriaQuery.class.getClassLoader());
+                    return EntityManager.class.getMethod("createQuery", criteriaSelect);
+                }
+                catch (ReflectiveOperationException ex) {
+                    throw new FacesException("Unable to resolve EntityManager#createQuery for CriteriaQuery", ex);
+                }
+            }
+        }
     }
 
     protected void applyFiltersFromFilterMeta(Class<T> entityClass, Collection<FilterMeta> filterBy, CriteriaBuilder cb,

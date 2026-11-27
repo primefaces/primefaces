@@ -1125,37 +1125,10 @@ public class MyJPALazyDataModel<T> extends JPALazyDataModel<T> {
 
 #### Jakarta Persistence 4.0
 
-`JPALazyDataModel` is compiled against Jakarta Persistence 3.1. Jakarta Persistence 4.0 (Jakarta EE 12) removed
-`EntityManager#createQuery(CriteriaQuery)` and `CriteriaBuilder#and(Predicate...)`, which leads to a `NoSuchMethodError` at runtime.
-Both calls are isolated in protected methods (`createTypedQuery` and `and`), so you can extend `JPALazyDataModel` in your own code,
-compiled against Jakarta Persistence 4.0, and override them. The method bodies stay the same, but compiling them against 4.0
-binds them to the new `createQuery(CriteriaSelect)` and `and(List)` methods:
-
-```java
-public class Jpa4LazyDataModel<T> extends JPALazyDataModel<T> {
-
-    public static <T> Builder<T, Jpa4LazyDataModel<T>> builder() {
-        return new Builder<>(new Jpa4LazyDataModel<>());
-    }
-
-    @Override
-    protected <R> TypedQuery<R> createTypedQuery(EntityManager em, CriteriaQuery<R> cq) {
-        return em.createQuery(cq); // binds to createQuery(CriteriaSelect)
-    }
-
-    @Override
-    protected Predicate and(CriteriaBuilder cb, List<Predicate> predicates) {
-        return cb.and(predicates); // binds to and(List)
-    }
-}
-```
-
-```java
-JPALazyDataModel<MyEntity> lazyDataModel = Jpa4LazyDataModel.<MyEntity> builder()
-        .entityClass(MyEntity.class)
-        .entityManager(() -> entityManager)
-        .build();
-```
+`JPALazyDataModel` supports Jakarta Persistence 3.x as well as 4.0 (Jakarta EE 12) out of the box.
+Jakarta Persistence 4.0 removed `EntityManager#createQuery(CriteriaQuery)` and `CriteriaBuilder#and(Predicate...)`, so `JPALazyDataModel`
+resolves the available `createQuery` method at runtime and combines predicates with `CriteriaBuilder#and(Expression, Expression)`.
+Both are implemented in the protected methods `createTypedQuery` and `and`, which can be overridden if needed.
 
 #### Unsupported features
 
