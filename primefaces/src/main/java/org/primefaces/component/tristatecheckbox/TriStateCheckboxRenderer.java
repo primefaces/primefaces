@@ -50,10 +50,11 @@ public class TriStateCheckboxRenderer extends InputRenderer {
         String clientId = checkbox.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
-        if (LangUtils.isBlank(submittedValue)) {
-            checkbox.setSubmittedValue(null);
+        // a missing (not submitted) value must leave submittedValue untouched so the model is not updated
+        if ("0".equals(submittedValue)) {
+            checkbox.setSubmittedValue(TriStateCheckbox.EMPTY_SUBMITTED_VALUE);
         }
-        if ("1".equals(submittedValue)) {
+        else if ("1".equals(submittedValue)) {
             checkbox.setSubmittedValue(Boolean.TRUE);
         }
         else if ("2".equals(submittedValue)) {
