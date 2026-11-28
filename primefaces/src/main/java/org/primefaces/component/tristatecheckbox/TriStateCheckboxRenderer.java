@@ -51,10 +51,11 @@ public class TriStateCheckboxRenderer extends InputRenderer<TriStateCheckbox> {
         String clientId = component.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
-        if (LangUtils.isBlank(submittedValue)) {
-            component.setSubmittedValue(null);
+        // a missing (not submitted) value must leave submittedValue untouched so the model is not updated
+        if ("0".equals(submittedValue)) {
+            component.setSubmittedValue(TriStateCheckbox.EMPTY_SUBMITTED_VALUE);
         }
-        if ("1".equals(submittedValue)) {
+        else if ("1".equals(submittedValue)) {
             component.setSubmittedValue(Boolean.TRUE);
         }
         else if ("2".equals(submittedValue)) {
