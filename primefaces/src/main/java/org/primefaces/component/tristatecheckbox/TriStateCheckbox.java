@@ -37,6 +37,11 @@ public class TriStateCheckbox extends TriStateCheckboxBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.TriStateCheckbox";
     public static final String UI_ICON = "ui-icon ";
 
+    /**
+     * Submitted value marking the empty (null) state, to distinguish it from a request where the input was not decoded.
+     */
+    public static final String EMPTY_SUBMITTED_VALUE = "";
+
     @Override
     public String getDefaultEventName() {
         return "valueChange";
@@ -49,12 +54,13 @@ public class TriStateCheckbox extends TriStateCheckboxBase {
         }
 
         Object submittedValue = getSubmittedValue();
-        if (submittedValue != null) {
+        if (!EMPTY_SUBMITTED_VALUE.equals(submittedValue)) {
+            // null means nothing was decoded (e.g. TreeTable expand/collapse) -> UIInput skips it and keeps the model value
             super.validate(context);
             return;
         }
 
-        // special handling for allowed null value
+        // special handling for the explicitly submitted empty state
         Boolean newValue = null;
 
         validateValue(context, newValue);
