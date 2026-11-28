@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:treeTable id="treeTable" value="#{triStateCheckbox003.root}" var="item">
+                <p:column headerText="Name">
+                    <h:outputText value="#{item.name}"/>
+                </p:column>
+                <p:column headerText="Value">
+                    <p:triStateCheckbox id="value" value="#{item.value}">
+                        <p:ajax event="change" process="@this"/>
+                    </p:triStateCheckbox>
+                </p:column>
+            </p:treeTable>
+
+            <p:commandButton id="button" process="@this" update="output" value="Show"/>
+            <h:outputText id="output" value="#{triStateCheckbox003.first.value},#{triStateCheckbox003.second.value}"/>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
