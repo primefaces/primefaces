@@ -248,14 +248,19 @@ public interface UITable<T extends UITableState> extends ColumnAware, MultiViewS
                                 filterMeta.setMatchMode(m);
                                 filterMeta.setConstraint(FilterConstraints.of(m));
                             });
-                }
 
-                try {
-                    // if no custom filter provided and conversion necessary, use UIColumn#converter instead
-                    filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), filterValue);
+                    // between / notBetween get a List of the values of both inputs
+                    filterValue = FilterMatchModeOptions.convertFilterValue(context, column, filterMeta.getMatchMode(), (String) filterValue,
+                            params.get(columnClientId + separator + "filter_to"));
                 }
-                catch (ConverterException ex) {
-                    filterValue = null;
+                else {
+                    try {
+                        // if no custom filter provided and conversion necessary, use UIColumn#converter instead
+                        filterValue = ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), filterValue);
+                    }
+                    catch (ConverterException ex) {
+                        filterValue = null;
+                    }
                 }
             }
 

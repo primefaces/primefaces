@@ -30,19 +30,26 @@ import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.GreaterThanEqualsFilterConstraint;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import jakarta.el.MethodExpression;
 import jakarta.faces.FacesException;
+import jakarta.faces.component.UIComponent;
 import jakarta.faces.component.html.HtmlOutputText;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.ConverterException;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -122,10 +129,21 @@ class FilterMatchModeOptionsTest {
 
     @Test
     void unsupportedMatchModes() {
-        for (String operator : List.of("in", "notIn", "between", "notBetween", "global")) {
+        for (String operator : List.of("in", "notIn", "global")) {
             Column column = column("equals," + operator, null);
             assertThrows(FacesException.class, () -> FilterMatchModeOptions.resolve(context, table, column), operator);
         }
+    }
+
+    @Test
+    void rangeMatchModes() {
+        assertEquals(List.of(MatchMode.EQUALS, MatchMode.BETWEEN, MatchMode.NOT_BETWEEN),
+                FilterMatchModeOptions.resolve(context, table, column("equals,between,notBetween", null)));
+        assertTrue(FilterMatchModeOptions.NUMERIC.containsAll(List.of(MatchMode.BETWEEN, MatchMode.NOT_BETWEEN)));
+        assertTrue(FilterMatchModeOptions.DATE.containsAll(List.of(MatchMode.BETWEEN, MatchMode.NOT_BETWEEN)));
+        assertFalse(FilterMatchModeOptions.TEXT.contains(MatchMode.BETWEEN));
+        assertEquals(List.of(MatchMode.BETWEEN, MatchMode.NOT_BETWEEN),
+                Arrays.stream(MatchMode.values()).filter(MatchMode::isRange).collect(Collectors.toList()));
     }
 
     @Test
@@ -161,7 +179,8 @@ class FilterMatchModeOptionsTest {
         FilterMatchModeOptions.apply(context, table, column, filterMeta);
 
         FilterMatchModeOptions.validateFilterByMatchMode(filterMeta, MatchMode.GREATER_THAN);
-        for (MatchMode matchMode : List.of(MatchMode.CONTAINS, MatchMode.BETWEEN)) {
+        FilterMatchModeOptions.validateFilterByMatchMode(filterMeta, MatchMode.BETWEEN);
+        for (MatchMode matchMode : List.of(MatchMode.CONTAINS, MatchMode.EXACT)) {
             FacesException e = assertThrows(FacesException.class,
                     () -> FilterMatchModeOptions.validateFilterByMatchMode(filterMeta, matchMode));
             assertTrue(e.getMessage().contains("'" + matchMode.operator() + "'"), e.getMessage());
@@ -209,5 +228,45 @@ class FilterMatchModeOptionsTest {
         FilterMeta implicitMeta = FilterMeta.of(context, "row", implicit, false);
         FilterMatchModeOptions.apply(context, table, implicit, implicitMeta);
         assertEquals(MatchMode.EQUALS, implicitMeta.getMatchMode());
+    }
+
+    private Column integerColumn() {
+        Column column = column("numeric", null);
+        column.setConverter(new Converter<Integer>() {
+            @Override
+            public Integer getAsObject(FacesContext context, UIComponent component, String value) {
+                try {
+                    return value == null ? null : Integer.valueOf(value);
+                }
+                catch (NumberFormatException e) {
+                    throw new ConverterException(e);
+                }
+            }
+
+            @Override
+            public String getAsString(FacesContext context, UIComponent component, Integer value) {
+                return String.valueOf(value);
+            }
+        });
+        return column;
+    }
+
+    @Test
+    void convertSingleValue() {
+        Column column = integerColumn();
+        assertEquals(42, FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.EQUALS, "42", null));
+        assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.EQUALS, "x", null));
+        assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.EQUALS, " ", null));
+    }
+
+    @Test
+    void convertBetween() {
+        Column column = integerColumn();
+        assertEquals(List.of(1, 5), FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.BETWEEN, " 1", "5 "));
+        assertEquals(List.of(1, 5), FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.NOT_BETWEEN, "1", "5"));
+        // no open-ended ranges, and inactive if one value does not convert
+        assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.BETWEEN, "1", " "));
+        assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.BETWEEN, null, "5"));
+        assertNull(FilterMatchModeOptions.convertFilterValue(context, column, MatchMode.BETWEEN, "1", "x"));
     }
 }

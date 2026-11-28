@@ -52,6 +52,7 @@ public class DataTable061 implements Serializable {
     private List<Employee> filteredEmployeesAuto;
     private List<Employee> filteredEmployeesPlain;
     private List<Employee> filteredEmployeesSticky;
+    private Integer salaryFilter;
     private List<ColumnModel> columns = List.of(new ColumnModel("First name", "firstName"), new ColumnModel("Last name", "lastName"));
 
     @Inject

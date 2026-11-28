@@ -16,7 +16,8 @@
             <p:dataTable id="datatable" widgetVar="wgtTable" value="#{dataTable061.employees}" var="employee"
                          filteredValue="#{dataTable061.filteredEmployees}" filterMatchModeOptions="text">
 
-                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"/>
+                <p:column headerText="ID" field="id" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"
+                          filterPlaceholder="ID"/>
 
                 <p:column headerText="First name" field="firstName"/>
 
@@ -60,6 +61,15 @@
                 <p:column headerText="ID" field="id" converter="jakarta.faces.Integer" filterMatchMode="gte"/>
                 <p:column headerText="First name" field="firstName"/>
             </p:dataTable>
+
+            <!-- GitHub #7427: a filterValue binding to a single value, between gives a List -->
+            <p:dataTable id="datatableBinding" value="#{dataTable061.employees}" var="employee">
+                <p:ajax event="filter" update="form:salaryFilter"/>
+                <p:column headerText="ID" field="id" filterable="false"/>
+                <p:column headerText="Salary" field="salary" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"
+                          filterValue="#{dataTable061.salaryFilter}"/>
+            </p:dataTable>
+            <h:outputText id="salaryFilter" value="#{dataTable061.salaryFilter}"/>
 
             <p:dataTable id="datatableSticky" value="#{dataTable061.employees}" var="employee" stickyHeader="true"
                          filteredValue="#{dataTable061.filteredEmployeesSticky}" filterMatchModeOptions="text">

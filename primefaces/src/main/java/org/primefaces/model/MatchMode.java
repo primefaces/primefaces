@@ -70,6 +70,15 @@ public enum MatchMode {
         return operator;
     }
 
+    /**
+     * Whether the filter value of this match mode is a range, a {@link java.util.List} of its start and end.
+     *
+     * @return {@code true} for {@link #BETWEEN} and {@link #NOT_BETWEEN}
+     */
+    public boolean isRange() {
+        return this == BETWEEN || this == NOT_BETWEEN;
+    }
+
     public static MatchMode of(String operator) {
         if (LangUtils.isBlank(operator)) {
             return UIColumn.DEFAULT_FILTER_MATCH_MODE;

@@ -185,6 +185,19 @@
         margin: var(--p-datatable-column-filter-gap) auto auto auto;
     }
 
+    /* between / notBetween: the second input (end of the range) beside the first one, so the header row keeps its height;
+       the first input takes the full width while the second one is hidden */
+    .p-datatable-filter-range {
+        display: flex;
+        gap: var(--p-datatable-header-cell-gap);
+
+        > .p-column-filter {
+            flex: 1 1 0;
+            min-width: 0;
+            margin-inline: 0;
+        }
+    }
+
     .p-column-filter .p-inputfield,
     .p-column-customfilter .p-inputfield,
     .p-column-customfilter .p-selectonemenu {

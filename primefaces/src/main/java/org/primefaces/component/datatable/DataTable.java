@@ -145,6 +145,8 @@ public class DataTable extends DataTableBaseImpl {
     public static final String FILTER_MATCH_MODE_MENU_CLASS = "p-datatable-filter-matchmode-menu p-input-overlay p-hidden";
     public static final String FILTER_MATCH_MODE_OPTION_CLASS = "p-datatable-filter-matchmode-option";
     public static final String FILTER_MATCH_MODE_LABEL_CLASS = "p-datatable-filter-matchmode-label";
+    public static final String FILTER_VALUE_TO_CLASS = "p-datatable-filter-to";
+    public static final String FILTER_RANGE_CLASS = "p-datatable-filter-range";
     public static final String RESIZABLE_COLUMN_CLASS = "p-resizable-column";
     public static final String DRAGGABLE_COLUMN_CLASS = "p-draggable-column";
     public static final String EXPANDED_ROW_CLASS = "p-expanded-row";
@@ -346,13 +348,33 @@ public class DataTable extends DataTableBaseImpl {
             if (column.isDynamic()) {
                 DynamicColumn dynamicColumn = (DynamicColumn) column;
                 dynamicColumn.applyStatelessModel();
-                columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+                columnFilterValueVE.setValue(elContext, filterValueForBinding(elContext, columnFilterValueVE, filter.getFilterValue()));
                 dynamicColumn.cleanStatelessModel();
             }
             else {
-                columnFilterValueVE.setValue(elContext, filter.getFilterValue());
+                columnFilterValueVE.setValue(elContext, filterValueForBinding(elContext, columnFilterValueVE, filter.getFilterValue()));
             }
         }
+    }
+
+    /**
+     * The filter value to write to the {@code filterValue} binding of a column: {@code null} if a {@code List} (between /
+     * notBetween) does not fit a binding to a single value or a single value does not fit a binding to a collection, as a
+     * match mode picker may offer both kinds of match modes for the same column (#7427).
+     */
+    static Object filterValueForBinding(ELContext elContext, ValueExpression filterValueVE, Object filterValue) {
+        if (filterValue == null) {
+            return null;
+        }
+        Class<?> type = filterValueVE.getType(elContext);
+        if (type == null || type == Object.class) {
+            return filterValue;
+        }
+        boolean collection = Collection.class.isAssignableFrom(type);
+        if (filterValue instanceof Collection) {
+            return collection && type.isInstance(filterValue) ? filterValue : null;
+        }
+        return collection && !filterValue.getClass().isArray() ? null : filterValue;
     }
 
     @Override

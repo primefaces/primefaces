@@ -30,9 +30,13 @@ import org.primefaces.el.MyBean;
 import org.primefaces.el.MyContainer;
 import org.primefaces.mock.FacesContextMock;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import jakarta.el.ExpressionFactory;
 import jakarta.el.ValueExpression;
@@ -42,6 +46,7 @@ import jakarta.faces.render.Renderer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -175,5 +180,37 @@ class DataTableTest {
         exprVE = expFactory.createValueExpression(
                 context.getELContext(), "#{i18n[row][column[property]]}", String.class);
         assertNull(column.resolveField(context, exprVE));
+    }
+
+    /**
+     * GitHub #7427: between / notBetween of a match mode picker give a List, the other match modes of the same column a single
+     * value, the filterValue binding only gets what its type takes.
+     */
+    @Test
+    void filterValueForBinding() {
+        List<Integer> range = Arrays.asList(10, 100);
+
+        assertEquals(range, DataTable.filterValueForBinding(null, valueExpression(Object.class), range));
+        assertEquals(range, DataTable.filterValueForBinding(null, valueExpression(List.class), range));
+        assertEquals(range, DataTable.filterValueForBinding(null, valueExpression(Collection.class), range));
+        assertEquals(range, DataTable.filterValueForBinding(null, valueExpression(null), range));
+        assertNull(DataTable.filterValueForBinding(null, valueExpression(BigDecimal.class), range));
+        assertNull(DataTable.filterValueForBinding(null, valueExpression(Set.class), range));
+
+        assertEquals(10, DataTable.filterValueForBinding(null, valueExpression(Integer.class), 10));
+        assertEquals(10, DataTable.filterValueForBinding(null, valueExpression(Object.class), 10));
+        assertNull(DataTable.filterValueForBinding(null, valueExpression(List.class), 10));
+        assertNull(DataTable.filterValueForBinding(null, valueExpression(Integer.class), null));
+
+        // unchanged: EL coerces a String, an array goes to a List binding as before
+        assertEquals("10", DataTable.filterValueForBinding(null, valueExpression(Integer.class), "10"));
+        String[] array = {"a", "b"};
+        assertSame(array, DataTable.filterValueForBinding(null, valueExpression(List.class), array));
+    }
+
+    private static ValueExpression valueExpression(Class<?> type) {
+        ValueExpression valueExpression = mock(ValueExpression.class);
+        doReturn(type).when(valueExpression).getType(null);
+        return valueExpression;
     }
 }

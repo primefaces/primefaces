@@ -30,11 +30,13 @@ import org.primefaces.el.ValueExpressionAnalyzer;
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.MatchMode;
 import org.primefaces.model.filter.FilterConstraints;
+import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.FacetUtils;
 import org.primefaces.util.LangUtils;
 
 import java.time.temporal.Temporal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -47,6 +49,7 @@ import jakarta.el.ValueReference;
 import jakarta.faces.FacesException;
 import jakarta.faces.component.UIComponent;
 import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.ConverterException;
 
 /**
  * Resolves the match modes an end user may pick for a column filter, as configured by the {@code filterMatchModeOptions}
@@ -61,6 +64,9 @@ import jakarta.faces.context.FacesContext;
  * filter request and only accepted if it is one of the column's options. Picking another match mode always sends a filter
  * request, also with an empty filter value, so the server side {@link FilterMeta} (and with it AJAX updates and the multi view
  * state) always knows the picked match mode.
+ * <p>
+ * {@code between} / {@code notBetween} get a {@link java.util.List} as filter value (see {@link #convertFilterValue}): the
+ * values of the filter input and of a second input {@code <column clientId>:filter_to}.
  */
 final class FilterMatchModeOptions {
 
@@ -75,16 +81,15 @@ final class FilterMatchModeOptions {
 
     static final List<MatchMode> NUMERIC = List.of(
             MatchMode.EQUALS, MatchMode.NOT_EQUALS, MatchMode.LESS_THAN, MatchMode.LESS_THAN_EQUALS,
-            MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS);
+            MatchMode.GREATER_THAN, MatchMode.GREATER_THAN_EQUALS, MatchMode.BETWEEN, MatchMode.NOT_BETWEEN);
 
     static final List<MatchMode> DATE = NUMERIC;
 
     /**
-     * Match modes that are not offered by the picker (yet): {@code global} is no column filter, and the multi-value modes
-     * need a value separator.
+     * Match modes that are not offered by the picker: {@code global} is no column filter, {@code in} / {@code notIn} need a
+     * collection, e.g. from a filter facet.
      */
-    private static final Set<MatchMode> UNSUPPORTED = Set.of(
-            MatchMode.GLOBAL, MatchMode.IN, MatchMode.NOT_IN, MatchMode.BETWEEN, MatchMode.NOT_BETWEEN);
+    private static final Set<MatchMode> UNSUPPORTED = Set.of(MatchMode.GLOBAL, MatchMode.IN, MatchMode.NOT_IN);
 
     private FilterMatchModeOptions() {
         // NOOP
@@ -148,6 +153,39 @@ final class FilterMatchModeOptions {
             throw new FacesException("Match mode '" + (matchMode == null ? null : matchMode.operator()) + "' of the filterBy for column '"
                     + filterMeta.getColumnKey() + "' is not one of its filterMatchModeOptions " + operators(options));
         }
+    }
+
+    /**
+     * Converts the submitted filter value of a column with a match mode picker with the column's converter. {@code between} /
+     * {@code notBetween} get a {@link List} of the two values {@code value} and {@code valueTo}.
+     *
+     * @param context the {@link FacesContext}
+     * @param column the column
+     * @param matchMode the column's match mode
+     * @param value the submitted filter value
+     * @param valueTo the submitted second filter value, only used by {@code between} / {@code notBetween}
+     * @return the filter value, {@code null} if it is empty or does not convert (a range is only active if both of its values
+     *         convert)
+     */
+    static Object convertFilterValue(FacesContext context, UIColumn column, MatchMode matchMode, String value, String valueTo) {
+        try {
+            if (matchMode.isRange()) {
+                if (LangUtils.isBlank(value) || LangUtils.isBlank(valueTo)) {
+                    return null;
+                }
+                Object from = convert(context, column, value.trim());
+                Object to = convert(context, column, valueTo.trim());
+                return from == null || to == null ? null : Arrays.asList(from, to);
+            }
+            return convert(context, column, value);
+        }
+        catch (ConverterException e) {
+            return null;
+        }
+    }
+
+    private static Object convert(FacesContext context, UIColumn column, String value) {
+        return ComponentUtils.getConvertedValue(context, column.asUIComponent(), column.getConverter(), value);
     }
 
     /**

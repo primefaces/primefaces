@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <!-- DefaultLazyDataModel, filters in memory with the FilterConstraint of the match mode -->
+            <p:dataTable id="datatableDefault" value="#{dataTable061Lazy.employees}" var="employee" lazy="true">
+                <p:column headerText="ID" field="id" filterable="false"/>
+                <p:column headerText="Salary" field="salary" filterMatchModeOptions="numeric" converter="jakarta.faces.Integer"/>
+            </p:dataTable>
+
+            <!-- JPALazyDataModel, filters in the database query -->
+            <p:dataTable id="datatableJpa" value="#{dataTable061Lazy.countries}" var="country" lazy="true"
+                         paginator="true" rows="10">
+                <p:column headerText="Name" field="name" filterable="false"/>
+                <p:column headerText="Population (M)" field="population" filterMatchModeOptions="numeric"
+                          converter="jakarta.faces.Integer"/>
+            </p:dataTable>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>

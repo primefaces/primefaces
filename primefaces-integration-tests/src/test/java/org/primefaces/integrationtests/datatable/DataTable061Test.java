@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,7 +54,7 @@ class DataTable061Test extends AbstractPrimePageTest {
 
     private static final List<String> TEXT = List.of("startsWith", "notStartsWith", "endsWith", "notEndsWith",
             "contains", "notContains", "exact", "notExact");
-    private static final List<String> NUMERIC = List.of("equals", "notEquals", "lt", "lte", "gt", "gte");
+    private static final List<String> NUMERIC = List.of("equals", "notEquals", "lt", "lte", "gt", "gte", "between", "notBetween");
 
     @Test
     @Order(1)
@@ -186,11 +187,11 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertEquals("true", trigger.getDomAttribute("aria-expanded"));
         assertEquals("gte", focusedMatchMode());
 
-        // Act - wraps around to the first one
+        // Act
         activeElement().sendKeys(Keys.ARROW_DOWN);
 
         // Assert
-        assertEquals("equals", focusedMatchMode());
+        assertEquals("between", focusedMatchMode());
 
         // Act
         activeElement().sendKeys(Keys.ESCAPE);
@@ -355,6 +356,369 @@ class DataTable061Test extends AbstractPrimePageTest {
         assertNoJavascriptErrors();
     }
 
+    @Test
+    @Order(14)
+    @DisplayName("DataTable: GitHub #7427 between with a second input for the end of the range")
+    void between(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatable;
+        HeaderCell id = cell(dataTable, "ID");
+        WebElement filterTo = filterTo(id);
+        assertFalse(filterTo.isDisplayed());
+
+        // Act - without the end of the range the filter is inactive
+        dataTable.filter("ID", "3");
+        dataTable.filterMatchMode("ID", "between");
+
+        // Assert
+        assertTrue(filterTo.isDisplayed());
+        assertEquals("Filter ID To", filterTo.getDomAttribute("aria-label"));
+        assertEquals("To", filterTo.getDomAttribute("placeholder"));
+        assertEquals("ID", id.getColumnFilter().getDomAttribute("placeholder"));
+        // beside the first input, on the same line
+        assertEquals(id.getColumnFilter().getLocation().getY(), filterTo.getLocation().getY());
+        assertEquals(8, dataTable.getRows().size());
+
+        // Act
+        setValueAndFilter(dataTable, filterTo, "6");
+
+        // Assert
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+
+        // Act
+        dataTable.filterMatchMode("ID", "notBetween");
+
+        // Assert
+        assertEquals(List.of("1", "2", "11", "533"), ids(dataTable));
+
+        // Act - kept across an AJAX update
+        page.buttonUpdate.click();
+
+        // Assert
+        id = cell(dataTable, "ID");
+        assertEquals("3", id.getColumnFilter().getDomProperty("value"));
+        assertEquals("6", filterTo(id).getDomProperty("value"));
+        assertEquals(List.of("1", "2", "11", "533"), ids(dataTable));
+
+        // Act - a value which does not convert makes the filter inactive
+        setValueAndFilter(dataTable, filterTo(id), "x");
+
+        // Assert
+        assertEquals(8, dataTable.getRows().size());
+
+        // Act - another match mode hides and clears the second input
+        dataTable.filterMatchMode("ID", "gt");
+
+        // Assert
+        assertFalse(filterTo(id).isDisplayed());
+        assertEquals("", filterTo(id).getDomProperty("value"));
+        assertEquals(List.of("4", "5", "6", "11", "533"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("DataTable: GitHub #7427 clearFilters() hides and clears the second input")
+    void betweenClearFilters(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatable;
+        dataTable.filter("ID", "3");
+        dataTable.filterMatchMode("ID", "between");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+        assertEquals(4, dataTable.getRows().size());
+
+        // Act
+        dataTable.clearFilters();
+
+        // Assert
+        HeaderCell id = cell(dataTable, "ID");
+        assertEquals("equals", id.getFilterMatchMode());
+        assertFalse(filterTo(id).isDisplayed());
+        assertEquals("", filterTo(id).getDomProperty("value"));
+        assertEquals(8, dataTable.getRows().size());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(16)
+    @DisplayName("DataTable: GitHub #7427 toggleFilter() shows the second input only for between")
+    void betweenToggleFilter(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatable;
+        HeaderCell id = cell(dataTable, "ID");
+
+        // Act
+        dataTable.filterMatchMode("ID", "between");
+        PrimeSelenium.executeScript("PF('wgtTable').toggleFilter();");
+
+        // Assert
+        assertFalse(id.getColumnFilter().isDisplayed());
+        assertFalse(filterTo(id).isDisplayed());
+
+        // Act
+        PrimeSelenium.executeScript("PF('wgtTable').toggleFilter();");
+
+        // Assert
+        assertTrue(id.getColumnFilter().isDisplayed());
+        assertTrue(filterTo(id).isDisplayed());
+
+        // Act - visible filters, another match mode
+        dataTable.filterMatchMode("ID", "gt");
+        PrimeSelenium.executeScript("PF('wgtTable').toggleFilter();");
+        PrimeSelenium.executeScript("PF('wgtTable').toggleFilter();");
+
+        // Assert - the second input is not shown with the others
+        assertTrue(id.getColumnFilter().isDisplayed());
+        assertFalse(filterTo(id).isDisplayed());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(17)
+    @Tag("DataTable-scrolling")
+    @DisplayName("DataTable: GitHub #7427 between with stickyHeader, the copy of the header follows the second input")
+    void betweenStickyHeader(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatableSticky;
+        int height = clonedHeader(dataTable).getSize().getHeight();
+
+        // Act
+        dataTable.filterMatchMode("ID", "between");
+
+        // Assert - the copy shows the second input as well, the header keeps its height
+        WebElement clonedFilterTo = clonedHeader(dataTable).findElement(By.className("p-datatable-filter-to"));
+        assertTrue(clonedFilterTo.isDisplayed());
+        assertFalse(clonedFilterTo.isEnabled());
+        assertEquals(height, clonedHeader(dataTable).getSize().getHeight());
+
+        // Act
+        dataTable.filter("ID", "3");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+
+        // Assert - the disabled copy is not submitted
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+
+        // Act
+        dataTable.clearFilters();
+
+        // Assert
+        assertFalse(clonedHeader(dataTable).findElement(By.className("p-datatable-filter-to")).isDisplayed());
+        assertEquals(height, clonedHeader(dataTable).getSize().getHeight());
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(18)
+    @Tag("DataTable-mvs")
+    @DisplayName("DataTable: GitHub #7427 multiViewState restores both values of between")
+    void betweenMultiViewState(MultiViewStatePage page, OtherPage otherPage) {
+        // Arrange
+        PrimeSelenium.goTo(page);
+        DataTable dataTable = page.datatable;
+        dataTable.filter("Salary", "2300");
+        dataTable.filterMatchMode("Salary", "between");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Salary")), "2800");
+        assertEquals(List.of("2", "6", "11", "533"), ids(dataTable));
+
+        // Act
+        PrimeSelenium.goTo(otherPage);
+        PrimeSelenium.goTo(page);
+
+        // Assert
+        HeaderCell salary = cell(dataTable, "Salary");
+        assertEquals("between", salary.getFilterMatchMode());
+        assertEquals("2300", salary.getColumnFilter().getDomProperty("value"));
+        assertTrue(filterTo(salary).isDisplayed());
+        assertEquals("2800", filterTo(salary).getDomProperty("value"));
+        assertEquals(List.of("2", "6", "11", "533"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(19)
+    @DisplayName("DataTable: GitHub #7427 between with a DefaultLazyDataModel")
+    void betweenLazyDefault(LazyPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableDefault;
+        dataTable.filter("Salary", "2300");
+        dataTable.filterMatchMode("Salary", "between");
+
+        // Act
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Salary")), "2800");
+
+        // Assert
+        assertEquals(List.of("2", "6", "11", "533"), ids(dataTable));
+
+        // Act
+        dataTable.filterMatchMode("Salary", "notBetween");
+
+        // Assert - like the in-memory filtering of a non-lazy table, null (3) is not between
+        assertEquals(List.of("1", "3", "4", "5"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(20)
+    @DisplayName("DataTable: GitHub #7427 between with a JPALazyDataModel, filtered in the database query")
+    void betweenLazyJpa(LazyPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableJpa;
+        dataTable.filter("Population (M)", "140");
+        dataTable.filterMatchMode("Population (M)", "between");
+
+        // Act
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Population (M)")), "220");
+
+        // Assert
+        assertEquals(List.of("Bangladesh", "Brazil", "Russian Federation"), sorted(ids(dataTable)));
+
+        // Act
+        PrimeSelenium.executeScript("arguments[0].value = '1';", cell(dataTable, "Population (M)").getColumnFilter());
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Population (M)")), "1400");
+        dataTable.filterMatchMode("Population (M)", "notBetween");
+
+        // Assert
+        assertEquals(List.of("China"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(21)
+    @DisplayName("DataTable: GitHub #7427 between with filterPosition=top, the inputs above the column title")
+    void betweenFilterPositionTop(LayoutPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableTop;
+        HeaderCell id = cell(dataTable, "ID");
+        int titleY = id.getColumnTitle().getLocation().getY();
+        int height = dataTable.getHeader().getWebElement().getSize().getHeight();
+
+        // Act
+        dataTable.filterMatchMode("ID", "between");
+
+        // Assert - beside each other above the title, the header keeps its height
+        id = cell(dataTable, "ID");
+        WebElement filter = id.getColumnFilter();
+        WebElement filterTo = filterTo(id);
+        assertTrue(filterTo.isDisplayed());
+        assertEquals(filter.getLocation().getY(), filterTo.getLocation().getY());
+        assertTrue(filter.getLocation().getX() < filterTo.getLocation().getX());
+        assertTrue(filter.getLocation().getY() + filter.getSize().getHeight() <= id.getColumnTitle().getLocation().getY());
+        assertEquals(titleY, id.getColumnTitle().getLocation().getY());
+        assertEquals(height, dataTable.getHeader().getWebElement().getSize().getHeight());
+
+        // Act
+        dataTable.filter("ID", "3");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+
+        // Assert
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(22)
+    @DisplayName("DataTable: GitHub #7427 between in a right-to-left page, the second input on the left")
+    void betweenRtl(LayoutPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableRtl;
+        int height = dataTable.getHeader().getWebElement().getSize().getHeight();
+
+        // Act
+        dataTable.filterMatchMode("ID", "between");
+
+        // Assert
+        HeaderCell id = cell(dataTable, "ID");
+        WebElement filter = id.getColumnFilter();
+        WebElement filterTo = filterTo(id);
+        assertTrue(filterTo.isDisplayed());
+        assertEquals(filter.getLocation().getY(), filterTo.getLocation().getY());
+        assertTrue(filterTo.getLocation().getX() + filterTo.getSize().getWidth() <= filter.getLocation().getX());
+        // both inside the cell
+        WebElement th = id.getWebElement();
+        assertTrue(filterTo.getLocation().getX() >= th.getLocation().getX());
+        assertTrue(filter.getLocation().getX() + filter.getSize().getWidth() <= th.getLocation().getX() + th.getSize().getWidth());
+        assertEquals(height, dataTable.getHeader().getWebElement().getSize().getHeight());
+
+        // Act
+        dataTable.filter("ID", "3");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+
+        // Assert
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(23)
+    @Tag("DataTable-scrolling")
+    @DisplayName("DataTable: GitHub #7427 stickyHeader with resizableColumns, the copy of the header stays disabled after a resize")
+    void stickyHeaderResize(LayoutPage page) {
+        // Arrange
+        DataTable dataTable = page.datatableResizable;
+        dataTable.filterMatchMode("ID", "between");
+        WebElement th = cell(dataTable, "ID").getWebElement();
+        int width = th.getSize().getWidth();
+
+        // Act
+        WebElement resizer = th.findElement(By.className("p-column-resizer"));
+        new Actions(PrimeSelenium.getWebDriver()).clickAndHold(resizer).moveByOffset(10, 0).moveByOffset(30, 0).release().perform();
+
+        // Assert - resized, and the recloned copy is disabled and shows the second input
+        assertTrue(cell(dataTable, "ID").getWebElement().getSize().getWidth() > width);
+        List<WebElement> clonedInputs = clonedHeader(dataTable).findElements(
+                By.cssSelector(".p-column-filter, .p-datatable-filter-matchmode-input, .p-datatable-filter-matchmode-trigger"));
+        assertFalse(clonedInputs.isEmpty());
+        clonedInputs.forEach(input -> assertFalse(input.isEnabled()));
+        assertTrue(clonedHeader(dataTable).findElement(By.className("p-datatable-filter-to")).isDisplayed());
+
+        // Act
+        dataTable.filter("ID", "3");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "ID")), "6");
+
+        // Assert
+        assertEquals(List.of("3", "4", "5", "6"), ids(dataTable));
+        assertNoJavascriptErrors();
+    }
+
+    @Test
+    @Order(24)
+    @DisplayName("DataTable: GitHub #7427 between with a filterValue binding to a single value, which gets null")
+    void betweenFilterValueBinding(Page page) {
+        // Arrange
+        DataTable dataTable = page.datatableBinding;
+        dataTable.filter("Salary", "2300");
+        assertEquals("2300", page.salaryFilter.getText());
+
+        // Act
+        dataTable.filterMatchMode("Salary", "between");
+        setValueAndFilter(dataTable, filterTo(cell(dataTable, "Salary")), "2800");
+
+        // Assert - filtered, the Integer binding cannot take the List
+        assertEquals(List.of("2", "6", "11", "533"), ids(dataTable));
+        assertEquals("", page.salaryFilter.getText());
+
+        // Act
+        dataTable.filterMatchMode("Salary", "gte");
+
+        // Assert
+        assertEquals(List.of("1", "2", "4", "6", "11", "533"), ids(dataTable));
+        assertEquals("2300", page.salaryFilter.getText());
+        assertNoJavascriptErrors();
+    }
+
+    private static WebElement clonedHeader(DataTable dataTable) {
+        return dataTable.findElement(By.cssSelector(".p-datatable-tablewrapper > table > thead"));
+    }
+
+    private static WebElement filterTo(HeaderCell cell) {
+        return cell.getWebElement().findElement(By.className("p-datatable-filter-to"));
+    }
+
+    private static void setValueAndFilter(DataTable dataTable, WebElement input, String value) {
+        PrimeSelenium.executeScript("arguments[0].value = arguments[1];", input, value);
+        dataTable.applyFilters();
+    }
+
     private static HeaderCell cell(DataTable dataTable, String headerText) {
         return dataTable.getHeader().getCell(headerText).orElseThrow();
     }
@@ -365,6 +729,10 @@ class DataTable061Test extends AbstractPrimePageTest {
 
     private static List<String> ids(DataTable dataTable) {
         return dataTable.getRows().stream().map(row -> row.getCell(0).getText()).collect(Collectors.toList());
+    }
+
+    private static List<String> sorted(List<String> values) {
+        return values.stream().sorted().collect(Collectors.toList());
     }
 
     private static WebElement activeElement() {
@@ -388,6 +756,12 @@ class DataTable061Test extends AbstractPrimePageTest {
         @FindBy(id = "form:datatableSticky")
         DataTable datatableSticky;
 
+        @FindBy(id = "form:datatableBinding")
+        DataTable datatableBinding;
+
+        @FindBy(id = "form:salaryFilter")
+        WebElement salaryFilter;
+
         @FindBy(id = "form:buttonUpdate")
         CommandButton buttonUpdate;
 
@@ -404,6 +778,35 @@ class DataTable061Test extends AbstractPrimePageTest {
         @Override
         public String getLocation() {
             return "datatable/dataTable061MultiViewState.xhtml";
+        }
+    }
+
+    public static class LazyPage extends AbstractPrimePage {
+        @FindBy(id = "form:datatableDefault")
+        DataTable datatableDefault;
+
+        @FindBy(id = "form:datatableJpa")
+        DataTable datatableJpa;
+
+        @Override
+        public String getLocation() {
+            return "datatable/dataTable061Lazy.xhtml";
+        }
+    }
+
+    public static class LayoutPage extends AbstractPrimePage {
+        @FindBy(id = "form:datatableTop")
+        DataTable datatableTop;
+
+        @FindBy(id = "form:datatableRtl")
+        DataTable datatableRtl;
+
+        @FindBy(id = "form:datatableResizable")
+        DataTable datatableResizable;
+
+        @Override
+        public String getLocation() {
+            return "datatable/dataTable061Layout.xhtml";
         }
     }
 
